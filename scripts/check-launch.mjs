@@ -55,7 +55,7 @@ const headers = readFileSync('public/_headers', 'utf8');
 if (headers.includes('images.unsplash.com')) blockers.push('images.unsplash.com is still allowed in the CSP (public/_headers img-src)');
 
 // Extra safety checks.
-const dashPages = pages.filter((p) => /[–—]/.test(p.html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, '')));
+const dashPages = pages.filter((p) => /[\u2013\u2014]/.test(p.html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, '')));
 if (dashPages.length) blockers.push(`Em or en dashes in: ${dashPages.map((p) => p.path).join(', ')}`);
 const launchRobots = readFileSync('public/robots.launch.txt', 'utf8');
 if (!launchRobots.includes(`Sitemap: ${SITE}/sitemap-index.xml`)) blockers.push(`public/robots.launch.txt sitemap line does not match SITE (${SITE})`);
