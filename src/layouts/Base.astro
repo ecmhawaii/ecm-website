@@ -1,0 +1,77 @@
+---
+import '@fontsource/merriweather/700.css';
+import '@fontsource/archivo/400.css';
+import '@fontsource/archivo/600.css';
+import '@fontsource/archivo/700.css';
+import '../styles/global.css';
+import { business, nav, ui } from '../content/site';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
+const canonical = new URL(path, Astro.site).href;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- REMOVE AT LAUNCH: keeps the site out of search results while it is being built -->
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{ui.skipLink}</a>
+    <header class="site-header">
+      <div class="container header-top">
+        <a class="wordmark" href="/">{business.name}</a>
+        <a class="btn btn-small" href={business.phoneHref}>{ui.callButton}</a>
+      </div>
+      <nav class="container main-nav" aria-label={ui.mainNavLabel}>
+        <ul>
+          {nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <p class="footer-name">{business.name}</p>
+          <p>{business.city}</p>
+          <p><a href={business.phoneHref}>{business.phoneDisplay}</a></p>
+          <p>{business.license}</p>
+        </div>
+        <nav aria-label={ui.footerNavLabel}>
+          <ul>
+            {nav.map((item) => (
+              <li><a href={item.href}>{item.label}</a></li>
+            ))}
+            <li><a href="/subcontractors">{ui.footerSubcontractors}</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

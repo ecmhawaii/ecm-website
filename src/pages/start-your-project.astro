@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import { estimate as e, ui } from '../content/site';
+const f = e.fields;
+---
+<Base title={e.title} description={e.description}>
+  <section class="section">
+    <div class="container">
+      <h1>{e.h1}</h1>
+      <p class="prose">{e.intro}</p>
+      <p>{ui.requiredNote}</p>
+      <form
+        class="form"
+        name={e.formName}
+        method="POST"
+        action="/thank-you"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value={e.formName} />
+        <p class="hidden-field">
+          <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+        </p>
+
+        <div class="field">
+          <label for="name">{f.name} <span class="req" aria-hidden="true">*</span></label>
+          <input id="name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="phone">{f.phone} <span class="req" aria-hidden="true">*</span></label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+        </div>
+        <div class="field">
+          <label for="email">{f.email} <span class="req" aria-hidden="true">*</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="address">{f.address} <span class="req" aria-hidden="true">*</span></label>
+          <input id="address" name="address" type="text" autocomplete="street-address" required />
+        </div>
+        <div class="field">
+          <label for="project-type">{f.projectType}</label>
+          <select id="project-type" name="project-type">
+            <option value="">{ui.selectPlaceholder}</option>
+            {e.projectTypes.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="budget">{f.budget}</label>
+          <select id="budget" name="budget">
+            <option value="">{ui.selectPlaceholder}</option>
+            {e.budgets.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="start">{f.start}</label>
+          <select id="start" name="start">
+            <option value="">{ui.selectPlaceholder}</option>
+            {e.starts.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="details">{f.details}</label>
+          <textarea id="details" name="details"></textarea>
+        </div>
+        <div class="field">
+          <label for="heard">{f.heard}</label>
+          <select id="heard" name="heard">
+            <option value="">{ui.selectPlaceholder}</option>
+            {e.heardFrom.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        <button class="btn" type="submit">{ui.submit}</button>
+      </form>
+    </div>
+  </section>
+</Base>

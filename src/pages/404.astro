@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { notFound as n } from '../content/site';
+---
+<Base title={n.title} description={n.description}>
+  <section class="section">
+    <div class="container prose">
+      <h1>{n.h1}</h1>
+      <p>{n.text}</p>
+      <a class="btn" href="/">{n.homeLink}</a>
+    </div>
+  </section>
+</Base>
