@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import { subcontractors as s, ui } from '../content/site';
 const f = s.fields;
 ---
-<Base title={s.title} description={s.description}>
+<Base title={s.title} description={s.description} crumbs={[{ name: s.h1, path: '/subcontractors' }]}>
+  <PageHead h1={s.h1} lead={s.intro} />
   <section class="section">
-    <div class="container">
-      <h1>{s.h1}</h1>
-      <p class="prose">{s.intro}</p>
+    <div class="container form-wrap">
       <p>{ui.requiredNote}</p>
       <form
         class="form"
@@ -16,6 +16,7 @@ const f = s.fields;
         action="/thank-you"
         data-netlify="true"
         netlify-honeypot="bot-field"
+        data-sub-form
       >
         <input type="hidden" name="form-name" value={s.formName} />
         <p class="hidden-field">
@@ -23,23 +24,23 @@ const f = s.fields;
         </p>
 
         <div class="field">
-          <label for="company">{f.company} <span class="req" aria-hidden="true">*</span></label>
+          <label for="company">{f.company} <span aria-hidden="true">*</span></label>
           <input id="company" name="company" type="text" autocomplete="organization" required />
         </div>
         <div class="field">
-          <label for="contact">{f.contact} <span class="req" aria-hidden="true">*</span></label>
+          <label for="contact">{f.contact} <span aria-hidden="true">*</span></label>
           <input id="contact" name="contact" type="text" autocomplete="name" required />
         </div>
         <div class="field">
-          <label for="phone">{f.phone} <span class="req" aria-hidden="true">*</span></label>
+          <label for="phone">{f.phone} <span aria-hidden="true">*</span></label>
           <input id="phone" name="phone" type="tel" autocomplete="tel" required />
         </div>
         <div class="field">
-          <label for="email">{f.email} <span class="req" aria-hidden="true">*</span></label>
+          <label for="email">{f.email} <span aria-hidden="true">*</span></label>
           <input id="email" name="email" type="email" autocomplete="email" required />
         </div>
         <div class="field">
-          <label for="trade">{f.trade} <span class="req" aria-hidden="true">*</span></label>
+          <label for="trade">{f.trade} <span aria-hidden="true">*</span></label>
           <input id="trade" name="trade" type="text" required />
         </div>
         <div class="field">
@@ -61,8 +62,17 @@ const f = s.fields;
           <label for="note">{f.note}</label>
           <textarea id="note" name="note"></textarea>
         </div>
-        <button class="btn" type="submit">{ui.submit}</button>
+        <button class="btn btn-lg" type="submit">{ui.submit}</button>
       </form>
     </div>
   </section>
 </Base>
+
+<script>
+  // Lets the thank you page show the subcontractor version of its message.
+  const form = document.querySelector<HTMLFormElement>('[data-sub-form]');
+  form?.addEventListener('submit', () => {
+    try { sessionStorage.setItem('ecm-thank-you', JSON.stringify({ form: 'subcontractor' })); } catch {}
+    form.action = '/thank-you?form=subcontractor';
+  });
+</script>

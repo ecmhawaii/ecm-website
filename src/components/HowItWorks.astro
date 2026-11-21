@@ -1,0 +1,13 @@
+---
+import { howItWorks } from '../content/site';
+---
+<section class="section" aria-labelledby="how-heading">
+  <div class="container">
+    <h2 id="how-heading">{howItWorks.heading}</h2>
+    <ol class="steps">
+      {howItWorks.steps.map((s) => (
+        <li><strong>{s.title}</strong><p>{s.text}</p></li>
+      ))}
+    </ol>
+  </div>
+</section>

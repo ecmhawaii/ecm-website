@@ -1,59 +1,65 @@
 ---
 import Base from '../layouts/Base.astro';
-import { business, home, ui } from '../content/site';
+import Hero from '../components/Hero.astro';
+import CredentialsStrip from '../components/CredentialsStrip.astro';
+import Chips from '../components/Chips.astro';
+import Slider from '../components/Slider.astro';
+import PhotoSlot from '../components/PhotoSlot.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Reviews from '../components/Reviews.astro';
+import TrustedBy from '../components/TrustedBy.astro';
+import InstagramFeed from '../components/InstagramFeed.astro';
+import Financing from '../components/Financing.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { home, ui } from '../content/site';
+import { sliderKeys } from '../content/images';
+import { faqSchema } from '../lib/schema';
 ---
-<Base title={home.title} description={home.description}>
-  <section class="hero">
-    <div class="container">
-      <h1>{home.h1}</h1>
-      <p class="lead">{home.intro}</p>
-      <div class="btn-row">
-        <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
-        <a class="btn btn-outline" href={business.phoneHref}>{ui.callButton}</a>
+<Base title={home.title} description={home.description} schema={faqSchema('home')}>
+  <Hero h1={home.h1} line={home.heroLine} />
+  <CredentialsStrip />
+
+  <section class="section intro-split" aria-labelledby="intro-heading">
+    <div class="container split">
+      <div class="split-text">
+        <h2 id="intro-heading">{home.introHeading}</h2>
+        <p class="lead">{home.intro}</p>
+        <Chips label={home.chipsLabel} items={home.chips} />
+        <p class="inline-cta"><a class="btn btn-xl" href="/start-your-project">{ui.estimateButton}</a></p>
+      </div>
+      <div class="split-media">
+        <Slider slots={sliderKeys} />
       </div>
     </div>
   </section>
-
-  <div class="proof-strip">
-    <div class="container">
-      <ul>
-        {home.proof.map((line) => <li>{line}</li>)}
-      </ul>
-    </div>
-  </div>
 
   <section class="section section-soft" aria-labelledby="services-heading">
     <div class="container">
       <h2 id="services-heading">{home.servicesHeading}</h2>
       <ul class="card-grid four">
-        {home.serviceCards.map((name) => (
-          <li class="card">
-            <a class="card-link" href="/services">{name} <span aria-hidden="true">&rsaquo;</span></a>
+        {home.serviceCards.map((c) => (
+          <li class="card service-card">
+            <a href={c.href} class="service-card-link">
+              <PhotoSlot slot={c.image} size="card" ratio="photo" />
+              <span class="service-card-name">{c.name} <span aria-hidden="true">&rsaquo;</span></span>
+            </a>
           </li>
         ))}
       </ul>
+      <p class="inline-cta"><a class="btn" href="/start-your-project">{ui.estimateButton}</a></p>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="how-heading">
-    <div class="container">
-      <h2 id="how-heading">{home.howHeading}</h2>
-      <ol class="steps">
-        {home.steps.map((step) => (
-          <li>
-            <strong>{step.title}</strong>
-            <p>{step.text}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
+  <div class="how-wrap">
+    <HowItWorks />
+    <div class="container how-photo"><PhotoSlot slot="crew" size="full" ratio="wide" /></div>
+  </div>
 
-  <section class="section section-gray" aria-labelledby="closing-heading">
-    <div class="container">
-      <h2 id="closing-heading">{home.closingHeading}</h2>
-      <p class="prose">{home.closingText}</p>
-      <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
-    </div>
-  </section>
+  <Reviews />
+  <TrustedBy />
+  <InstagramFeed />
+  <div class="container"><Financing /></div>
+  <Faq page="home" />
+  <CtaBand />
 </Base>

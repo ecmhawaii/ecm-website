@@ -1,55 +1,127 @@
-// ALL visible website text lives in this file.
-// When the approved copy is ready, replace the strings here and nothing else.
-// Rules (see CLAUDE.md): no em dashes or en dashes, only claims Jesse has confirmed,
-// business name / phone / license identical everywhere (use the `business` values below).
+// ALL visible website text and every on/off switch lives in this file.
+// Images live in src/content/images.ts.
+//
+// Rules (see CLAUDE.md):
+// - No em dashes or en dashes. Use "to" in ranges.
+// - Only claims Jesse has confirmed in writing. Anything not confirmed stays in a
+//   switched-off slot below, never in live copy.
+// - Business name, phone and license come from `business` so they match on every page.
 
 export const business = {
   name: 'Elite Construction Management',
   city: 'Kapolei, Hawaii',
+  locality: 'Kapolei',
+  region: 'HI',
+  country: 'US',
   phoneDisplay: '(808) 987-5782',
   phoneHref: 'tel:+18089875782',
+  phoneE164: '+1-808-987-5782',
   license: 'Hawaii contractor license BC-37929',
-  siteUrl: 'https://ecmhawaii.com',
+  licenseShort: 'License BC-37929',
+  licenseClass: 'Class B General Building',
+  // Islands Jesse has confirmed ECM serves. Empty = no areaServed in structured data
+  // and no service area claims anywhere. Example once confirmed: ['Oahu']
+  areaServed: [] as string[],
+};
+
+// ---------------------------------------------------------------------------
+// HIDDEN SLOTS. Each one is off until Jesse supplies real material.
+// Never put sample or made up data in these.
+// ---------------------------------------------------------------------------
+export const slots = {
+  // Google reviews. Shows only when enabled AND at least `minCount` real reviews are listed.
+  reviews: {
+    enabled: false,
+    minCount: 5,
+    heading: 'What clients say',
+    sourceLabel: 'Google reviews',
+    profileUrl: '', // ECM's Google Business Profile reviews link
+    items: [] as Array<{ author: string; rating: 1 | 2 | 3 | 4 | 5; text: string; date: string }>,
+  },
+  // Instagram. Links and local image files only. No third party script or embed.
+  instagram: {
+    enabled: false,
+    heading: 'On Instagram',
+    profileUrl: '',
+    handle: '',
+    // Each post: link to the post, a photo saved in /public, and alt text.
+    posts: [] as Array<{ url: string; image: string; alt: string }>,
+  },
+  // Hearth financing link. Needs Jesse's Hearth account link and approved wording.
+  financing: {
+    enabled: false,
+    heading: '',
+    text: '',
+    linkLabel: '',
+    url: '',
+  },
+  // Trusted By: partner, supplier and association logos. Needs each owner's written OK.
+  trustedBy: {
+    enabled: false,
+    heading: 'Trusted by',
+    logos: [] as Array<{ name: string; image: string; url?: string }>,
+  },
+  // Insurance line for the credentials strip and About page. Off until Jesse confirms
+  // the coverage in writing (or a certificate of insurance is on file).
+  insurance: {
+    enabled: false,
+    text: '',
+  },
+  // Reply time promise on the thank you page. Off until Jesse confirms one.
+  replyTime: {
+    enabled: false,
+    text: '',
+  },
 };
 
 export const nav = [
-  { label: 'Home', href: '/' },
   { label: 'Services', href: '/services' },
   { label: 'Projects', href: '/portfolio' },
   { label: 'About', href: '/about' },
-  { label: 'Request an Estimate', href: '/start-your-project' },
+];
+
+export const servicePages = [
+  { label: 'Custom homes', href: '/custom-homes' },
+  { label: 'ADUs and ohana units', href: '/adu-oahu' },
+  { label: 'Remodeling', href: '/remodeling' },
+  { label: 'Commercial tenant improvements', href: '/commercial-tenant-improvements' },
 ];
 
 export const ui = {
   skipLink: 'Skip to main content',
+  menu: 'Menu',
+  home: 'Home',
   callButton: `Call ${business.phoneDisplay}`,
+  callShort: 'Call',
   estimateButton: 'Request an Estimate',
+  estimateShort: 'Request Estimate',
   mainNavLabel: 'Main',
   footerNavLabel: 'Footer',
+  footerServicesLabel: 'Services',
+  footerCompanyLabel: 'Company',
   footerSubcontractors: 'Subcontractors',
+  footerGuides: 'Guides',
+  breadcrumbLabel: 'Breadcrumb',
   photoComing: 'Photo coming',
+  projectPhotosComing: 'Project photos coming soon',
+  samplePhoto: 'Sample photo',
   requiredNote: 'Fields marked * are required.',
   selectPlaceholder: 'Choose one',
   submit: 'Send',
   honeypotLabel: 'Leave this field empty',
+  learnMore: 'Learn more',
+  sliderLabel: 'Sample photos',
+  sliderPrev: 'Previous photo',
+  sliderNext: 'Next photo',
+  draftBadge: 'DRAFT, content pending',
+  faqHeading: 'Questions and answers',
+  onThisPage: 'On this page',
 };
 
-export const home = {
-  title: 'Elite Construction Management | Hawaii General Contractor',
-  description:
-    'Kapolei general contractor for custom homes, ADUs, remodels and commercial tenant improvements. Call (808) 987-5782 or request an estimate online.',
-  h1: 'General contractor for homes and businesses in Hawaii',
-  intro:
-    'Elite Construction Management is a licensed Hawaii general contractor based in Kapolei. We build new homes, ADUs and additions, remodels and commercial tenant improvements, and we run the job from first walkthrough to final inspection.',
-  proof: ['Hawaii license BC-37929, Class B General Building.', 'Licensed and insured.'],
-  servicesHeading: 'What we build',
-  serviceCards: [
-    'Custom homes and new construction',
-    'ADUs and additions',
-    'Remodels',
-    'Commercial tenant improvements',
-  ],
-  howHeading: 'How it works',
+export const credentials = [`Hawaii license BC-37929`, business.licenseClass];
+
+export const howItWorks = {
+  heading: 'How it works',
   steps: [
     { title: 'Tell us about your project.', text: 'Use the estimate form or call.' },
     {
@@ -62,39 +134,206 @@ export const home = {
       text: 'Our crew and licensed subs do the work, and you get regular updates.',
     },
   ],
-  closingHeading: 'Planning a project?',
-  closingText:
-    'Tell us what you have in mind and we will follow up to set up a site visit.',
 };
 
+export const ctaBand = {
+  heading: 'Planning a project?',
+  text: 'Tell us what you have in mind and we will follow up to set up a site visit.',
+};
+
+export const home = {
+  title: 'Elite Construction Management | Hawaii General Contractor',
+  description:
+    'Kapolei general contractor for custom homes, ADUs, remodels and commercial tenant improvements. Call (808) 987-5782 or request an estimate online.',
+  h1: 'General contractor for homes and businesses in Hawaii',
+  heroLine: 'Custom homes, ADUs and additions, remodels and commercial tenant improvements. Based in Kapolei.',
+  introHeading: 'From first walkthrough to final inspection',
+  intro:
+    'Elite Construction Management is a licensed Hawaii general contractor based in Kapolei. We build new homes, ADUs and additions, remodels and commercial tenant improvements, and we run the job from first walkthrough to final inspection.',
+  chipsLabel: 'What we build',
+  chips: [
+    { label: 'Custom homes', href: '/custom-homes' },
+    { label: 'ADUs and ohana units', href: '/adu-oahu' },
+    { label: 'Additions', href: '/adu-oahu#additions' },
+    { label: 'Kitchen remodels', href: '/remodeling#kitchens' },
+    { label: 'Bathroom remodels', href: '/remodeling#bathrooms' },
+    { label: 'Commercial build outs', href: '/commercial-tenant-improvements' },
+  ],
+  servicesHeading: 'What we build',
+  serviceCards: [
+    { name: 'Custom homes and new construction', href: '/custom-homes', image: 'home' },
+    { name: 'ADUs and additions', href: '/adu-oahu', image: 'adu' },
+    { name: 'Remodels', href: '/remodeling', image: 'kitchen' },
+    { name: 'Commercial tenant improvements', href: '/commercial-tenant-improvements', image: 'commercial' },
+  ],
+};
+
+// Service pages. `involves` lists are plain descriptions of what that kind of job
+// includes. They are NOT claims about ECM and contain no prices, timelines,
+// permit rules or guarantees. DRAFT copy: needs approval before launch.
 export const services = {
   title: 'Services | Elite Construction Management',
   description:
     'Custom homes, ADUs, additions, remodels and commercial tenant improvements. Licensed Hawaii general contractor BC-37929.',
   h1: 'What we build',
+  intro: 'Open a category to read more, or go straight to the estimate form.',
   items: [
     {
       id: 'custom-homes',
       name: 'Custom homes and new construction',
       text: 'We build new homes from plans you bring or plans developed with your architect or designer. We manage permits, subs and inspections through to move in.',
+      href: '/custom-homes',
     },
     {
       id: 'adus-additions',
       name: 'ADUs and additions',
       text: 'An ADU or addition adds space without moving. We handle the build and coordinate permits and inspections.',
+      href: '/adu-oahu',
     },
     {
       id: 'remodels',
       name: 'Remodels',
       text: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts so the price is set up front.',
+      href: '/remodeling',
     },
     {
       id: 'commercial',
       name: 'Commercial tenant improvements',
       text: 'Build outs and renovations for retail, office and other commercial spaces.',
+      href: '/commercial-tenant-improvements',
     },
   ],
   subsLine: 'Plumbing and electrical are done by licensed subcontractors.',
+};
+
+export type ServiceSection = { id: string; heading: string; text?: string; list?: string[] };
+export type ServicePage = {
+  key: string;
+  path: string;
+  title: string;
+  description: string;
+  h1: string;
+  intro: string[];
+  image: string;
+  sections: ServiceSection[];
+};
+
+export const serviceDetail: Record<string, ServicePage> = {
+  adu: {
+    key: 'adu',
+    path: '/adu-oahu',
+    title: 'ADUs and Ohana Units on Oahu | Elite Construction Management',
+    description:
+      'ADUs, ohana units and additions built by Elite Construction Management, a licensed Hawaii general contractor based in Kapolei. Request an estimate.',
+    h1: 'ADUs and ohana units on Oahu',
+    intro: [
+      'An ADU or addition adds space without moving. We handle the build and coordinate permits and inspections.',
+      'Elite Construction Management is a licensed Hawaii general contractor based in Kapolei.',
+    ],
+    image: 'adu',
+    sections: [
+      {
+        id: 'what-it-involves',
+        heading: 'What an ADU or ohana unit project involves',
+        list: [
+          'Talking through how you plan to use the new unit and what fits on your lot.',
+          'Plans from your architect or designer.',
+          'Permit applications and plan review.',
+          'Site work, utilities and foundation.',
+          'Framing, roofing, windows and doors.',
+          'Plumbing and electrical by licensed subcontractors.',
+          'Insulation, drywall, flooring, cabinets and finishes.',
+          'Inspections through final.',
+        ],
+      },
+      {
+        id: 'additions',
+        heading: 'Additions',
+        text: 'An addition extends the home you already have, for example a new bedroom, a bathroom or a larger living area. The work ties new foundation, framing, roofing, plumbing and electrical into the existing house.',
+      },
+    ],
+  },
+  customHomes: {
+    key: 'customHomes',
+    path: '/custom-homes',
+    title: 'Custom Home Builder in Hawaii | Elite Construction Management',
+    description:
+      'Custom homes and new construction by Elite Construction Management, a licensed general contractor based in Kapolei, Hawaii. Request an estimate.',
+    h1: 'Custom homes and new construction',
+    intro: [
+      'We build new homes from plans you bring or plans developed with your architect or designer. We manage permits, subs and inspections through to move in.',
+    ],
+    image: 'framing',
+    sections: [
+      {
+        id: 'what-it-involves',
+        heading: 'What building a custom home involves',
+        list: [
+          'Reviewing your plans, your lot and your budget.',
+          'Permit applications and plan review.',
+          'Site preparation and foundation.',
+          'Framing, roofing, windows and exterior.',
+          'Plumbing, electrical and other trades by licensed subcontractors.',
+          'Insulation, drywall, cabinets, flooring and finishes.',
+          'Inspections and a final walkthrough before move in.',
+        ],
+      },
+    ],
+  },
+  remodeling: {
+    key: 'remodeling',
+    path: '/remodeling',
+    title: 'Kitchen and Bathroom Remodeling in Hawaii | Elite Construction Management',
+    description:
+      'Kitchen, bathroom and whole home remodels by Elite Construction Management, a licensed Hawaii general contractor based in Kapolei. Request an estimate.',
+    h1: 'Home remodeling: kitchens, bathrooms and whole homes',
+    intro: [
+      'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts so the price is set up front.',
+    ],
+    image: 'kitchen',
+    sections: [
+      {
+        id: 'kitchens',
+        heading: 'Kitchen remodels',
+        text: 'A kitchen remodel can be new cabinets and counters or a full change to the layout. The work can include demolition, framing changes, plumbing and electrical by licensed subcontractors, cabinets, counters, flooring, fixtures and finishes.',
+      },
+      {
+        id: 'bathrooms',
+        heading: 'Bathroom remodels',
+        text: 'A bathroom remodel can be new fixtures and tile or a full rebuild down to the framing. The work can include demolition, plumbing and electrical by licensed subcontractors, waterproofing, tile, vanities, fixtures and finishes.',
+      },
+      {
+        id: 'whole-home',
+        heading: 'Whole home remodels',
+        text: 'A whole home remodel updates several rooms or the full house at once. It can include layout changes, kitchens, bathrooms, flooring, windows and finishes throughout.',
+      },
+    ],
+  },
+  commercial: {
+    key: 'commercial',
+    path: '/commercial-tenant-improvements',
+    title: 'Commercial Tenant Improvements in Hawaii | Elite Construction Management',
+    description:
+      'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor BC-37929 in Kapolei.',
+    h1: 'Commercial tenant improvements',
+    intro: ['Build outs and renovations for retail, office and other commercial spaces.'],
+    image: 'commercial',
+    sections: [
+      {
+        id: 'what-it-involves',
+        heading: 'What a tenant improvement involves',
+        list: [
+          'Reviewing the space, your plans and what the landlord requires.',
+          'Permit applications and plan review.',
+          'Demolition of existing finishes.',
+          'Framing, walls, ceilings and doors.',
+          'Plumbing and electrical by licensed subcontractors.',
+          'Flooring, paint and finishes.',
+          'Inspections through final.',
+        ],
+      },
+    ],
+  },
 };
 
 export const projects = {
@@ -103,15 +342,11 @@ export const projects = {
     'Projects by Elite Construction Management, a general contractor in Kapolei, Hawaii.',
   h1: 'Our projects',
   text: 'Project photos are coming soon. Ask us about similar projects when you request an estimate.',
-  // Add cards here only with the owner's written OK (CLAUDE.md rule 5).
-  // Shape: { type: 'Remodel', island: 'Oahu', summary: 'Two sentences.', photo?: '/path.jpg', photoAlt?: '...' }
-  cards: [] as Array<{
-    type: string;
-    island: string;
-    summary: string;
-    photo?: string;
-    photoAlt?: string;
-  }>,
+  // Add cards here only with the owner's written OK (CLAUDE.md rule 5). Never use stock photos here.
+  // Shape: { type: 'Remodel', island: 'Oahu', summary: 'Two sentences.', image: 'project1' }
+  cards: [] as Array<{ type: string; island: string; summary: string; image: string }>,
+  // Number of empty "Project photos coming soon" tiles shown while `cards` is empty.
+  emptySlots: 6,
 };
 
 export const about = {
@@ -121,9 +356,9 @@ export const about = {
   h1: 'About Elite Construction Management',
   text: 'Elite Construction Management is a Hawaii general contractor based in Kapolei, led by owner Jesse Alverio. Our crews are backed by licensed subcontractors for plumbing, electrical and other trades.',
   credentialsHeading: 'Credentials',
-  credentials: ['Hawaii contractor license BC-37929, Class B General Building.', 'General liability insured.'],
 };
 
+// Multi-step estimate form. Netlify form name stays "estimate".
 export const estimate = {
   title: 'Request an Estimate | Elite Construction Management',
   description:
@@ -131,21 +366,62 @@ export const estimate = {
   h1: 'Request an Estimate',
   intro: 'Tell us a little about your project. We will get back to you to set up a site visit.',
   formName: 'estimate',
-  fields: {
-    name: 'Name',
-    phone: 'Phone',
-    email: 'Email',
-    address: 'Project address or area',
-    projectType: 'Project type',
-    budget: 'Budget range',
-    start: 'When do you want to start',
-    details: 'Tell us about the project',
-    heard: 'How did you hear about us',
+  formVersion: 'v2-multistep',
+  defaultSubject: 'New lead: estimate request',
+  subjectPrefix: 'New lead',
+  progressTemplate: 'Step {n} of {total}',
+  next: 'Next',
+  back: 'Back',
+  chooseOne: 'Please choose one to continue.',
+  steps: {
+    type: {
+      legend: 'What kind of project is it?',
+      name: 'project-type',
+      options: [
+        'Custom home',
+        'ADU or ohana unit',
+        'Addition',
+        'Kitchen remodel',
+        'Bathroom remodel',
+        'Whole home remodel',
+        'Commercial build out',
+        'Other',
+      ],
+    },
+    location: {
+      legend: 'Where is the project?',
+      islandLabel: 'Island',
+      islandName: 'island',
+      islands: ['Oahu', 'Maui', 'Hawaii Island', 'Kauai', 'Other'],
+      zipLabel: 'ZIP code',
+      zipName: 'zip',
+      zipHint: '5 digits',
+    },
+    timeline: {
+      legend: 'When do you want to start?',
+      name: 'timeline',
+      options: ['As soon as possible', '1 to 3 months', '3 to 6 months', '6 months or more', 'Just planning'],
+    },
+    budget: {
+      legend: 'What is your budget range?',
+      name: 'budget',
+      options: ['Under $50k', '$50k to $150k', '$150k to $500k', '$500k to $1M', 'Over $1M', 'Not sure yet'],
+    },
+    plans: {
+      legend: 'Do you have plans?',
+      name: 'plans',
+      options: ['I have plans', 'I need design help', 'Not sure'],
+    },
+    contact: {
+      legend: 'How do we reach you?',
+      name: 'Name',
+      phone: 'Phone',
+      email: 'Email',
+      bestTime: 'Best time to call',
+      bestTimes: ['Morning', 'Afternoon', 'Evening', 'Any time'],
+      notes: 'Anything else about the project (optional)',
+    },
   },
-  projectTypes: ['Custom home', 'ADU or addition', 'Remodel', 'Commercial', 'Other'],
-  budgets: ['Under $50k', '$50k to $150k', '$150k to $500k', '$500k to $1M', 'Over $1M'],
-  starts: ['Within 3 months', '3 to 6 months', '6 months or more', 'Just planning'],
-  heardFrom: ['Google', 'Referral', 'Instagram', 'Other'],
 };
 
 export const subcontractors = {
@@ -176,7 +452,12 @@ export const thankYou = {
   description: 'We received your request and will contact you to schedule a site visit.',
   h1: 'Thanks.',
   text: 'We received your request and will contact you to schedule a site visit.',
+  subcontractorText: 'We received your details and will reach out when a project fits.',
   urgentLead: 'For anything urgent, call',
+  nextHeading: 'What happens next',
+  nextSteps: ['We review your project.', 'We call you.', 'We schedule a site visit.'],
+  planningHeading: 'Still planning?',
+  planningLead: 'This guide may help while you plan:',
 };
 
 export const notFound = {
@@ -185,4 +466,137 @@ export const notFound = {
   h1: 'Page not found',
   text: 'The page you are looking for is not here.',
   homeLink: 'Go to the home page',
+};
+
+// ---------------------------------------------------------------------------
+// GUIDES. Structure only. The PM writes the content.
+// status 'draft': page shows a DRAFT badge, gets noindex and stays out of the sitemap.
+// Change to 'final' only when the PM's FINAL COPY lands.
+// ---------------------------------------------------------------------------
+export type Guide = {
+  slug: string;
+  status: 'draft' | 'final';
+  title: string;
+  description: string;
+  h1: string;
+  intro: string; // INTRO SLOT: empty until the PM writes it
+  sections: Array<{ id: string; heading: string; body: string[] }>; // body empty until written
+};
+
+export const guidesHub = {
+  status: 'draft' as 'draft' | 'final',
+  title: 'Building Guides | Elite Construction Management',
+  description: 'Guides for planning ADUs, custom homes and remodels in Hawaii, from Elite Construction Management.',
+  h1: 'Guides',
+  intro: '',
+};
+
+export const guides: Guide[] = [
+  {
+    slug: 'adu-oahu',
+    status: 'draft',
+    title: 'ADUs on Oahu: A Planning Guide | Elite Construction Management',
+    description: 'A planning guide to building an ADU or ohana unit on Oahu, from Elite Construction Management.',
+    h1: 'Building an ADU on Oahu',
+    intro: '',
+    sections: [
+      { id: 'adu-or-ohana', heading: 'ADU or ohana unit', body: [] },
+      { id: 'lot', heading: 'Is your lot a fit', body: [] },
+      { id: 'design', heading: 'Design and plans', body: [] },
+      { id: 'permits', heading: 'Permits', body: [] },
+      { id: 'costs', heading: 'Costs to plan for', body: [] },
+      { id: 'build', heading: 'The build and inspections', body: [] },
+      { id: 'questions', heading: 'Questions to ask a contractor', body: [] },
+    ],
+  },
+  {
+    slug: 'cost-to-build-a-house-in-hawaii',
+    status: 'draft',
+    title: 'Cost to Build a House in Hawaii | Elite Construction Management',
+    description: 'What goes into the cost of building a house in Hawaii, from Elite Construction Management.',
+    h1: 'What it costs to build a house in Hawaii',
+    intro: '',
+    sections: [
+      { id: 'drivers', heading: 'What drives the cost', body: [] },
+      { id: 'site', heading: 'Land and site work', body: [] },
+      { id: 'design-permits', heading: 'Design and permits', body: [] },
+      { id: 'materials', heading: 'Materials and shipping', body: [] },
+      { id: 'labor', heading: 'Labor', body: [] },
+      { id: 'contingency', heading: 'Planning for the unexpected', body: [] },
+      { id: 'estimate', heading: 'Getting a reliable estimate', body: [] },
+    ],
+  },
+  {
+    slug: 'hiring-a-general-contractor-in-hawaii',
+    status: 'draft',
+    title: 'Hiring a General Contractor in Hawaii | Elite Construction Management',
+    description: 'What to check before hiring a general contractor in Hawaii, from Elite Construction Management.',
+    h1: 'Hiring a general contractor in Hawaii',
+    intro: '',
+    sections: [
+      { id: 'license', heading: 'Check the license', body: [] },
+      { id: 'insurance', heading: 'Insurance and bonding', body: [] },
+      { id: 'scope', heading: 'Get the scope in writing', body: [] },
+      { id: 'bids', heading: 'Comparing bids', body: [] },
+      { id: 'payments', heading: 'Payment schedule', body: [] },
+      { id: 'communication', heading: 'Communication during the job', body: [] },
+      { id: 'red-flags', heading: 'Red flags', body: [] },
+    ],
+  },
+  {
+    slug: 'bathroom-remodel-cost-honolulu',
+    status: 'draft',
+    title: 'Bathroom Remodel Cost in Honolulu | Elite Construction Management',
+    description: 'What affects the cost of a bathroom remodel in Honolulu, from Elite Construction Management.',
+    h1: 'Bathroom remodel cost in Honolulu',
+    intro: '',
+    sections: [
+      { id: 'factors', heading: 'What affects the cost', body: [] },
+      { id: 'layout', heading: 'Keeping or changing the layout', body: [] },
+      { id: 'finishes', heading: 'Fixtures, tile and finishes', body: [] },
+      { id: 'trades', heading: 'Plumbing and electrical', body: [] },
+      { id: 'permits', heading: 'Permits', body: [] },
+      { id: 'budget', heading: 'Setting your budget', body: [] },
+    ],
+  },
+];
+
+export const guidePath = (slug: string) => `/guides/${slug}`;
+
+// Paths kept out of the sitemap because they are still drafts (read by astro.config.mjs).
+export const draftPaths = [
+  ...(guidesHub.status === 'draft' ? ['/guides'] : []),
+  ...guides.filter((g) => g.status === 'draft').map((g) => guidePath(g.slug)),
+];
+
+// Thank you page: which guide to suggest to someone who picked "Just planning".
+export const planningGuideByType: Record<string, string> = {
+  'Custom home': 'cost-to-build-a-house-in-hawaii',
+  'ADU or ohana unit': 'adu-oahu',
+  Addition: 'adu-oahu',
+  'Bathroom remodel': 'bathroom-remodel-cost-honolulu',
+  default: 'hiring-a-general-contractor-in-hawaii',
+};
+
+// FAQ blocks, keyed by page. Empty = no FAQ section and no FAQPage structured data.
+// Only approved Q and A. Shape: { q: 'Question?', a: 'Answer.' }
+export const faqs: Record<string, Array<{ q: string; a: string }>> = {
+  home: [],
+  services: [],
+  adu: [],
+  customHomes: [],
+  remodeling: [],
+  commercial: [],
+  'guide:adu-oahu': [],
+  'guide:cost-to-build-a-house-in-hawaii': [],
+  'guide:hiring-a-general-contractor-in-hawaii': [],
+  'guide:bathroom-remodel-cost-honolulu': [],
+};
+
+// GUIDE CONTENT slots on service pages: short excerpts or links the PM adds later.
+export const guideContent: Record<string, Array<{ heading: string; text: string; guide?: string }>> = {
+  adu: [],
+  customHomes: [],
+  remodeling: [],
+  commercial: [],
 };

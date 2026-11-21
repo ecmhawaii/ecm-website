@@ -1,0 +1,13 @@
+---
+// Big button-style radio choices. Real radio inputs, so they work with keyboard and without JS.
+interface Props { name: string; options: string[]; required?: boolean; cols?: 2 | 3 }
+const { name, options, required = true, cols = 2 } = Astro.props;
+---
+<div class:list={['choices', `choices-${cols}`]}>
+  {options.map((o, i) => (
+    <label class="choice">
+      <input type="radio" name={name} value={o} required={required && i === 0} />
+      <span>{o}</span>
+    </label>
+  ))}
+</div>

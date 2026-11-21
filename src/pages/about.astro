@@ -1,22 +1,24 @@
 ---
 import Base from '../layouts/Base.astro';
-import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
-import { about } from '../content/site';
+import PageHead from '../components/PageHead.astro';
+import PhotoSlot from '../components/PhotoSlot.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { about, credentials, slots, nav } from '../content/site';
+const creds = [...credentials, ...(slots.insurance.enabled && slots.insurance.text ? [slots.insurance.text] : [])];
 ---
-<Base title={about.title} description={about.description}>
+<Base title={about.title} description={about.description} crumbs={[{ name: nav.find((n) => n.href === '/about')!.label, path: '/about' }]}>
+  <PageHead h1={about.h1} />
   <section class="section">
-    <div class="container">
-      <h1>{about.h1}</h1>
-      <p class="prose">{about.text}</p>
-      <div class="callout" style="margin: 24px 0">
-        <h2 class="card-title">{about.credentialsHeading}</h2>
-        <ul>
-          {about.credentials.map((line) => <li>{line}</li>)}
-        </ul>
+    <div class="container split">
+      <div class="split-text">
+        <p class="lead">{about.text}</p>
+        <div class="callout">
+          <h2 class="card-title">{about.credentialsHeading}</h2>
+          <ul>{creds.map((c) => <li>{c}</li>)}</ul>
+        </div>
       </div>
-      <div style="max-width: 640px">
-        <PhotoPlaceholder ratio="16 / 9" />
-      </div>
+      <div class="split-media"><PhotoSlot slot="about" ratio="photo" /></div>
     </div>
   </section>
+  <CtaBand />
 </Base>

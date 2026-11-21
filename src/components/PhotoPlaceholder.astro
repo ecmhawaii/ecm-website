@@ -1,8 +1,0 @@
----
-import { ui } from '../content/site';
-interface Props { ratio?: string }
-const { ratio = '4 / 3' } = Astro.props;
----
-<div class="photo-placeholder" style={`aspect-ratio: ${ratio}`} role="img" aria-label={ui.photoComing}>
-  <span aria-hidden="true">{ui.photoComing}</span>
-</div>

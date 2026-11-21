@@ -1,0 +1,13 @@
+---
+import { ctaBand, business, ui } from '../content/site';
+---
+<section class="cta-band" aria-labelledby="cta-heading">
+  <div class="container">
+    <h2 id="cta-heading">{ctaBand.heading}</h2>
+    <p>{ctaBand.text}</p>
+    <div class="btn-row">
+      <a class="btn btn-lg" href="/start-your-project">{ui.estimateButton}</a>
+      <a class="btn btn-lg btn-ghost" href={business.phoneHref}>{ui.callButton}</a>
+    </div>
+  </div>
+</section>

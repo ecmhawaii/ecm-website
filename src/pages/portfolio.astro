@@ -1,20 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import CtaBand from '../components/CtaBand.astro';
 import { projects } from '../content/site';
 ---
-<Base title={projects.title} description={projects.description}>
+<Base title={projects.title} description={projects.description} crumbs={[{ name: projects.h1, path: '/portfolio' }]}>
+  <PageHead h1={projects.h1} lead={projects.text} />
   <section class="section">
     <div class="container">
-      <h1>{projects.h1}</h1>
-      <p class="prose">{projects.text}</p>
-      {projects.cards.length > 0 && (
-        <ul class="card-grid">
-          {projects.cards.map((card) => (
-            <li><ProjectCard {...card} /></li>
-          ))}
-        </ul>
-      )}
+      <ul class="card-grid three">
+        {projects.cards.length > 0
+          ? projects.cards.map((card) => <li><ProjectCard {...card} /></li>)
+          : Array.from({ length: projects.emptySlots }).map(() => <li><ProjectCard empty /></li>)}
+      </ul>
     </div>
   </section>
+  <CtaBand />
 </Base>

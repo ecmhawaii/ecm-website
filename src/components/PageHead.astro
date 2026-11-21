@@ -1,0 +1,13 @@
+---
+// Dark band at the top of inner pages with the page's single H1.
+interface Props { h1: string; lead?: string; badge?: string }
+const { h1, lead, badge } = Astro.props;
+---
+<section class="page-head">
+  <div class="container">
+    {badge && <p class="draft-badge">{badge}</p>}
+    <h1>{h1}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+  </div>
+</section>

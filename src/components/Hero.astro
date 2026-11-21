@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import { hero } from '../content/images';
+import { business, ui } from '../content/site';
+interface Props { h1: string; line: string }
+const { h1, line } = Astro.props;
+---
+<section class="hero" data-placeholder={hero.placeholder ? 'true' : undefined}>
+  <Image
+    src={hero.src}
+    alt=""
+    width={1920}
+    widths={[640, 960, 1280, 1600, 1920]}
+    sizes="100vw"
+    quality={70}
+    format="webp"
+    priority
+    class="hero-img"
+  />
+  <div class="hero-overlay"></div>
+  <div class="container hero-inner">
+    <h1 class="hero-title">{h1}</h1>
+    <p class="hero-line">{line}</p>
+    <div class="btn-row">
+      <a class="btn btn-lg" href="/start-your-project">{ui.estimateButton}</a>
+      <a class="btn btn-lg btn-ghost" href={business.phoneHref}>{ui.callButton}</a>
+    </div>
+  </div>
+</section>

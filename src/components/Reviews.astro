@@ -1,0 +1,23 @@
+---
+// HIDDEN SLOT: Google reviews. Shows only when enabled and at least minCount real reviews are listed.
+import { slots } from '../content/site';
+const r = slots.reviews;
+const show = r.enabled && r.items.length >= r.minCount;
+---
+{show && (
+  <section class="section section-soft" aria-labelledby="reviews-heading" data-slot="reviews">
+    <div class="container">
+      <h2 id="reviews-heading">{r.heading}</h2>
+      <ul class="card-grid">
+        {r.items.map((it) => (
+          <li class="card"><blockquote class="card-body">
+            <p class="stars" aria-label={`${it.rating} out of 5`}>{'★'.repeat(it.rating)}</p>
+            <p>{it.text}</p>
+            <footer>{it.author}, {it.date}</footer>
+          </blockquote></li>
+        ))}
+      </ul>
+      {r.profileUrl && <p><a href={r.profileUrl} rel="noopener">{r.sourceLabel}</a></p>}
+    </div>
+  </section>
+)}

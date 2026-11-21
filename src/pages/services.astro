@@ -1,21 +1,36 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import CredentialsStrip from '../components/CredentialsStrip.astro';
+import Financing from '../components/Financing.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
 import { services, ui } from '../content/site';
+import { faqSchema } from '../lib/schema';
 ---
-<Base title={services.title} description={services.description}>
+<Base title={services.title} description={services.description} crumbs={[{ name: services.h1, path: '/services' }]} schema={faqSchema('services')}>
+  <PageHead h1={services.h1} lead={services.intro} />
+  <CredentialsStrip />
   <section class="section">
     <div class="container">
-      <h1>{services.h1}</h1>
       <div class="accordion">
-        {services.items.map((item) => (
-          <details id={item.id}>
+        {services.items.map((item, i) => (
+          <details id={item.id} open={i === 0}>
             <summary>{item.name}</summary>
-            <div class="panel"><p>{item.text}</p></div>
+            <div class="panel">
+              <p>{item.text}</p>
+              <div class="btn-row btn-row-left">
+                <a class="btn btn-outline" href={item.href}>{ui.learnMore}<span class="sr-only">: {item.name}</span></a>
+                <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
+              </div>
+            </div>
           </details>
         ))}
       </div>
-      <p class="prose" style="margin-top: 24px">{services.subsLine}</p>
-      <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
+      <p class="prose subs-line">{services.subsLine}</p>
+      <Financing />
     </div>
   </section>
+  <Faq page="services" />
+  <CtaBand />
 </Base>

@@ -1,13 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import { notFound as n } from '../content/site';
 ---
 <Base title={n.title} description={n.description}>
-  <section class="section">
-    <div class="container prose">
-      <h1>{n.h1}</h1>
-      <p>{n.text}</p>
-      <a class="btn" href="/">{n.homeLink}</a>
-    </div>
-  </section>
+  <PageHead h1={n.h1} lead={n.text}>
+    <p><a class="btn btn-lg" href="/">{n.homeLink}</a></p>
+  </PageHead>
 </Base>

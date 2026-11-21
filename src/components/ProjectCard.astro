@@ -1,22 +1,17 @@
 ---
-// Reusable project card. Not shown on the site until the owner approves projects and photos.
-import PhotoPlaceholder from './PhotoPlaceholder.astro';
-
-interface Props {
-  type: string;
-  island: string;
-  summary: string;
-  photo?: string;
-  photoAlt?: string;
-}
-
-const { type, island, summary, photo, photoAlt = '' } = Astro.props;
+// Reusable project card. Only for real ECM projects with the owner's written OK.
+import PhotoSlot from './PhotoSlot.astro';
+import { ui } from '../content/site';
+interface Props { type?: string; island?: string; summary?: string; image?: string; empty?: boolean }
+const { type, island, summary, image = '', empty = false } = Astro.props;
 ---
 <article class="card project-card">
-  {photo ? <img src={photo} alt={photoAlt} loading="lazy" /> : <PhotoPlaceholder />}
-  <div class="card-body">
-    <h2 class="card-title">{type}</h2>
-    <p class="project-island">{island}</p>
-    <p>{summary}</p>
-  </div>
+  <PhotoSlot slot={empty ? '__none__' : image} size="card" emptyLabel={ui.projectPhotosComing} />
+  {!empty && (
+    <div class="card-body">
+      <h2 class="card-title">{type}</h2>
+      <p class="project-island">{island}</p>
+      <p>{summary}</p>
+    </div>
+  )}
 </article>

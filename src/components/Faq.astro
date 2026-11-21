@@ -1,0 +1,17 @@
+---
+// Visible Q and A. Pages pass the same items to Base as FAQPage structured data (lib/schema.ts).
+// Renders nothing while the list in site.ts is empty.
+import { faqs, ui } from '../content/site';
+interface Props { page: string }
+const items = faqs[Astro.props.page] ?? [];
+---
+{items.length > 0 && (
+  <section class="section faq" aria-labelledby="faq-heading">
+    <div class="container">
+      <h2 id="faq-heading">{ui.faqHeading}</h2>
+      {items.map((f) => (
+        <details><summary>{f.q}</summary><div class="panel"><p>{f.a}</p></div></details>
+      ))}
+    </div>
+  </section>
+)}

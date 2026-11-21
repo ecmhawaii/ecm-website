@@ -1,0 +1,58 @@
+---
+// Shared body for the four service pages.
+import Base from '../layouts/Base.astro';
+import PageHead from './PageHead.astro';
+import CredentialsStrip from './CredentialsStrip.astro';
+import PhotoSlot from './PhotoSlot.astro';
+import HowItWorks from './HowItWorks.astro';
+import GuideContentSlot from './GuideContentSlot.astro';
+import Financing from './Financing.astro';
+import Faq from './Faq.astro';
+import CtaBand from './CtaBand.astro';
+import EstimateButton from './EstimateButton.astro';
+import { serviceDetail, services, business, ui } from '../content/site';
+import { faqSchema } from '../lib/schema';
+
+interface Props { page: keyof typeof serviceDetail }
+const s = serviceDetail[Astro.props.page];
+const crumbs = [
+  { name: services.h1, path: '/services' },
+  { name: s.h1, path: s.path },
+];
+---
+<Base title={s.title} description={s.description} crumbs={crumbs} schema={faqSchema(s.key)}>
+  <PageHead h1={s.h1}>
+    <div class="btn-row btn-row-left">
+      <a class="btn btn-lg" href="/start-your-project">{ui.estimateButton}</a>
+      <a class="btn btn-lg btn-ghost" href={business.phoneHref}>{ui.callButton}</a>
+    </div>
+  </PageHead>
+  <CredentialsStrip />
+
+  <section class="section">
+    <div class="container split">
+      <div class="split-text">
+        {s.intro.map((p) => <p class="lead">{p}</p>)}
+        <EstimateButton />
+      </div>
+      <div class="split-media"><PhotoSlot slot={s.image} ratio="photo" eager /></div>
+    </div>
+  </section>
+
+  {s.sections.map((sec, i) => (
+    <section class:list={['section', i % 2 === 0 && 'section-soft']} id={sec.id} aria-labelledby={`${sec.id}-h`}>
+      <div class="container prose">
+        <h2 id={`${sec.id}-h`}>{sec.heading}</h2>
+        {sec.text && <p>{sec.text}</p>}
+        {sec.list && <ul class="check-list">{sec.list.map((li) => <li>{li}</li>)}</ul>}
+        <EstimateButton />
+      </div>
+    </section>
+  ))}
+
+  <HowItWorks />
+  <GuideContentSlot page={s.key} />
+  <div class="container"><Financing /></div>
+  <Faq page={s.key} />
+  <CtaBand />
+</Base>

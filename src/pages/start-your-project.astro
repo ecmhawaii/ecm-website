@@ -1,77 +1,202 @@
 ---
 import Base from '../layouts/Base.astro';
-import { estimate as e, ui } from '../content/site';
-const f = e.fields;
+import PageHead from '../components/PageHead.astro';
+import ChoiceGroup from '../components/ChoiceGroup.astro';
+import { estimate as e, ui, business } from '../content/site';
+const s = e.steps;
+const total = 6;
 ---
-<Base title={e.title} description={e.description}>
+<Base title={e.title} description={e.description} crumbs={[{ name: e.h1, path: '/start-your-project' }]}>
+  <PageHead h1={e.h1} lead={e.intro} />
   <section class="section">
-    <div class="container">
-      <h1>{e.h1}</h1>
-      <p class="prose">{e.intro}</p>
-      <p>{ui.requiredNote}</p>
+    <div class="container form-wrap">
       <form
-        class="form"
+        class="form estimate-form"
         name={e.formName}
         method="POST"
         action="/thank-you"
         data-netlify="true"
         netlify-honeypot="bot-field"
+        data-estimate
+        data-total={total}
       >
         <input type="hidden" name="form-name" value={e.formName} />
+        <input type="hidden" name="subject" value={e.defaultSubject} data-subject-prefix={e.subjectPrefix} />
+        <input type="hidden" name="source-page" value="unknown" />
+        <input type="hidden" name="form-version" value={e.formVersion} />
         <p class="hidden-field">
           <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
         </p>
 
-        <div class="field">
-          <label for="name">{f.name} <span class="req" aria-hidden="true">*</span></label>
-          <input id="name" name="name" type="text" autocomplete="name" required />
+        <div class="progress-wrap" hidden data-progress data-template={e.progressTemplate}>
+          <p class="progress-text" aria-live="polite" data-progress-text></p>
+          <progress max={total} value="1" data-progress-bar></progress>
         </div>
-        <div class="field">
-          <label for="phone">{f.phone} <span class="req" aria-hidden="true">*</span></label>
-          <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+
+        <fieldset class="step" data-step="1">
+          <legend class="step-legend" tabindex="-1">{s.type.legend}</legend>
+          <ChoiceGroup name={s.type.name} options={s.type.options} />
+        </fieldset>
+
+        <fieldset class="step" data-step="2">
+          <legend class="step-legend" tabindex="-1">{s.location.legend}</legend>
+          <p class="sub-label" id="island-label">{s.location.islandLabel} <span aria-hidden="true">*</span></p>
+          <div role="radiogroup" aria-labelledby="island-label">
+            <ChoiceGroup name={s.location.islandName} options={s.location.islands} cols={3} />
+          </div>
+          <div class="field">
+            <label for="zip">{s.location.zipLabel}</label>
+            <input id="zip" name={s.location.zipName} type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" aria-describedby="zip-hint" />
+            <span class="hint" id="zip-hint">{s.location.zipHint}</span>
+          </div>
+        </fieldset>
+
+        <fieldset class="step" data-step="3">
+          <legend class="step-legend" tabindex="-1">{s.timeline.legend}</legend>
+          <ChoiceGroup name={s.timeline.name} options={s.timeline.options} />
+        </fieldset>
+
+        <fieldset class="step" data-step="4">
+          <legend class="step-legend" tabindex="-1">{s.budget.legend}</legend>
+          <ChoiceGroup name={s.budget.name} options={s.budget.options} />
+        </fieldset>
+
+        <fieldset class="step" data-step="5">
+          <legend class="step-legend" tabindex="-1">{s.plans.legend}</legend>
+          <ChoiceGroup name={s.plans.name} options={s.plans.options} cols={3} />
+        </fieldset>
+
+        <fieldset class="step" data-step="6">
+          <legend class="step-legend" tabindex="-1">{s.contact.legend}</legend>
+          <p class="hint">{ui.requiredNote}</p>
+          <div class="field">
+            <label for="name">{s.contact.name} <span aria-hidden="true">*</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="phone">{s.contact.phone} <span aria-hidden="true">*</span></label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+          </div>
+          <div class="field">
+            <label for="email">{s.contact.email} <span aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="best-time">{s.contact.bestTime}</label>
+            <select id="best-time" name="best-time">
+              <option value="">{ui.selectPlaceholder}</option>
+              {s.contact.bestTimes.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="notes">{s.contact.notes}</label>
+            <textarea id="notes" name="notes"></textarea>
+          </div>
+        </fieldset>
+
+        <p class="step-error" role="alert" hidden data-step-error>{e.chooseOne}</p>
+
+        <div class="step-nav">
+          <button type="button" class="btn btn-outline" hidden data-back>{e.back}</button>
+          <button type="button" class="btn btn-lg" hidden data-next>{e.next}</button>
+          <button type="submit" class="btn btn-lg" data-submit>{ui.submit}</button>
         </div>
-        <div class="field">
-          <label for="email">{f.email} <span class="req" aria-hidden="true">*</span></label>
-          <input id="email" name="email" type="email" autocomplete="email" required />
-        </div>
-        <div class="field">
-          <label for="address">{f.address} <span class="req" aria-hidden="true">*</span></label>
-          <input id="address" name="address" type="text" autocomplete="street-address" required />
-        </div>
-        <div class="field">
-          <label for="project-type">{f.projectType}</label>
-          <select id="project-type" name="project-type">
-            <option value="">{ui.selectPlaceholder}</option>
-            {e.projectTypes.map((o) => <option value={o}>{o}</option>)}
-          </select>
-        </div>
-        <div class="field">
-          <label for="budget">{f.budget}</label>
-          <select id="budget" name="budget">
-            <option value="">{ui.selectPlaceholder}</option>
-            {e.budgets.map((o) => <option value={o}>{o}</option>)}
-          </select>
-        </div>
-        <div class="field">
-          <label for="start">{f.start}</label>
-          <select id="start" name="start">
-            <option value="">{ui.selectPlaceholder}</option>
-            {e.starts.map((o) => <option value={o}>{o}</option>)}
-          </select>
-        </div>
-        <div class="field">
-          <label for="details">{f.details}</label>
-          <textarea id="details" name="details"></textarea>
-        </div>
-        <div class="field">
-          <label for="heard">{f.heard}</label>
-          <select id="heard" name="heard">
-            <option value="">{ui.selectPlaceholder}</option>
-            {e.heardFrom.map((o) => <option value={o}>{o}</option>)}
-          </select>
-        </div>
-        <button class="btn" type="submit">{ui.submit}</button>
       </form>
+      <p class="form-alt">{ui.callButton}: <a href={business.phoneHref}>{business.phoneDisplay}</a></p>
     </div>
   </section>
 </Base>
+
+<script>
+  // Progressive enhancement. Without JS every step shows as one plain form that submits normally.
+  const form = document.querySelector<HTMLFormElement>('[data-estimate]');
+  if (form) {
+    const steps = [...form.querySelectorAll<HTMLFieldSetElement>('.step')];
+    const total = steps.length;
+    const back = form.querySelector<HTMLButtonElement>('[data-back]')!;
+    const next = form.querySelector<HTMLButtonElement>('[data-next]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const progress = form.querySelector<HTMLElement>('[data-progress]')!;
+    const progressText = form.querySelector<HTMLElement>('[data-progress-text]')!;
+    const bar = form.querySelector<HTMLProgressElement>('[data-progress-bar]')!;
+    const error = form.querySelector<HTMLElement>('[data-step-error]')!;
+    let current = 0;
+
+    const show = (i: number, focus = true) => {
+      current = i;
+      steps.forEach((s, n) => (s.hidden = n !== i));
+      back.hidden = i === 0;
+      next.hidden = i === total - 1;
+      submit.hidden = i !== total - 1;
+      progress.hidden = false;
+      progressText.textContent = (progress.dataset.template || '').replace('{n}', String(i + 1)).replace('{total}', String(total));
+      bar.value = i + 1;
+      error.hidden = true;
+      if (focus) steps[i].querySelector<HTMLElement>('.step-legend')?.focus();
+    };
+
+    const stepValid = (i: number) => {
+      const fields = [...steps[i].querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea')];
+      for (const f of fields) {
+        if (!f.checkValidity()) {
+          if (f instanceof HTMLInputElement && f.type === 'radio') {
+            error.hidden = false;
+            f.focus();
+          } else {
+            f.reportValidity();
+          }
+          return false;
+        }
+      }
+      return true;
+    };
+
+    next.addEventListener('click', () => { if (stepValid(current)) show(current + 1); });
+    back.addEventListener('click', () => show(current - 1));
+
+    // Pointer click on a choice moves straight to the next step (keyboard users press Next).
+    form.addEventListener('click', (ev) => {
+      const input = (ev.target as HTMLElement).closest('.choice')?.querySelector('input');
+      if (!input || (ev as MouseEvent).detail === 0) return;
+      const stepEl = input.closest('.step');
+      const i = steps.indexOf(stepEl as HTMLFieldSetElement);
+      const singleChoice = stepEl && stepEl.querySelectorAll('input:not([type=radio]), select, textarea').length === 0;
+      if (i === current && singleChoice && i < total - 1) setTimeout(() => show(current + 1), 150);
+    });
+    form.addEventListener('change', () => { error.hidden = true; });
+    // Enter in a text field goes to the next step instead of submitting early.
+    form.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' && (ev.target as HTMLElement).tagName === 'INPUT' && current < total - 1) {
+        ev.preventDefault();
+        next.click();
+      }
+    });
+
+    const val = (name: string) => (form.elements.namedItem(name) as RadioNodeList | HTMLInputElement | null)?.value ?? '';
+
+    form.addEventListener('submit', (ev) => {
+      for (let i = 0; i < total; i++) {
+        if (!stepValid(i)) { ev.preventDefault(); show(i); return; }
+      }
+      const subject = form.elements.namedItem('subject') as HTMLInputElement;
+      const type = val('project-type').replace('ADU or ohana unit', 'ADU');
+      const parts = [type, val('island'), val('budget')].filter(Boolean);
+      if (parts.length) subject.value = `${subject.dataset.subjectPrefix}: ${parts.join(', ')}`;
+
+      const answers = { form: 'estimate', type: val('project-type'), timeline: val('timeline'), island: val('island') };
+      try { sessionStorage.setItem('ecm-thank-you', JSON.stringify(answers)); } catch {}
+      const q = new URLSearchParams({ type: answers.type, timeline: answers.timeline });
+      form.action = `/thank-you?${q.toString()}`;
+    });
+
+    // Source page: where the visitor came from, if it was a page on this site.
+    const source = form.elements.namedItem('source-page') as HTMLInputElement;
+    try {
+      const ref = document.referrer ? new URL(document.referrer) : null;
+      source.value = ref ? (ref.origin === location.origin ? ref.pathname : ref.hostname) : 'direct';
+    } catch {}
+
+    form.classList.add('is-enhanced');
+    show(0, false);
+  }
+</script>

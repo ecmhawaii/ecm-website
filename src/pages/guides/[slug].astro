@@ -1,0 +1,41 @@
+---
+// Guide pages: structure only. The PM writes intro and section bodies in site.ts.
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import EstimateButton from '../../components/EstimateButton.astro';
+import { guides, guidesHub, guidePath, ui } from '../../content/site';
+import { faqSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return guides.map((g) => ({ params: { slug: g.slug } }));
+}
+const g = guides.find((x) => x.slug === Astro.params.slug)!;
+const isDraft = g.status === 'draft';
+const crumbs = [
+  { name: guidesHub.h1, path: '/guides' },
+  { name: g.h1, path: guidePath(g.slug) },
+];
+---
+<Base title={g.title} description={g.description} noindex={isDraft} crumbs={crumbs} schema={faqSchema(`guide:${g.slug}`)}>
+  <PageHead h1={g.h1} lead={g.intro || undefined} badge={isDraft ? ui.draftBadge : undefined} />
+  <!-- INTRO SLOT: guides[].intro in site.ts -->
+  <article class="section">
+    <div class="container prose guide-body">
+      <nav class="toc" aria-labelledby="toc-h">
+        <p id="toc-h" class="toc-head">{ui.onThisPage}</p>
+        <ul>{g.sections.map((s) => <li><a href={`#${s.id}`}>{s.heading}</a></li>)}</ul>
+      </nav>
+      {g.sections.map((s) => (
+        <section id={s.id} aria-labelledby={`${s.id}-h`}>
+          <h2 id={`${s.id}-h`}>{s.heading}</h2>
+          {s.body.length ? s.body.map((p) => <p>{p}</p>) : isDraft && <p class="draft-note">{ui.draftBadge}</p>}
+        </section>
+      ))}
+      <EstimateButton />
+    </div>
+  </article>
+  <Faq page={`guide:${g.slug}`} />
+  <CtaBand />
+</Base>
