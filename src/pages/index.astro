@@ -1,16 +1,59 @@
 ---
+import Base from '../layouts/Base.astro';
+import { business, home, ui } from '../content/site';
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- REMOVE AT LAUNCH: keeps the site out of search results while it is being built -->
-    <meta name="robots" content="noindex, nofollow" />
-    <title>Elite Construction Management</title>
-  </head>
-  <body>
-    <h1>Elite Construction Management</h1>
-    <p>Our new website is on the way. Call (808) 987-5782.</p>
-  </body>
-</html>
+<Base title={home.title} description={home.description}>
+  <section class="hero">
+    <div class="container">
+      <h1>{home.h1}</h1>
+      <p class="lead">{home.intro}</p>
+      <div class="btn-row">
+        <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
+        <a class="btn btn-outline" href={business.phoneHref}>{ui.callButton}</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="proof-strip">
+    <div class="container">
+      <ul>
+        {home.proof.map((line) => <li>{line}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <section class="section section-soft" aria-labelledby="services-heading">
+    <div class="container">
+      <h2 id="services-heading">{home.servicesHeading}</h2>
+      <ul class="card-grid four">
+        {home.serviceCards.map((name) => (
+          <li class="card">
+            <a class="card-link" href="/services">{name} <span aria-hidden="true">&rsaquo;</span></a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-heading">
+    <div class="container">
+      <h2 id="how-heading">{home.howHeading}</h2>
+      <ol class="steps">
+        {home.steps.map((step) => (
+          <li>
+            <strong>{step.title}</strong>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-gray" aria-labelledby="closing-heading">
+    <div class="container">
+      <h2 id="closing-heading">{home.closingHeading}</h2>
+      <p class="prose">{home.closingText}</p>
+      <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { business, thankYou as t } from '../content/site';
+---
+<Base title={t.title} description={t.description}>
+  <section class="section">
+    <div class="container prose">
+      <h1>{t.h1}</h1>
+      <p>{t.text}</p>
+      <p>{t.urgentLead} <a href={business.phoneHref}>{business.phoneDisplay}</a>.</p>
+    </div>
+  </section>
+</Base>

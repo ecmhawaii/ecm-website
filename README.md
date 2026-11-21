@@ -17,4 +17,8 @@ Netlify builds this repo from `main` (`npm run build`, publish folder `dist`, se
 
 ## Before launch
 
-The home page has a noindex meta tag and `public/robots.txt` disallows everything. Both are marked REMOVE AT LAUNCH.
+Every page has a noindex meta tag (set once in `src/layouts/Base.astro`) and `public/robots.txt` disallows everything. Both are marked REMOVE AT LAUNCH.
+
+## Editing website text
+
+All visible text is in `src/content/site.ts`. Replace copy there once it is approved. Pages, the layout and styles do not hold any copy of their own.
