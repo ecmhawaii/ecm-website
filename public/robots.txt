@@ -1,0 +1,3 @@
+# REMOVE AT LAUNCH: blocks all crawlers while the site is being built
+User-agent: *
+Disallow: /
