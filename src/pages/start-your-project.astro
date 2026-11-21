@@ -154,16 +154,24 @@ const total = 6;
     next.addEventListener('click', () => { if (stepValid(current)) show(current + 1); });
     back.addEventListener('click', () => show(current - 1));
 
-    // Pointer click on a choice moves straight to the next step (keyboard users press Next).
-    form.addEventListener('click', (ev) => {
-      const input = (ev.target as HTMLElement).closest('.choice')?.querySelector('input');
-      if (!input || (ev as MouseEvent).detail === 0) return;
-      const stepEl = input.closest('.step');
-      const i = steps.indexOf(stepEl as HTMLFieldSetElement);
-      const singleChoice = stepEl && stepEl.querySelectorAll('input:not([type=radio]), select, textarea').length === 0;
-      if (i === current && singleChoice && i < total - 1) setTimeout(() => show(current + 1), 150);
+    // A tap or click on a choice moves straight to the next step (once). Keyboard users
+    // (arrow keys / Space) stay on the step and press Next, so arrowing never skips ahead.
+    let pointerChoice = false;
+    let advancing = false;
+    form.addEventListener('pointerdown', (ev) => { pointerChoice = !!(ev.target as HTMLElement).closest('.choice'); });
+    form.addEventListener('keydown', () => { pointerChoice = false; });
+    form.addEventListener('change', (ev) => {
+      error.hidden = true;
+      const input = ev.target as HTMLInputElement;
+      if (!pointerChoice || input.type !== 'radio' || advancing) return;
+      pointerChoice = false;
+      const stepEl = input.closest('.step') as HTMLFieldSetElement;
+      const i = steps.indexOf(stepEl);
+      const singleChoice = stepEl.querySelectorAll('input:not([type=radio]), select, textarea').length === 0;
+      if (i !== current || !singleChoice || i >= total - 1) return;
+      advancing = true;
+      setTimeout(() => { advancing = false; if (current === i) show(i + 1); }, 180);
     });
-    form.addEventListener('change', () => { error.hidden = true; });
     // Enter in a text field goes to the next step instead of submitting early.
     form.addEventListener('keydown', (ev) => {
       if (ev.key === 'Enter' && (ev.target as HTMLElement).tagName === 'INPUT' && current < total - 1) {
