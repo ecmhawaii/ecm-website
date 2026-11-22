@@ -4,7 +4,7 @@ import Eyebrow from './Eyebrow.astro';
 import { home, projects, ui } from '../content/site';
 const items = home.featured.map((id) => projects.cards.find((c) => c.id === id)!).filter(Boolean);
 ---
-<section class="section section-soft" aria-labelledby="feat-h">
+<section class="section section-soft cv-auto" aria-labelledby="feat-h">
   <div class="container">
     <Eyebrow text={home.featuredEyebrow} />
     <div class="section-head">

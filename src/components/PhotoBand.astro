@@ -3,6 +3,6 @@
 import PhotoSlot from './PhotoSlot.astro';
 interface Props { image: string }
 ---
-<div class="photo-band" data-parallax>
-  <PhotoSlot image={Astro.props.image} ratio="none" sizes="100vw" widths={[640, 960, 1216]} class="band-photo" />
+<div class="photo-band cv-auto" data-parallax>
+  <PhotoSlot image={Astro.props.image} ratio="none" crop={16 / 10} quality={50} sizes="100vw" widths={[640, 960, 1216]} class="band-photo" />
 </div>

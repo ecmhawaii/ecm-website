@@ -8,8 +8,9 @@ import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { Project } from '../content/site';
 
-interface Props { project: Project }
-const { project: p } = Astro.props;
+interface Props { project: Project; /** First project sits on the first screen: never hidden for a reveal. */ first?: boolean }
+const { project: p, first = false } = Astro.props;
+const reveal = first ? undefined : '';
 
 // Full-size versions for the lightbox (also the no-JS link target).
 const gallery = await Promise.all(
@@ -22,25 +23,25 @@ const gallery = await Promise.all(
 );
 ---
 <article class="project" id={p.id} aria-labelledby={`${p.id}-h`}>
-  <div class="project-head" data-reveal>
+  <div class="project-head" data-reveal={reveal}>
     <p class="card-meta">{p.type}{p.place && <Fragment> · {p.place}</Fragment>}</p>
     <h2 id={`${p.id}-h`}>{p.name}</h2>
     <p class="lead">{p.summary}</p>
   </div>
   {p.compare && (
-    <div class="project-compare" data-reveal>
+    <div class="project-compare" data-reveal={reveal}>
       <h3 class="sub-head">{projects.compareHeading}</h3>
       <Compare {...p.compare} name={p.name} />
     </div>
   )}
   {gallery.length > 0 && (
     <div class="project-gallery">
-      <h3 class="sub-head" data-reveal>{projects.galleryHeading}</h3>
-      <ul class="gallery-grid" data-stagger data-gallery>
+      <h3 class="sub-head" data-reveal={reveal}>{projects.galleryHeading}</h3>
+      <ul class="gallery-grid" data-stagger={reveal} data-gallery>
         {gallery.map((g, i) => (
           <li>
             <a class="gallery-link lift" href={g.full} data-lightbox data-caption={g.caption} data-alt={g.alt} data-index={i}>
-              <PhotoSlot image={g.image} ratio="square" sizes="(min-width: 960px) 25vw, 50vw" widths={[320, 480, 640]} />
+              <PhotoSlot image={g.image} ratio="square" quality={42} sizes="(min-width: 960px) 25vw, 50vw" widths={[240, 360, 720]} />
               <span class="sr-only">{ui.openPhoto}: {g.caption}</span>
             </a>
             <p class="gallery-caption">{g.caption}</p>

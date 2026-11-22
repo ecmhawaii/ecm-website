@@ -396,7 +396,6 @@ export const projects = {
   h1: 'Our projects',
   text: 'A few recent jobs. Ask us about similar projects when you request an estimate.',
   eyebrow: 'Portfolio',
-  headImage: 'pergolaView',
   compareHeading: 'Before and after',
   galleryHeading: 'Photos',
   cards: [
@@ -548,6 +547,9 @@ export const subcontractors = {
   intro:
     'We work with licensed subcontractors and suppliers in Hawaii. Send us your details and we will reach out when a project fits.',
   formName: 'subcontractor',
+  // Email subject for Netlify's alert (hidden "subject" field). JS fills in trade and islands.
+  defaultSubject: 'New subcontractor: form submission',
+  subjectPrefix: 'New subcontractor',
   fields: {
     company: 'Company name',
     contact: 'Contact name',

@@ -24,7 +24,10 @@ const notes = [];
 const ph = pages.filter((p) => p.html.includes('data-placeholder="true"'));
 if (ph.length) blockers.push(`Placeholder images on ${ph.length} pages: ${ph.map((p) => p.path).join(', ')} (replace slots in src/content/images.ts)`);
 const imagesTs = readFileSync('src/content/images.ts', 'utf8');
-const phSlots = [...imagesTs.matchAll(/^\s*(?:export const )?(\w+)\s*[:=]\s*\{[^\n]*placeholder: true/gm)].map((m) => m[1]);
+const phSlots = [
+  ...[...imagesTs.matchAll(/^\s*(?:export const )?(\w+)\s*[:=]\s*\{[^\n]*placeholder: true/gm)].map((m) => m[1]),
+  ...[...imagesTs.matchAll(/^\s*(\w+):\s*stock\(/gm)].map((m) => m[1]),
+];
 if (phSlots.length) blockers.push(`Image slots still marked placeholder: ${phSlots.join(', ')}`);
 
 // 2. noindex.

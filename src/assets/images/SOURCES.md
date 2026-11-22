@@ -9,15 +9,17 @@
 
 Unsplash License (free to use). Each page was checked as a "Free Photo" page by the PM on 2026-11-21. Shown on the site with a visible "Sample photo" tag. Never captioned as ECM work. All slots are set in `src/content/images.ts`. Replace every row before launch; `npm run check:launch` fails while any remain.
 
-| Slot | URL | Status |
-| --- | --- | --- |
-| home | https://images.unsplash.com/photo-1791882895731-a46380dc545e | PLACEHOLDER |
-| adu | https://images.unsplash.com/photo-1774847408513-bebd160c419a | PLACEHOLDER |
-| kitchen | https://images.unsplash.com/photo-1617228069096-4638a7ffc906 | PLACEHOLDER |
-| bathroom | https://images.unsplash.com/photo-1763485956310-55f3c0e822d5 | PLACEHOLDER |
-| commercial | https://images.unsplash.com/photo-1758448500688-3ababa93fd67 | PLACEHOLDER |
-| framing | https://images.unsplash.com/photo-1777105939822-21228c81916d | PLACEHOLDER |
-| crew | https://images.unsplash.com/photo-1587582423116-ec07293f0395 | PLACEHOLDER |
+v3 (2026-11-22): only the four slots with no matching ECM photo still use stock.
+
+| Slot | URL | Used on (v3) | Status |
+| --- | --- | --- | --- |
+| home | https://images.unsplash.com/photo-1791882895731-a46380dc545e | Home services list (Custom homes), /custom-homes photo hero | PLACEHOLDER |
+| adu | https://images.unsplash.com/photo-1774847408513-bebd160c419a | Home services list (ADUs and additions), /adu-oahu photo hero | PLACEHOLDER |
+| kitchen | https://images.unsplash.com/photo-1617228069096-4638a7ffc906 | /remodeling, Kitchen remodels section | PLACEHOLDER |
+| bathroom | https://images.unsplash.com/photo-1763485956310-55f3c0e822d5 | /remodeling, Bathroom remodels section | PLACEHOLDER |
+| commercial | https://images.unsplash.com/photo-1758448500688-3ababa93fd67 | Not used in v3 (replaced by ECM Longs Drugs photos) | Retired |
+| framing | https://images.unsplash.com/photo-1777105939822-21228c81916d | Not used in v3 | Retired |
+| crew | https://images.unsplash.com/photo-1587582423116-ec07293f0395 | Not used in v3 (replaced by ECM job site photos) | Retired |
 
 Every image added to the site gets a row here: file, where it came from, licence, and whether it is a placeholder.
 
@@ -41,3 +43,22 @@ Not imported, on purpose:
 - long-s-drug-store-support-commercial-oahu-honolulu-drip-edge: carries an "AI-generated content" mark, so it is not a real job photo.
 - longs-drug-pali-outside (night storefront) and projects.png: origin unknown, may not be ECM's own photos.
 - acs-logo: no longer on the server (404). ACS is named in text only, no logo.
+
+## Where the ECM job photos are used (v3, 2026-11-22)
+
+All through Astro's Image component (resized, WebP). Slot names are in `src/content/images.ts`.
+
+| File | Slot | Used on |
+| --- | --- | --- |
+| projects/acs-hope-lodge-exterior.jpg | acsExterior | /portfolio gallery (card size only) |
+| projects/acs-hope-lodge-sign.jpg | acsSign | Home featured project card, home slider, /portfolio |
+| projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | acsCeiling1, acsCeiling2 | /portfolio gallery |
+| projects/acs-hope-lodge-pergola-1.jpg | pergola1 | Home slider, /about photo, /portfolio gallery |
+| projects/acs-hope-lodge-pergola-2.jpg | pergolaView | Home full-width photo band, /portfolio gallery |
+| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | /portfolio before and after slider; after also on home (Remodels, featured card, slider) and the /remodeling photo hero |
+| projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | drivewayBefore, drivewayDuring | /portfolio before and during slider (no finished photo on file); during also in the home slider |
+| projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | walk1, walk2, walk3 | /portfolio gallery; walk3 in the home slider |
+| projects/longs-drip-edge-before.jpg, -after.jpg | longsBefore, longsAfter | /portfolio gallery; after in the home slider |
+| projects/longs-drip-edge-1.jpg, -3.jpg | longs1, longsSign | /portfolio gallery |
+| projects/longs-drip-edge-2.jpg | longsStore | Home Commercial service, featured card, slider; /commercial-tenant-improvements photo hero |
+| hero-diamond-head.jpg | hero | Home hero and share card (still unconfirmed, see above) |

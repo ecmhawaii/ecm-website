@@ -20,10 +20,14 @@ interface Props {
   imgClass?: string;
   /** Optional caption shown under the photo (real photos only). */
   caption?: string;
+  /** Server-side crop aspect (width / height) when ratio is 'none' (photo bands). */
+  crop?: number;
+  /** WebP quality. Lower for photos under a dark overlay. */
+  quality?: number;
 }
 const {
   image: slot, sizes = '(min-width: 960px) 50vw, 100vw', widths = [480, 800, 1200], ratio = 'photo',
-  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption,
+  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58,
 } = Astro.props;
 const p = photos[slot];
 const isLocal = p && typeof p.src !== 'string';
@@ -31,6 +35,10 @@ const remote = p && typeof p.src === 'string' ? (p.src as string) : '';
 const remoteSrc = remote && ratio !== 'band' && !sizes.includes('100vw') ? remote.replace('w=1600', 'w=900') : remote;
 const pos = `pos-${p?.position ?? 'center'}`;
 const localW = isLocal ? (p.src as ImageMetadata).width : 0;
+// Crop on the server to the shape the slot shows, so no hidden pixels are downloaded.
+const aspects: Record<string, number> = { photo: 4 / 3, square: 1, tall: 3 / 4, wide: 16 / 9 };
+const aspect = crop ?? aspects[ratio];
+const sharpPos: Record<string, string> = { top: 'top', upper: 'center', center: 'center', lower: 'center', bottom: 'bottom' };
 const fitWidths = isLocal ? (widths.filter((w) => w <= localW).length ? widths.filter((w) => w <= localW) : [localW]) : [];
 ---
 <figure class:list={['photo', `ratio-${ratio}`, cls]} data-placeholder={p?.placeholder && (isLocal || remote) ? 'true' : undefined}>
@@ -39,9 +47,13 @@ const fitWidths = isLocal ? (widths.filter((w) => w <= localW).length ? widths.f
       src={p.src as ImageMetadata}
       alt={p.alt}
       widths={fitWidths}
+      width={aspect ? Math.max(...fitWidths) : undefined}
+      height={aspect ? Math.round(Math.max(...fitWidths) / aspect) : undefined}
+      fit={aspect ? 'cover' : undefined}
+      position={aspect ? sharpPos[p.position ?? 'center'] : undefined}
       sizes={sizes}
       format="webp"
-      quality={72}
+      quality={quality}
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : undefined}
       decoding="async"

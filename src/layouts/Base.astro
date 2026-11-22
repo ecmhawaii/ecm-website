@@ -1,6 +1,5 @@
 ---
 import '@fontsource/merriweather/700.css';
-import '@fontsource/merriweather/900.css';
 import '@fontsource/archivo/400.css';
 import '@fontsource/archivo/600.css';
 import '@fontsource/archivo/700.css';
@@ -87,8 +86,6 @@ const onEstimatePage = path === '/start-your-project';
     {path !== '/404' && <link rel="canonical" href={canonical} />}
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#111111" />
-    <!-- Sets html.js / html.motion before first paint (external file: CSP is script-src 'self') -->
-    <script is:inline src="/flag.js"></script>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={business.name} />
     <meta property="og:locale" content="en_US" />

@@ -22,6 +22,7 @@ Netlify builds this repo from `main` (`npm run build`, publish folder `dist`, se
 - `src/assets/images/SOURCES.md`: where every image came from and its status.
 - `site.config.mjs`: the canonical site URL (`SITE`) and the site-wide noindex switch.
 - `public/_headers`: security headers (Content-Security-Policy and others).
+- `src/scripts/motion.ts` and `motion-gsap.ts`: page animation (gsap from npm, self-hosted). Elements are hidden for animation only when scripting is on and reduced motion is off (CSS media queries), so with JavaScript off or reduced motion everything shows at once. gsap loads only after the first photo and fonts are ready, to protect page speed.
 
 ## Before launch
 

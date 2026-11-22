@@ -7,16 +7,16 @@ import PhotoSlot from './PhotoSlot.astro';
 import { ui } from '../content/site';
 interface Props { before: string; after: string; beforeLabel: string; afterLabel: string; name: string }
 const { before, after, beforeLabel, afterLabel, name } = Astro.props;
-const sizes = '(min-width: 960px) 560px, 100vw';
+const sizes = '(min-width: 960px) 560px, 92vw';
 ---
 <div class="compare" data-compare>
   <div class="compare-stage">
     <div class="compare-pane compare-before">
-      <PhotoSlot image={before} ratio="tall" sizes={sizes} widths={[480, 800, 1100]} />
+      <PhotoSlot image={before} ratio="tall" sizes={sizes} widths={[400, 640]} />
       <span class="compare-label compare-label-before">{beforeLabel}</span>
     </div>
     <div class="compare-pane compare-after">
-      <PhotoSlot image={after} ratio="tall" sizes={sizes} widths={[480, 800, 1100]} />
+      <PhotoSlot image={after} ratio="tall" sizes={sizes} widths={[400, 640]} />
       <span class="compare-label compare-label-after">{afterLabel}</span>
     </div>
     <div class="compare-handle" aria-hidden="true"><span></span></div>

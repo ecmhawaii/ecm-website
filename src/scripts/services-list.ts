@@ -4,6 +4,7 @@ export function initServicesList() {
   if (list) {
     const items = [...list.querySelectorAll<HTMLDetailsElement>('[data-svc-item]')];
     items.forEach((d, i) => (d.open = i === 0));
+    list.classList.add('is-live');
     for (const d of items) {
       d.querySelector('summary')!.addEventListener('click', (e) => {
         if (!d.open) { e.preventDefault(); items.forEach((x) => (x.open = x === d)); }

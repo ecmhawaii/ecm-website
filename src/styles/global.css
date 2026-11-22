@@ -83,7 +83,7 @@ ul, ol { padding-left: 1.2em; }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-height: var(--tap); }
 .brand:hover { color: var(--ink); }
 .brand-logo { width: 48px; height: auto; }
-.brand-name { font-family: var(--font-heading); font-weight: 900; font-size: 0.98rem; line-height: 1.2; max-width: 15ch; }
+.brand-name { font-family: var(--font-heading); font-weight: 700; font-size: 0.98rem; line-height: 1.2; max-width: 15ch; }
 .nav-desktop { display: none; }
 .nav-mobile summary {
   list-style: none; cursor: pointer;
@@ -292,8 +292,9 @@ html { scroll-padding-bottom: 96px; }
 .hero-media { position: absolute; inset: 0; overflow: hidden; }
 .hero-img { position: absolute; left: 0; top: -7%; width: 100%; height: 114%; object-fit: cover; object-position: 50% 40%; transform-origin: 50% 50%; }
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17, 17, 17, 0.35) 0%, rgba(17, 17, 17, 0.62) 45%, rgba(17, 17, 17, 0.9) 100%); }
-.hero-inner { position: relative; padding-top: 40px; padding-bottom: 24px; }
-.hero-title { color: var(--on-dark); font-weight: 900; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.08; font-size: clamp(1.9rem, 8vw, 4.2rem); max-width: 20ch; margin-bottom: 14px; }
+.hero-inner { position: relative; padding-top: 40px; padding-bottom: 24px; flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end; }
+.hero-inner > * { flex: 0 0 auto; }
+.hero-title { color: var(--on-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.08; font-size: clamp(1.9rem, 8vw, 4.2rem); max-width: 20ch; margin-bottom: 14px; }
 .hero-line { font-size: clamp(1.02rem, 1.6vw, 1.2rem); max-width: 54ch; color: var(--on-dark); margin-bottom: 4px; }
 .hero-btns { margin-top: 18px; }
 .hero-btns .btn { flex: 1 1 200px; }
@@ -329,36 +330,41 @@ html { scroll-padding-bottom: 96px; }
 .clients-dup { display: none; }
 @media (min-width: 960px) {
   .clients-inner { grid-template-columns: auto 1fr; align-items: center; gap: 40px; }
-  .motion .clients-track-wrap { mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
-  .motion .clients-list { flex-wrap: nowrap; flex-shrink: 0; gap: 0; animation: marquee 38s linear infinite; }
-  .motion .clients-list li { padding-right: 64px; white-space: nowrap; }
-  .motion .clients-dup { display: flex; }
-  .motion .clients-track-wrap:hover .clients-list { animation-play-state: paused; }
+}
+@media (min-width: 960px) and (prefers-reduced-motion: no-preference) {
+  .clients-track-wrap { mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .clients-list { flex-wrap: nowrap; flex-shrink: 0; gap: 0; animation: marquee 38s linear infinite; }
+  .clients-list li { padding-right: 64px; white-space: nowrap; }
+  .clients-dup { display: flex; }
+  .clients-track-wrap:hover .clients-list { animation-play-state: paused; }
 }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
 /* Hook statement */
-.hook-statement { font-weight: 900; font-size: clamp(2rem, 6.6vw, 4.8rem); line-height: 1.08; letter-spacing: -0.01em; max-width: 18ch; margin-bottom: 28px; }
+.hook-statement { font-weight: 700; font-size: clamp(2rem, 6.6vw, 4.8rem); line-height: 1.08; letter-spacing: -0.01em; max-width: 18ch; margin-bottom: 28px; }
 .hook-lead { color: var(--ink-2); max-width: 60ch; }
 
 /* Services as a large list */
 .svc-list { border-top: 1px solid var(--border); margin-top: 16px; position: relative; }
 .svc-item { border-bottom: 1px solid var(--border); }
-.svc-name { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 16px; padding: 22px 0; min-height: var(--tap); font-family: var(--font-heading); font-weight: 900; font-size: clamp(1.7rem, 5.4vw, 3.6rem); line-height: 1.1; color: var(--ink); transition: color 0.25s ease, transform 0.35s ease; }
+.svc-name { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 16px; padding: 22px 0; min-height: var(--tap); font-family: var(--font-heading); font-weight: 700; font-size: clamp(1.7rem, 5.4vw, 3.6rem); line-height: 1.1; color: var(--ink); transition: color 0.25s ease, transform 0.35s ease; }
 .svc-name::-webkit-details-marker { display: none; }
 .svc-num { font-family: var(--font-body); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; color: var(--brand); }
 .svc-item[open] .svc-name, .svc-name:hover { color: var(--brand); }
 .svc-body { display: grid; gap: 12px; padding: 0 0 24px; }
+/* With scripting on, items 2 to 4 start closed (the list script opens one at a time), so their
+   photos are not fetched before they are needed. JS off: every item stays open. */
+@media (scripting: enabled) { .svc-list:not(.is-live) .svc-item:not(:first-child) .svc-body { display: none; } }
 .svc-body p { margin: 0; font-size: 1.08rem; }
 /* Desktop version: only with JS (html.js) on wide screens. */
 .svc-desk { display: none; }
-@media (min-width: 960px) {
-  .js .svc-list { display: none; }
-  .js .svc-desk { display: grid; grid-template-columns: 1.25fr 1fr; gap: 56px; align-items: start; margin-top: 16px; }
+@media (min-width: 960px) and (scripting: enabled) {
+  .svc-list { display: none; }
+  .svc-desk { display: grid; grid-template-columns: 1.25fr 1fr; gap: 56px; align-items: start; margin-top: 16px; }
 }
 .svc-desk-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
 .svc-desk-list li { border-bottom: 1px solid var(--border); }
-.svc-desk-link { display: flex; align-items: baseline; gap: 18px; padding: 22px 0; text-decoration: none; color: var(--ink); font-family: var(--font-heading); font-weight: 900; font-size: clamp(2rem, 4.2vw, 3.6rem); line-height: 1.1; transition: color 0.25s ease, transform 0.35s ease; }
+.svc-desk-link { display: flex; align-items: baseline; gap: 18px; padding: 22px 0; text-decoration: none; color: var(--ink); font-family: var(--font-heading); font-weight: 700; font-size: clamp(2rem, 4.2vw, 3.6rem); line-height: 1.1; transition: color 0.25s ease, transform 0.35s ease; }
 .svc-desk-link:hover, .svc-desk-link:focus-visible, .svc-desk-link.is-active { color: var(--brand); transform: translateX(10px); }
 .svc-preview { position: sticky; top: 24px; display: grid; }
 .svc-preview-item { grid-area: 1 / 1; opacity: 0; transform: translateY(12px); transition: opacity 0.4s ease, transform 0.5s ease; pointer-events: none; }
@@ -415,7 +421,7 @@ html { scroll-padding-bottom: 96px; }
 
 /* Estimate band: solid steel blue, unlike every other section */
 .estimate-band { background: var(--brand); color: var(--on-dark); padding: 64px 0; }
-.estimate-band h2 { color: var(--on-dark); font-size: clamp(2rem, 5.6vw, 3.6rem); font-weight: 900; margin-bottom: 12px; }
+.estimate-band h2 { color: var(--on-dark); font-size: clamp(2rem, 5.6vw, 3.6rem); font-weight: 700; margin-bottom: 12px; }
 .estimate-band .eyebrow { color: var(--on-dark); }
 .est-text { font-size: 1.15rem; max-width: 52ch; }
 .est-reply { font-weight: 700; display: inline-flex; align-items: center; gap: 10px; }
@@ -436,7 +442,7 @@ html { scroll-padding-bottom: 96px; }
 .footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 36px; border-bottom: 1px solid #2c2c2c; margin-bottom: 36px; }
 .footer-brand-link { gap: 20px; }
 .footer-logo { width: 96px; height: auto; filter: invert(1); }
-.footer-wordmark { font-family: var(--font-heading); font-weight: 900; font-size: clamp(1.6rem, 4.4vw, 3rem); line-height: 1.1; color: var(--on-dark); max-width: 14ch; }
+.footer-wordmark { font-family: var(--font-heading); font-weight: 700; font-size: clamp(1.6rem, 4.4vw, 3rem); line-height: 1.1; color: var(--on-dark); max-width: 14ch; }
 .footer-head { font-weight: 700; color: var(--on-dark); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem; margin-bottom: 6px !important; }
 .footer-head-gap { margin-top: 18px !important; }
 .footer-grid { display: grid; gap: 32px; grid-template-columns: 1fr; }
@@ -466,7 +472,7 @@ html { scroll-padding-bottom: 96px; }
 .compare-label-before { left: 10px; }
 .compare-label-after { right: 10px; }
 .compare-handle { display: none; }
-.compare.is-live .compare-stage { display: block; aspect-ratio: 3 / 4; border-radius: var(--radius); overflow: hidden; --pos: 50%; }
+.compare.is-live .compare-stage { display: block; aspect-ratio: 3 / 4; border-radius: var(--radius); overflow: hidden; }
 .compare.is-live { --pos: 50%; }
 .compare.is-live .compare-pane { position: absolute; inset: 0; }
 .compare.is-live .compare-pane .photo { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0; }
@@ -497,15 +503,21 @@ html { scroll-padding-bottom: 96px; }
 .nav-mobile[open] summary { background: var(--ink); color: var(--on-dark); }
 
 /* ---------------------------------------------------------------------
-   Motion: elements are hidden for animation ONLY under html.motion
-   (set by public/flag.js when JS runs and reduced motion is off).
-   JS off or reduced motion: everything is visible, nothing moves.
+   Motion. Elements are hidden for animation ONLY when the browser runs scripts AND the
+   visitor has not asked for reduced motion (CSS media queries, no blocking script).
+   - JS off or reduced motion: nothing is hidden, nothing moves.
+   - html.motion-off (set by the module when it is late or cannot run): nothing hidden.
+   - Safety net: if the motion module never starts, a CSS animation shows everything at 2.6s.
    --------------------------------------------------------------------- */
-.motion [data-reveal],
-.motion [data-stagger] > *,
-.motion [data-hero-fade],
-.motion [data-hero-title],
-.motion [data-split-words] { visibility: hidden; }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  html:not(.motion-off) [data-reveal],
+  html:not(.motion-off) [data-stagger] > *,
+  html:not(.motion-off) [data-hero-fade],
+  html:not(.motion-off) [data-hero-title],
+  html:not(.motion-off) [data-split-words] { visibility: hidden; }
+  html:not(.motion-ready):not(.motion-off) :is([data-reveal], [data-stagger] > *, [data-hero-fade], [data-hero-title], [data-split-words]) { animation: ecm-show 0s 2.6s forwards; }
+}
+@keyframes ecm-show { to { visibility: visible; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
   .lift:hover, .card:has(a:hover) { transform: none !important; }
@@ -521,3 +533,7 @@ html { scroll-padding-bottom: 96px; }
   .cred-strip li + li::before { content: none; }
   .cred-strip li:nth-child(odd):not(:last-child)::after { content: '\00B7'; margin: 0 8px; font-size: 1.3em; line-height: 0; color: var(--on-dark-2); }
 }
+
+/* Below-the-fold sections skip rendering until near the viewport, so their photos are not
+   fetched while the LCP photo loads. 'auto' remembers the real size once rendered. */
+.cv-auto { content-visibility: auto; contain-intrinsic-size: auto 900px; }

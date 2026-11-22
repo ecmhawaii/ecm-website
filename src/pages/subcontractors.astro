@@ -19,6 +19,7 @@ const f = s.fields;
         data-sub-form
       >
         <input type="hidden" name="form-name" value={s.formName} />
+        <input type="hidden" name="subject" value={s.defaultSubject} data-subject-prefix={s.subjectPrefix} />
         <p class="hidden-field">
           <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
         </p>
@@ -69,9 +70,14 @@ const f = s.fields;
 </Base>
 
 <script>
-  // Lets the thank you page show the subcontractor version of its message.
+  // Sets the email subject from the answers (JS off keeps the default), and lets the
+  // thank you page show the subcontractor version of its message.
   const form = document.querySelector<HTMLFormElement>('[data-sub-form]');
   form?.addEventListener('submit', () => {
+    const subject = form.elements.namedItem('subject') as HTMLInputElement;
+    const part = (name: string) => ((form.elements.namedItem(name) as HTMLInputElement | null)?.value ?? '').trim().slice(0, 40).trim();
+    const parts = [part('trade'), part('islands')].filter(Boolean);
+    if (parts.length) subject.value = `${subject.dataset.subjectPrefix}: ${parts.join(', ')}`;
     try { sessionStorage.setItem('ecm-thank-you', JSON.stringify({ form: 'subcontractor' })); } catch {}
     form.action = '/thank-you?form=subcontractor';
   });

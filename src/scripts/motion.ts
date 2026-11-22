@@ -1,92 +1,40 @@
-// All page motion, in one module. gsap is installed from npm and bundled (self-hosted).
-// Progressive enhancement:
-// - public/flag.js adds html.js and (unless reduced motion) html.motion before first paint.
-// - CSS hides animated elements ONLY under html.motion.
-// - This module animates them in. With JS off or reduced motion nothing is hidden or moved.
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
-
+// Motion entry (tiny). Decides whether to animate, then loads gsap.
+// - Reduced motion: nothing to do (CSS never hides anything).
+// - Waits for the hero / page-head photo (the LCP element), the page load event and the web
+//   fonts, so gsap does not compete with the LCP image and SplitText splits lines in the
+//   final font.
+// - If that takes too long (slow connection), skip motion and show everything as is.
 const root = document.documentElement;
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const LATE_MS = 2000;
+const MIN_START_MS = 600;
 
-function showAll() {
-  root.classList.remove('motion');
+function off() { root.classList.add('motion-off'); }
+
+async function start() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const hero = document.querySelector<HTMLImageElement>('[data-hero-img], .page-head-media img');
+  const heroReady = hero && !hero.complete
+    ? new Promise<void>((r) => { hero.addEventListener('load', () => r(), { once: true }); hero.addEventListener('error', () => r(), { once: true }); })
+    : Promise.resolve();
+  const fontsReady = document.fonts ? document.fonts.ready.then(() => undefined) : Promise.resolve();
+  // Wait for the load event and an idle moment too, so the gsap download never shares
+  // bandwidth with the LCP photo.
+  const loaded = document.readyState === 'complete'
+    ? Promise.resolve()
+    : new Promise<void>((r) => addEventListener('load', () => r(), { once: true }));
+  const idle = () => new Promise<void>((r) => ('requestIdleCallback' in window ? requestIdleCallback(() => r(), { timeout: 200 }) : setTimeout(r, 1)));
+  // Never before 600ms after navigation: the LCP photo has painted by then on fast connections.
+  const minDelay = () => new Promise<void>((r) => setTimeout(r, Math.max(0, MIN_START_MS - performance.now())));
+  const timeout = new Promise<'late'>((r) => setTimeout(() => r('late'), LATE_MS));
+  const ready = await Promise.race([Promise.all([heroReady, fontsReady, loaded, minDelay()]).then(idle).then(() => 'ok' as const), timeout]);
+  if (ready === 'late') { off(); return; }
+  try {
+    const mod = await import('./motion-gsap');
+    if (performance.now() > LATE_MS + 400) { off(); return; }
+    mod.init();
+  } catch {
+    off();
+  }
 }
 
-function init() {
-  if (reduced || !root.classList.contains('motion')) { showAll(); return; }
-  root.classList.add('motion-ready');
-  gsap.registerPlugin(ScrollTrigger, SplitText);
-  const ease = 'power3.out';
-
-  // ---- Hero / page head intro (no preloader) ----
-  // The hero photo is never hidden or faded: it only scales from 1.08 to 1, so it stays the LCP.
-  const heroImg = document.querySelector<HTMLElement>('[data-hero-img], .page-head-media img');
-  if (heroImg) gsap.fromTo(heroImg, { scale: 1.08 }, { scale: 1, duration: 1.4, ease: 'power2.out' });
-
-  const title = document.querySelector<HTMLElement>('[data-hero-title]');
-  const fades = gsap.utils.toArray<HTMLElement>('[data-hero-fade]');
-  const intro = gsap.timeline({ defaults: { ease } });
-  if (title) {
-    const split = SplitText.create(title, { type: 'lines', mask: 'lines', aria: 'auto' });
-    gsap.set(title, { autoAlpha: 1 });
-    // Under 700ms in total for the headline.
-    intro.from(split.lines, { yPercent: 105, duration: 0.5, stagger: 0.06 });
-  }
-  if (fades.length) {
-    intro.fromTo(fades, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08 }, title ? '-=0.25' : 0);
-  }
-
-  // ---- Big hook statement: words rise as it scrolls in ----
-  for (const el of gsap.utils.toArray<HTMLElement>('[data-split-words]')) {
-    const split = SplitText.create(el, { type: 'words', mask: 'words', aria: 'auto' });
-    gsap.set(el, { autoAlpha: 1 });
-    gsap.from(split.words, {
-      yPercent: 100, duration: 0.8, ease, stagger: 0.05,
-      scrollTrigger: { trigger: el, start: 'top 82%', once: true },
-    });
-  }
-
-  // ---- Section reveals: once each, 30px, 0.7s ----
-  ScrollTrigger.batch('[data-reveal]', {
-    start: 'top 88%',
-    once: true,
-    onEnter: (els) => gsap.fromTo(els, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.7, ease, stagger: 0.08, overwrite: true }),
-  });
-  // Cards and photos stagger in.
-  for (const group of gsap.utils.toArray<HTMLElement>('[data-stagger]')) {
-    const items = [...group.children] as HTMLElement[];
-    gsap.fromTo(items, { autoAlpha: 0, y: 36 }, {
-      autoAlpha: 1, y: 0, duration: 0.8, ease, stagger: 0.1,
-      scrollTrigger: { trigger: group, start: 'top 85%', once: true },
-    });
-  }
-
-  // ---- How it works: the line draws as you scroll ----
-  const line = document.querySelector<HTMLElement>('[data-steps-line]');
-  if (line) {
-    gsap.fromTo(line, { scaleX: 0, scaleY: 0 }, {
-      scaleX: 1, scaleY: 1, ease: 'none',
-      scrollTrigger: { trigger: '[data-steps]', start: 'top 75%', end: 'bottom 60%', scrub: 0.6 },
-    });
-  }
-
-  // ---- Slow parallax: hero photo and the full-width band. Desktop only. ----
-  const mm = gsap.matchMedia();
-  mm.add('(min-width: 960px)', () => {
-    for (const wrap of gsap.utils.toArray<HTMLElement>('[data-parallax]')) {
-      const img = wrap.querySelector('img');
-      if (!img) continue;
-      gsap.fromTo(img, { yPercent: -6 }, {
-        yPercent: 6, ease: 'none',
-        scrollTrigger: { trigger: wrap, start: 'top bottom', end: 'bottom top', scrub: true },
-      });
-    }
-  });
-
-  // Fonts can change line breaks: recalc trigger positions once they load.
-  document.fonts?.ready.then(() => ScrollTrigger.refresh());
-}
-
-init();
+start();

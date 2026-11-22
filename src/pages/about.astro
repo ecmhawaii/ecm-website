@@ -12,13 +12,13 @@ const creds = [...credentials, ...(slots.insurance.enabled && slots.insurance.te
   <section class="section">
     <div class="container split">
       <div class="split-text">
-        <p class="lead lead-lg" data-reveal>{about.text}</p>
-        <div class="callout" data-reveal>
+        <p class="lead lead-lg">{about.text}</p>
+        <div class="callout">
           <h2 class="card-title">{about.credentialsHeading}</h2>
           <ul>{creds.map((c) => <li>{c}</li>)}</ul>
         </div>
       </div>
-      <div class="split-media" data-reveal><PhotoSlot image={about.image} ratio="tall" sizes="(min-width: 960px) 45vw, 100vw" widths={[480, 800, 1100]} eager /></div>
+      <div class="split-media"><PhotoSlot image={about.image} ratio="tall" sizes="(min-width: 960px) 45vw, 100vw" widths={[480, 800, 1100]} eager /></div>
     </div>
   </section>
   <ClientsStrip />

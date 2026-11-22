@@ -8,15 +8,16 @@ const { h1, lead, badge, eyebrow, photo } = Astro.props;
 <section class:list={['page-head', photo && 'page-head-photo']}>
   {photo && (
     <div class="page-head-media" data-parallax>
-      <PhotoSlot image={photo} ratio="none" sizes="100vw" widths={[640, 960, 1216, 1600]} eager class="page-head-photo-fig" />
+      <PhotoSlot image={photo} ratio="none" crop={4 / 3} quality={42} sizes="100vw" widths={[480, 760, 1216]} eager class="page-head-photo-fig" />
     </div>
   )}
   {photo && <div class="hero-overlay"></div>}
   <div class="container page-head-inner">
     {badge && <p class="draft-badge">{badge}</p>}
-    {eyebrow && <p class="eyebrow eyebrow-light" data-hero-fade>{eyebrow}</p>}
-    <h1 data-hero-title>{h1}</h1>
-    {lead && <p class="lead" data-hero-fade>{lead}</p>}
+    {/* Intro motion only on photo heads. Text-only heads paint at once (they are the LCP). */}
+    {eyebrow && <p class="eyebrow eyebrow-light" data-hero-fade={photo ? '' : undefined}>{eyebrow}</p>}
+    <h1 data-hero-title={photo ? '' : undefined}>{h1}</h1>
+    {lead && <p class="lead" data-hero-fade={photo ? '' : undefined}>{lead}</p>}
     <slot />
   </div>
 </section>
