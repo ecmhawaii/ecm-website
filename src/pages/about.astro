@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import PhotoSlot from '../components/PhotoSlot.astro';
-import CtaBand from '../components/CtaBand.astro';
+import EstimateBand from '../components/EstimateBand.astro';
+import ClientsStrip from '../components/ClientsStrip.astro';
 import { about, credentials, slots, nav } from '../content/site';
 const creds = [...credentials, ...(slots.insurance.enabled && slots.insurance.text ? [slots.insurance.text] : [])];
 ---
@@ -11,14 +12,15 @@ const creds = [...credentials, ...(slots.insurance.enabled && slots.insurance.te
   <section class="section">
     <div class="container split">
       <div class="split-text">
-        <p class="lead">{about.text}</p>
-        <div class="callout">
+        <p class="lead lead-lg" data-reveal>{about.text}</p>
+        <div class="callout" data-reveal>
           <h2 class="card-title">{about.credentialsHeading}</h2>
           <ul>{creds.map((c) => <li>{c}</li>)}</ul>
         </div>
       </div>
-      <div class="split-media"><PhotoSlot slot="about" ratio="photo" /></div>
+      <div class="split-media" data-reveal><PhotoSlot image={about.image} ratio="tall" sizes="(min-width: 960px) 45vw, 100vw" widths={[480, 800, 1100]} eager /></div>
     </div>
   </section>
-  <CtaBand />
+  <ClientsStrip />
+  <EstimateBand />
 </Base>

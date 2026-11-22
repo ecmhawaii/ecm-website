@@ -1,0 +1,37 @@
+---
+// Before / after drag slider.
+// Works with mouse, touch and keyboard because the control is a native range input laid over
+// the photos (arrow keys, Home/End, drag). JS only moves a CSS variable (CSSOM, allowed by the CSP).
+// JS off: the two photos show side by side with their labels.
+import PhotoSlot from './PhotoSlot.astro';
+import { ui } from '../content/site';
+interface Props { before: string; after: string; beforeLabel: string; afterLabel: string; name: string }
+const { before, after, beforeLabel, afterLabel, name } = Astro.props;
+const sizes = '(min-width: 960px) 560px, 100vw';
+---
+<div class="compare" data-compare>
+  <div class="compare-stage">
+    <div class="compare-pane compare-before">
+      <PhotoSlot image={before} ratio="tall" sizes={sizes} widths={[480, 800, 1100]} />
+      <span class="compare-label compare-label-before">{beforeLabel}</span>
+    </div>
+    <div class="compare-pane compare-after">
+      <PhotoSlot image={after} ratio="tall" sizes={sizes} widths={[480, 800, 1100]} />
+      <span class="compare-label compare-label-after">{afterLabel}</span>
+    </div>
+    <div class="compare-handle" aria-hidden="true"><span></span></div>
+    <input
+      class="compare-range"
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      step="1"
+      aria-label={`${ui.compareLabel}: ${name}, ${beforeLabel} and ${afterLabel}`}
+      aria-valuetext={`50% ${afterLabel}`}
+      hidden
+      data-compare-range
+    />
+  </div>
+  <p class="compare-hint" hidden data-compare-hint>{ui.compareHint}</p>
+</div>

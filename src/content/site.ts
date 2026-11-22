@@ -19,9 +19,19 @@ export const business = {
   license: 'Hawaii contractor license BC-37929',
   licenseShort: 'License BC-37929',
   licenseClass: 'Class B General Building',
-  // Islands Jesse has confirmed ECM serves. Empty = no areaServed in structured data
-  // and no service area claims anywhere. Example once confirmed: ['Oahu']
-  areaServed: [] as string[],
+  email: 'info@ecmhawaii.com',
+  emailHref: 'mailto:info@ecmhawaii.com',
+  // Confirmed by Jesse (via Ellard, 2026-11-21).
+  veteranOwned: 'Veteran owned',
+  // Islands Jesse has confirmed ECM serves (2026-11-21). Drives areaServed in structured data.
+  areaServed: ['Oahu', 'Maui', 'Hawaii Island'] as string[],
+  islandsLine: 'Oahu, Maui and Hawaii Island',
+};
+
+// Clients ECM has built for. Confirmed by Jesse (via Ellard, 2026-11-21). Names only, as text. No logos.
+export const clients = {
+  heading: 'Trusted on projects for',
+  names: ['Longs Drugs', 'American Cancer Society', 'Tesla', 'Buffalo Wild Wings'],
 };
 
 // ---------------------------------------------------------------------------
@@ -67,10 +77,11 @@ export const slots = {
     enabled: false,
     text: '',
   },
-  // Reply time promise on the thank you page. Off until Jesse confirms one.
+  // Reply time promise. Confirmed by Jesse (via Ellard, 2026-11-21). Shown on the thank you
+  // page, the estimate page and the estimate band.
   replyTime: {
-    enabled: false,
-    text: '',
+    enabled: true,
+    text: "We'll call you back the same business day.",
   },
 };
 
@@ -101,6 +112,20 @@ export const ui = {
   footerCompanyLabel: 'Company',
   footerSubcontractors: 'Subcontractors',
   footerGuides: 'Guides',
+  footerContactLabel: 'Contact',
+  footerIslandsLabel: 'Islands served',
+  emailLabel: 'Email',
+  phoneLabel: 'Phone',
+  viewProject: 'View project',
+  viewAllProjects: 'See all projects',
+  openPhoto: 'Open photo',
+  closePhoto: 'Close',
+  photoOf: (n: number, total: number) => `Photo ${n} of ${total}`,
+  prevPhoto: 'Previous photo',
+  nextPhoto: 'Next photo',
+  photoDialogLabel: 'Project photo',
+  compareLabel: 'Drag to compare',
+  compareHint: 'Drag the handle or use the arrow keys to compare.',
   breadcrumbLabel: 'Breadcrumb',
   photoComing: 'Photo coming',
   projectPhotosComing: 'Project photos coming soon',
@@ -118,9 +143,11 @@ export const ui = {
   onThisPage: 'On this page',
 };
 
-export const credentials = [`Hawaii license BC-37929`, business.licenseClass];
+// Credentials strip: confirmed facts only. Shown with a middle dot between items.
+export const credentials = [`Hawaii license BC-37929`, business.licenseClass, business.veteranOwned, business.islandsLine];
 
 export const howItWorks = {
+  eyebrow: 'Process',
   heading: 'How it works',
   steps: [
     { title: 'Tell us about your project.', text: 'Use the estimate form or call.' },
@@ -137,6 +164,7 @@ export const howItWorks = {
 };
 
 export const ctaBand = {
+  eyebrow: 'Request an estimate',
   heading: 'Planning a project?',
   text: 'Tell us what you have in mind and we will follow up to set up a site visit.',
 };
@@ -145,26 +173,36 @@ export const home = {
   title: 'Elite Construction Management | Hawaii General Contractor',
   description:
     'Kapolei general contractor for custom homes, ADUs, remodels and commercial tenant improvements. Call (808) 987-5782 or request an estimate online.',
+  eyebrow: 'Licensed Hawaii general contractor',
   h1: 'General contractor for homes and businesses in Hawaii',
-  heroLine: 'Custom homes, ADUs and additions, remodels and commercial tenant improvements. Based in Kapolei.',
-  introHeading: 'From first walkthrough to final inspection',
+  heroLine: 'Custom homes, ADUs and additions, remodels and commercial tenant improvements on Oahu, Maui and Hawaii Island.',
+  hookEyebrow: 'How we work',
+  hook: 'One team from the first walkthrough to the final inspection.',
   intro:
     'Elite Construction Management is a licensed Hawaii general contractor based in Kapolei. We build new homes, ADUs and additions, remodels and commercial tenant improvements, and we run the job from first walkthrough to final inspection.',
-  chipsLabel: 'What we build',
-  chips: [
-    { label: 'Custom homes', href: '/custom-homes' },
-    { label: 'ADUs and ohana units', href: '/adu-oahu' },
-    { label: 'Additions', href: '/adu-oahu#additions' },
-    { label: 'Kitchen remodels', href: '/remodeling#kitchens' },
-    { label: 'Bathroom remodels', href: '/remodeling#bathrooms' },
-    { label: 'Commercial build outs', href: '/commercial-tenant-improvements' },
-  ],
+  servicesEyebrow: 'Services',
   servicesHeading: 'What we build',
+  // Big service list: name, one line (confirmed copy), photo slot, page.
+  servicesList: [
+    { name: 'Custom homes', line: 'New homes from plans you bring or plans developed with your architect or designer.', image: 'home', href: '/custom-homes' },
+    { name: 'ADUs and additions', line: 'An ADU or addition adds space without moving.', image: 'adu', href: '/adu-oahu' },
+    { name: 'Remodels', line: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.', image: 'bambooAfter', href: '/remodeling' },
+    { name: 'Commercial', line: 'Build outs and renovations for retail, office and other commercial spaces.', image: 'longsStore', href: '/commercial-tenant-improvements' },
+  ],
+  featuredEyebrow: 'Recent work',
+  featuredHeading: 'Featured projects',
+  featured: ['acs-hope-lodge', 'longs-drugs', 'kaneohe-bamboo-floor'],
+  sliderEyebrow: 'On the job',
+  sliderHeading: 'From the job site',
+  bandImage: 'pergolaView',
+  faqEyebrow: 'FAQ',
+  faqHeading: 'Common questions',
+  // Kept for pages that still link by service card.
   serviceCards: [
     { name: 'Custom homes and new construction', href: '/custom-homes', image: 'home' },
     { name: 'ADUs and additions', href: '/adu-oahu', image: 'adu' },
-    { name: 'Remodels', href: '/remodeling', image: 'kitchen' },
-    { name: 'Commercial tenant improvements', href: '/commercial-tenant-improvements', image: 'commercial' },
+    { name: 'Remodels', href: '/remodeling', image: 'bambooAfter' },
+    { name: 'Commercial tenant improvements', href: '/commercial-tenant-improvements', image: 'longsStore' },
   ],
 };
 
@@ -206,7 +244,7 @@ export const services = {
   subsLine: 'Plumbing and electrical are done by licensed subcontractors.',
 };
 
-export type ServiceSection = { id: string; heading: string; text?: string; list?: string[] };
+export type ServiceSection = { id: string; heading: string; text?: string; list?: string[]; image?: string };
 export type ServicePage = {
   key: string;
   path: string;
@@ -263,7 +301,7 @@ export const serviceDetail: Record<string, ServicePage> = {
     intro: [
       'We build new homes from plans you bring or plans developed with your architect or designer. We manage permits, subs and inspections through to move in.',
     ],
-    image: 'framing',
+    image: 'home',
     sections: [
       {
         id: 'what-it-involves',
@@ -290,16 +328,18 @@ export const serviceDetail: Record<string, ServicePage> = {
     intro: [
       'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts so the price is set up front.',
     ],
-    image: 'kitchen',
+    image: 'bambooAfter',
     sections: [
       {
         id: 'kitchens',
         heading: 'Kitchen remodels',
+        image: 'kitchen',
         text: 'A kitchen remodel can be new cabinets and counters or a full change to the layout. The work can include demolition, framing changes, plumbing and electrical by licensed subcontractors, cabinets, counters, flooring, fixtures and finishes.',
       },
       {
         id: 'bathrooms',
         heading: 'Bathroom remodels',
+        image: 'bathroom',
         text: 'A bathroom remodel can be new fixtures and tile or a full rebuild down to the framing. The work can include demolition, plumbing and electrical by licensed subcontractors, waterproofing, tile, vanities, fixtures and finishes.',
       },
       {
@@ -317,7 +357,7 @@ export const serviceDetail: Record<string, ServicePage> = {
       'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor BC-37929 in Kapolei.',
     h1: 'Commercial tenant improvements',
     intro: ['Build outs and renovations for retail, office and other commercial spaces.'],
-    image: 'commercial',
+    image: 'longsStore',
     sections: [
       {
         id: 'what-it-involves',
@@ -336,17 +376,92 @@ export const serviceDetail: Record<string, ServicePage> = {
   },
 };
 
+export type Project = {
+  id: string;
+  name: string;
+  type: string;
+  place: string; // '' when not stated in SOURCES.md
+  summary: string;
+  cover: string; // image slot
+  gallery?: Array<{ image: string; caption: string }>;
+  compare?: { before: string; after: string; beforeLabel: string; afterLabel: string };
+};
+
+// Real ECM projects. Captions use only the wording supplied by the PM (2026-11-22) and
+// SOURCES.md. Client names approved by Jesse (via Ellard, 2026-11-21).
 export const projects = {
   title: 'Projects | Elite Construction Management',
   description:
-    'Projects by Elite Construction Management, a general contractor in Kapolei, Hawaii.',
+    'Projects by Elite Construction Management, a general contractor in Kapolei, Hawaii: American Cancer Society Hope Lodge, Longs Drugs stores and residential work on Oahu.',
   h1: 'Our projects',
-  text: 'Project photos are coming soon. Ask us about similar projects when you request an estimate.',
-  // Add cards here only with the owner's written OK (CLAUDE.md rule 5). Never use stock photos here.
-  // Shape: { type: 'Remodel', island: 'Oahu', summary: 'Two sentences.', image: 'project1' }
-  cards: [] as Array<{ type: string; island: string; summary: string; image: string }>,
-  // Number of empty "Project photos coming soon" tiles shown while `cards` is empty.
-  emptySlots: 6,
+  text: 'A few recent jobs. Ask us about similar projects when you request an estimate.',
+  eyebrow: 'Portfolio',
+  headImage: 'pergolaView',
+  compareHeading: 'Before and after',
+  galleryHeading: 'Photos',
+  cards: [
+    {
+      id: 'acs-hope-lodge',
+      name: 'American Cancer Society Hope Lodge',
+      type: 'Restoration and pergola',
+      place: 'Honolulu, Oahu',
+      summary: 'Leak prevention and water mitigation, interior restoration and ceiling work, and an aluminum pergola system.',
+      cover: 'acsSign',
+      gallery: [
+        { image: 'acsExterior', caption: 'American Cancer Society Hope Lodge, Honolulu' },
+        { image: 'acsCeiling1', caption: 'Interior restoration and ceiling work' },
+        { image: 'acsCeiling2', caption: 'Interior restoration and ceiling work' },
+        { image: 'pergola1', caption: 'Aluminum pergola system' },
+        { image: 'pergolaView', caption: 'Aluminum pergola system' },
+      ],
+    },
+    {
+      id: 'longs-drugs',
+      name: 'Longs Drugs Oahu stores',
+      type: 'Retail',
+      place: 'Honolulu, Kapolei and Nanakuli',
+      summary: 'Metal drip edge replacement, plus retail store renovations and maintenance.',
+      cover: 'longsStore',
+      gallery: [
+        { image: 'longsBefore', caption: 'Metal drip edge replacement, before' },
+        { image: 'longsAfter', caption: 'Metal drip edge replacement, after' },
+        { image: 'longs1', caption: 'Metal drip edge replacement' },
+        { image: 'longsSign', caption: 'Metal drip edge replacement' },
+      ],
+    },
+    {
+      id: 'kaneohe-bamboo-floor',
+      name: 'Kaneohe bamboo floor remodel',
+      type: 'Remodel',
+      place: 'Kaneohe, Oahu',
+      summary: 'Bamboo floor remodel at a Kaneohe residence.',
+      cover: 'bambooAfter',
+      compare: { before: 'bambooBefore', after: 'bambooAfter', beforeLabel: 'Before', afterLabel: 'After' },
+    },
+    {
+      id: 'salt-lake-driveway',
+      name: 'Salt Lake concrete driveway and walkway',
+      type: 'Concrete',
+      place: 'Salt Lake, Oahu',
+      summary: 'Concrete driveway and walkway at a Salt Lake residence.',
+      cover: 'drivewayDuring',
+      // No finished "after" photo on file yet: the second photo is during the pour.
+      compare: { before: 'drivewayBefore', after: 'drivewayDuring', beforeLabel: 'Before', afterLabel: 'During' },
+    },
+    {
+      id: 'concrete-walkway',
+      name: 'Concrete walkway',
+      type: 'Concrete',
+      place: '',
+      summary: 'Concrete walkway in a garden courtyard.',
+      cover: 'walk3',
+      gallery: [
+        { image: 'walk1', caption: 'Concrete walkway in a garden courtyard' },
+        { image: 'walk2', caption: 'Concrete walkway in a garden courtyard' },
+        { image: 'walk3', caption: 'Concrete walkway in a garden courtyard' },
+      ],
+    },
+  ] as Project[],
 };
 
 export const about = {
@@ -356,6 +471,7 @@ export const about = {
   h1: 'About Elite Construction Management',
   text: 'Elite Construction Management is a Hawaii general contractor based in Kapolei, led by owner Jesse Alverio. Our crews are backed by licensed subcontractors for plumbing, electrical and other trades.',
   credentialsHeading: 'Credentials',
+  image: 'pergola1',
 };
 
 // Multi-step estimate form. Netlify form name stays "estimate".
@@ -579,14 +695,29 @@ export const planningGuideByType: Record<string, string> = {
 };
 
 // FAQ blocks, keyed by page. Empty = no FAQ section and no FAQPage structured data.
-// Only approved Q and A. Shape: { q: 'Question?', a: 'Answer.' }
+// Answers use ONLY confirmed facts. No prices, timelines, permit rules or guarantees.
+const Q = {
+  licensed: { q: 'Are you a licensed contractor?', a: 'Yes. Elite Construction Management holds Hawaii contractor license BC-37929, Class B General Building.' },
+  islands: { q: 'What islands do you serve?', a: 'We work on Oahu, Maui and Hawaii Island. We are based in Kapolei.' },
+  adus: { q: 'Do you build ADUs and ohana units?', a: 'Yes. We build ADUs, ohana units and additions. We handle the build and coordinate permits and inspections.' },
+  commercial: { q: 'Do you do commercial build outs?', a: 'Yes. We do build outs and renovations for retail, office and other commercial spaces. We have worked on projects for Longs Drugs, American Cancer Society, Tesla and Buffalo Wild Wings.' },
+  plans: { q: "Can you build from my architect's plans?", a: 'Yes. We build from plans you bring or plans developed with your architect or designer.' },
+  trades: { q: 'Who does the plumbing and electrical?', a: 'Licensed subcontractors. Our crews are backed by licensed subcontractors for plumbing, electrical and other trades.' },
+  estimate: { q: 'How do I get an estimate?', a: 'Fill out the estimate form or call (808) 987-5782. We will follow up to set up a site visit, walk the property with you and talk through scope, budget and timing.' },
+  callback: { q: 'How fast will you call me back?', a: "We'll call you back the same business day." },
+  smallJobs: { q: 'Do you take smaller jobs?', a: 'Yes. We take jobs under $50k as well as larger projects.' },
+  veteran: { q: 'Are you veteran owned?', a: 'Yes. Elite Construction Management is veteran owned. Owner Jesse Alverio is a veteran.' },
+  permitsSubs: { q: 'Do you manage permits, subs and inspections?', a: 'Yes. We manage permits, subs and inspections through to move in.' },
+  remodels: { q: 'Do you remodel kitchens and bathrooms?', a: 'Yes. We do kitchen, bathroom and whole home remodels, scoped clearly before work starts.' },
+};
+
 export const faqs: Record<string, Array<{ q: string; a: string }>> = {
-  home: [],
+  home: [Q.licensed, Q.islands, Q.adus, Q.commercial, Q.plans, Q.trades, Q.estimate, Q.callback, Q.smallJobs, Q.veteran],
   services: [],
-  adu: [],
-  customHomes: [],
-  remodeling: [],
-  commercial: [],
+  adu: [Q.adus, Q.plans, Q.islands, Q.callback],
+  customHomes: [Q.plans, Q.permitsSubs, Q.trades, Q.islands],
+  remodeling: [Q.remodels, Q.smallJobs, Q.trades, Q.estimate],
+  commercial: [Q.commercial, Q.licensed, Q.islands, Q.trades],
   'guide:adu-oahu': [],
   'guide:cost-to-build-a-house-in-hawaii': [],
   'guide:hiring-a-general-contractor-in-hawaii': [],

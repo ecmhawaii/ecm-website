@@ -1,0 +1,5 @@
+---
+interface Props { text: string; light?: boolean }
+const { text, light = false } = Astro.props;
+---
+<p class:list={['eyebrow', light && 'eyebrow-light']} data-reveal>{text}</p>

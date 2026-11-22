@@ -1,0 +1,21 @@
+---
+// Solid steel blue estimate band. Stands out from every other section on purpose.
+import { ctaBand, business, ui, slots } from '../content/site';
+---
+<section class="estimate-band" aria-labelledby="est-band-h">
+  <div class="container est-grid">
+    <div>
+      <p class="eyebrow eyebrow-light" data-reveal>{ctaBand.eyebrow}</p>
+      <h2 id="est-band-h" data-reveal>{ctaBand.heading}</h2>
+      <p class="est-text" data-reveal>{ctaBand.text}</p>
+      {slots.replyTime.enabled && slots.replyTime.text && <p class="est-reply" data-slot="reply-time" data-reveal>{slots.replyTime.text}</p>}
+    </div>
+    <div class="est-actions" data-reveal>
+      <a class="btn btn-xl btn-white btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
+      <p class="est-contact">
+        <span>{ui.phoneLabel}: <a href={business.phoneHref}>{business.phoneDisplay}</a></span>
+        <span>{ui.emailLabel}: <a href={business.emailHref}>{business.email}</a></span>
+      </p>
+    </div>
+  </div>
+</section>

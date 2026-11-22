@@ -1,13 +1,22 @@
 ---
 // Dark band at the top of inner pages with the page's single H1.
-interface Props { h1: string; lead?: string; badge?: string }
-const { h1, lead, badge } = Astro.props;
+// With `photo`, it becomes a photo hero band (dark overlay, parallax on desktop).
+import PhotoSlot from './PhotoSlot.astro';
+interface Props { h1: string; lead?: string; badge?: string; eyebrow?: string; photo?: string }
+const { h1, lead, badge, eyebrow, photo } = Astro.props;
 ---
-<section class="page-head">
-  <div class="container">
+<section class:list={['page-head', photo && 'page-head-photo']}>
+  {photo && (
+    <div class="page-head-media" data-parallax>
+      <PhotoSlot image={photo} ratio="none" sizes="100vw" widths={[640, 960, 1216, 1600]} eager class="page-head-photo-fig" />
+    </div>
+  )}
+  {photo && <div class="hero-overlay"></div>}
+  <div class="container page-head-inner">
     {badge && <p class="draft-badge">{badge}</p>}
-    <h1>{h1}</h1>
-    {lead && <p class="lead">{lead}</p>}
+    {eyebrow && <p class="eyebrow eyebrow-light" data-hero-fade>{eyebrow}</p>}
+    <h1 data-hero-title>{h1}</h1>
+    {lead && <p class="lead" data-hero-fade>{lead}</p>}
     <slot />
   </div>
 </section>

@@ -1,0 +1,8 @@
+---
+// Full-width photo band with a slow parallax on desktop (motion module).
+import PhotoSlot from './PhotoSlot.astro';
+interface Props { image: string }
+---
+<div class="photo-band" data-parallax>
+  <PhotoSlot image={Astro.props.image} ratio="none" sizes="100vw" widths={[640, 960, 1216]} class="band-photo" />
+</div>

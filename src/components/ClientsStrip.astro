@@ -1,0 +1,18 @@
+---
+// Client names as plain text (no logos). Desktop with motion: slow marquee (CSS), paused on
+// hover and for reduced motion. Mobile and JS off: a static wrapped list.
+import { clients } from '../content/site';
+---
+<section class="clients" aria-labelledby="clients-h">
+  <div class="container clients-inner">
+    <p class="eyebrow" id="clients-h">{clients.heading}</p>
+    <div class="clients-track-wrap">
+      <ul class="clients-list">
+        {clients.names.map((n) => <li>{n}</li>)}
+      </ul>
+      <ul class="clients-list clients-dup" aria-hidden="true">
+        {clients.names.map((n) => <li>{n}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>

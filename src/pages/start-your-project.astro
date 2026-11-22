@@ -2,12 +2,14 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import ChoiceGroup from '../components/ChoiceGroup.astro';
-import { estimate as e, ui, business } from '../content/site';
+import { estimate as e, ui, business, slots } from '../content/site';
 const s = e.steps;
 const total = 6;
 ---
 <Base title={e.title} description={e.description} crumbs={[{ name: e.h1, path: '/start-your-project' }]}>
-  <PageHead h1={e.h1} lead={e.intro} />
+  <PageHead h1={e.h1} lead={e.intro}>
+    {slots.replyTime.enabled && slots.replyTime.text && <p class="reply-pill" data-slot="reply-time">{slots.replyTime.text}</p>}
+  </PageHead>
   <section class="section">
     <div class="container form-wrap">
       <form
@@ -102,7 +104,7 @@ const total = 6;
           <button type="submit" class="btn btn-lg" data-submit>{ui.submit}</button>
         </div>
       </form>
-      <p class="form-alt">{ui.callButton}: <a href={business.phoneHref}>{business.phoneDisplay}</a></p>
+      <p class="form-alt">{ui.callButton}: <a href={business.phoneHref}>{business.phoneDisplay}</a> · {ui.emailLabel}: <a href={business.emailHref}>{business.email}</a></p>
     </div>
   </section>
 </Base>

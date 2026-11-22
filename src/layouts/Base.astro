@@ -7,7 +7,7 @@ import '@fontsource/archivo/700.css';
 import '../styles/global.css';
 import { Image, getImage } from 'astro:assets';
 import { SITE, SITE_NOINDEX } from '../../site.config.mjs';
-import { business, nav, servicePages, ui, guidesHub } from '../content/site';
+import { business, nav, servicePages, ui, guides, guidePath } from '../content/site';
 import { logo, hero } from '../content/images';
 
 export interface Crumb { name: string; path: string }
@@ -87,6 +87,8 @@ const onEstimatePage = path === '/start-your-project';
     {path !== '/404' && <link rel="canonical" href={canonical} />}
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#111111" />
+    <!-- Sets html.js / html.motion before first paint (external file: CSP is script-src 'self') -->
+    <script is:inline src="/flag.js"></script>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={business.name} />
     <meta property="og:locale" content="en_US" />
@@ -157,32 +159,52 @@ const onEstimatePage = path === '/start-your-project';
     </main>
 
     <footer class="site-footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <Image src={logo.src} alt="" width={72} densities={[1, 2]} class="footer-logo" />
-          <p class="footer-name">{business.name}</p>
-          <p>{business.city}</p>
-          <p><a href={business.phoneHref}>{business.phoneDisplay}</a></p>
-          <p>{business.license}</p>
-          <p>{business.licenseClass}</p>
+      <div class="container">
+        <div class="footer-top">
+          <a href="/" class="footer-brand-link">
+            <Image src={logo.src} alt="" width={140} densities={[1, 2]} class="footer-logo" />
+            <span class="footer-wordmark">{business.name}</span>
+          </a>
+          <a class="btn btn-lg btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
         </div>
-        <nav aria-label={ui.footerServicesLabel}>
-          <p class="footer-head">{ui.footerServicesLabel}</p>
-          <ul>
-            <li><a href="/services">{ui.footerServicesLabel}</a></li>
-            {servicePages.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-          </ul>
-        </nav>
-        <nav aria-label={ui.footerCompanyLabel}>
-          <p class="footer-head">{ui.footerCompanyLabel}</p>
-          <ul>
-            <li><a href="/">{ui.home}</a></li>
-            {nav.filter((n) => n.href !== '/services').map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-            <li><a href="/guides">{ui.footerGuides}</a></li>
-            <li><a href="/start-your-project">{ui.estimateButton}</a></li>
-            <li><a href="/subcontractors">{ui.footerSubcontractors}</a></li>
-          </ul>
-        </nav>
+        <div class="footer-grid">
+          <div>
+            <p class="footer-head">{ui.footerContactLabel}</p>
+            <p><a href={business.phoneHref}>{business.phoneDisplay}</a></p>
+            <p><a href={business.emailHref}>{business.email}</a></p>
+            <p>{business.city}</p>
+            <p class="footer-head footer-head-gap">{ui.footerIslandsLabel}</p>
+            <p>{business.islandsLine}</p>
+          </div>
+          <nav aria-label={ui.footerServicesLabel}>
+            <p class="footer-head">{ui.footerServicesLabel}</p>
+            <ul>
+              <li><a href="/services">{ui.footerServicesLabel}</a></li>
+              {servicePages.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+            </ul>
+          </nav>
+          <nav aria-label={ui.footerGuides}>
+            <p class="footer-head">{ui.footerGuides}</p>
+            <ul>
+              <li><a href="/guides">{ui.footerGuides}</a></li>
+              {guides.map((g) => <li><a href={guidePath(g.slug)}>{g.h1}</a></li>)}
+            </ul>
+          </nav>
+          <nav aria-label={ui.footerCompanyLabel}>
+            <p class="footer-head">{ui.footerCompanyLabel}</p>
+            <ul>
+              <li><a href="/">{ui.home}</a></li>
+              {nav.filter((n) => n.href !== '/services').map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+              <li><a href="/start-your-project">{ui.estimateButton}</a></li>
+              <li><a href="/subcontractors">{ui.footerSubcontractors}</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-legal">
+          <p>{business.name}</p>
+          <p>{business.license} · {business.licenseClass}</p>
+          <p>{business.veteranOwned}</p>
+        </div>
       </div>
     </footer>
 
@@ -190,5 +212,8 @@ const onEstimatePage = path === '/start-your-project';
       <a class="btn btn-light" href={business.phoneHref}>{ui.callShort}</a>
       <a class="btn" href="/start-your-project">{ui.estimateShort}</a>
     </div>
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

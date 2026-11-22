@@ -1,0 +1,11 @@
+---
+import { home } from '../content/site';
+import Eyebrow from './Eyebrow.astro';
+---
+<section class="section hook" aria-labelledby="hook-h">
+  <div class="container">
+    <Eyebrow text={home.hookEyebrow} />
+    <h2 class="hook-statement" id="hook-h" data-split-words>{home.hook}</h2>
+    <p class="lead hook-lead" data-reveal>{home.intro}</p>
+  </div>
+</section>

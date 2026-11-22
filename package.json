@@ -17,6 +17,7 @@
     "@astrojs/sitemap": "3.7.6",
     "@fontsource/archivo": "5.3.0",
     "@fontsource/merriweather": "5.3.0",
-    "astro": "7.4.13"
+    "astro": "7.4.13",
+    "gsap": "3.15.1"
   }
 }

@@ -1,65 +1,43 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import CredentialsStrip from '../components/CredentialsStrip.astro';
-import Chips from '../components/Chips.astro';
+import ClientsStrip from '../components/ClientsStrip.astro';
+import Hook from '../components/Hook.astro';
+import ServicesList from '../components/ServicesList.astro';
+import FeaturedProjects from '../components/FeaturedProjects.astro';
+import PhotoBand from '../components/PhotoBand.astro';
 import Slider from '../components/Slider.astro';
-import PhotoSlot from '../components/PhotoSlot.astro';
+import Eyebrow from '../components/Eyebrow.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import Reviews from '../components/Reviews.astro';
 import TrustedBy from '../components/TrustedBy.astro';
 import InstagramFeed from '../components/InstagramFeed.astro';
 import Financing from '../components/Financing.astro';
 import Faq from '../components/Faq.astro';
-import CtaBand from '../components/CtaBand.astro';
-import { home, ui } from '../content/site';
+import EstimateBand from '../components/EstimateBand.astro';
+import { home } from '../content/site';
 import { sliderKeys } from '../content/images';
 import { faqSchema } from '../lib/schema';
 ---
 <Base title={home.title} description={home.description} schema={faqSchema('home')}>
-  <Hero h1={home.h1} line={home.heroLine} />
-  <CredentialsStrip />
-
-  <section class="section intro-split" aria-labelledby="intro-heading">
-    <div class="container split">
-      <div class="split-text">
-        <h2 id="intro-heading">{home.introHeading}</h2>
-        <p class="lead">{home.intro}</p>
-        <Chips label={home.chipsLabel} items={home.chips} />
-        <p class="inline-cta"><a class="btn btn-xl" href="/start-your-project">{ui.estimateButton}</a></p>
-      </div>
-      <div class="split-media">
-        <Slider slots={sliderKeys} />
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-soft" aria-labelledby="services-heading">
+  <Hero eyebrow={home.eyebrow} h1={home.h1} line={home.heroLine} />
+  <ClientsStrip />
+  <Hook />
+  <ServicesList />
+  <FeaturedProjects />
+  <PhotoBand image={home.bandImage} />
+  <section class="section" aria-labelledby="slider-h">
     <div class="container">
-      <h2 id="services-heading">{home.servicesHeading}</h2>
-      <ul class="card-grid four">
-        {home.serviceCards.map((c) => (
-          <li class="card service-card">
-            <a href={c.href} class="service-card-link">
-              <PhotoSlot slot={c.image} size="card" ratio="photo" />
-              <span class="service-card-name">{c.name} <span aria-hidden="true">&rsaquo;</span></span>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <p class="inline-cta"><a class="btn" href="/start-your-project">{ui.estimateButton}</a></p>
+      <Eyebrow text={home.sliderEyebrow} />
+      <h2 id="slider-h" data-reveal>{home.sliderHeading}</h2>
+      <Slider slots={sliderKeys} />
     </div>
   </section>
-
-  <div class="how-wrap">
-    <HowItWorks />
-    <div class="container how-photo"><PhotoSlot slot="crew" size="full" ratio="wide" /></div>
-  </div>
-
+  <HowItWorks />
   <Reviews />
   <TrustedBy />
   <InstagramFeed />
   <div class="container"><Financing /></div>
-  <Faq page="home" />
-  <CtaBand />
+  <Faq page="home" eyebrow={home.faqEyebrow} heading={home.faqHeading} />
+  <EstimateBand />
 </Base>

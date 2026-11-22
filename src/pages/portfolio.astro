@@ -2,19 +2,24 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import CtaBand from '../components/CtaBand.astro';
+import Lightbox from '../components/Lightbox.astro';
+import EstimateBand from '../components/EstimateBand.astro';
 import { projects } from '../content/site';
 ---
 <Base title={projects.title} description={projects.description} crumbs={[{ name: projects.h1, path: '/portfolio' }]}>
-  <PageHead h1={projects.h1} lead={projects.text} />
-  <section class="section">
-    <div class="container">
-      <ul class="card-grid three">
-        {projects.cards.length > 0
-          ? projects.cards.map((card) => <li><ProjectCard {...card} /></li>)
-          : Array.from({ length: projects.emptySlots }).map(() => <li><ProjectCard empty /></li>)}
-      </ul>
-    </div>
-  </section>
-  <CtaBand />
+  <PageHead h1={projects.h1} lead={projects.text} eyebrow={projects.eyebrow} photo={projects.headImage} />
+  <nav class="project-index container" aria-label={projects.h1}>
+    <ul>
+      {projects.cards.map((p) => <li><a class="chip" href={`#${p.id}`}>{p.name}</a></li>)}
+    </ul>
+  </nav>
+  <div class="projects">
+    {projects.cards.map((p, i) => (
+      <section class:list={['section', i % 2 === 1 && 'section-soft']}>
+        <div class="container"><ProjectCard project={p} /></div>
+      </section>
+    ))}
+  </div>
+  <Lightbox />
+  <EstimateBand />
 </Base>

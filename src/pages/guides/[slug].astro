@@ -3,7 +3,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
 import Faq from '../../components/Faq.astro';
-import CtaBand from '../../components/CtaBand.astro';
+import EstimateBand from '../../components/EstimateBand.astro';
 import EstimateButton from '../../components/EstimateButton.astro';
 import { guides, guidesHub, guidePath, ui } from '../../content/site';
 import { faqSchema } from '../../lib/schema';
@@ -37,5 +37,5 @@ const crumbs = [
     </div>
   </article>
   <Faq page={`guide:${g.slug}`} />
-  <CtaBand />
+  <EstimateBand />
 </Base>

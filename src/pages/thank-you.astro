@@ -9,12 +9,12 @@ const guideList = guides.map((g) => ({ slug: g.slug, h1: g.h1, href: guidePath(g
   <section class="section">
     <div class="container prose" data-thanks data-guides={JSON.stringify(guideList)} data-guide-map={JSON.stringify(planningGuideByType)}>
       <p class="lead" data-thanks-text data-sub-text={t.subcontractorText}>{t.text}</p>
+      {/* REPLY TIME SLOT: confirmed by Jesse 2026-11-21 (slots.replyTime in site.ts). Hidden for subcontractors. */}
+      {slots.replyTime.enabled && slots.replyTime.text && <p class="reply-pill reply-pill-dark" data-slot="reply-time" data-reply>{slots.replyTime.text}</p>}
 
       <div class="callout next-box" data-next-box>
         <h2 class="card-title">{t.nextHeading}</h2>
         <ol class="next-steps">{t.nextSteps.map((s) => <li>{s}</li>)}</ol>
-        {/* REPLY TIME SLOT: off until Jesse confirms a reply time (slots.replyTime in site.ts) */}
-        {slots.replyTime.enabled && slots.replyTime.text && <p data-slot="reply-time">{slots.replyTime.text}</p>}
       </div>
 
       <div class="callout" hidden data-planning-box>
@@ -40,6 +40,8 @@ const guideList = guides.map((g) => ({ slug: g.slug, h1: g.h1, href: guidePath(g
       const text = root.querySelector<HTMLElement>('[data-thanks-text]')!;
       text.textContent = text.dataset.subText || text.textContent;
       root.querySelector<HTMLElement>('[data-next-box]')!.hidden = true;
+      const reply = root.querySelector<HTMLElement>('[data-reply]');
+      if (reply) reply.hidden = true;
     } else if (data.timeline === 'Just planning') {
       const map = JSON.parse(root.dataset.guideMap || '{}') as Record<string, string>;
       const list = JSON.parse(root.dataset.guides || '[]') as Array<{ slug: string; h1: string; href: string }>;

@@ -1,13 +1,18 @@
 ---
 import { howItWorks } from '../content/site';
+import Eyebrow from './Eyebrow.astro';
 ---
-<section class="section" aria-labelledby="how-heading">
+<section class="section how" aria-labelledby="how-heading">
   <div class="container">
-    <h2 id="how-heading">{howItWorks.heading}</h2>
-    <ol class="steps">
-      {howItWorks.steps.map((s) => (
-        <li><strong>{s.title}</strong><p>{s.text}</p></li>
-      ))}
-    </ol>
+    <Eyebrow text={howItWorks.eyebrow} />
+    <h2 id="how-heading" data-reveal>{howItWorks.heading}</h2>
+    <div class="steps-wrap" data-steps>
+      <div class="steps-line" aria-hidden="true"><span data-steps-line></span></div>
+      <ol class="steps">
+        {howItWorks.steps.map((s) => (
+          <li data-reveal><strong>{s.title}</strong><p>{s.text}</p></li>
+        ))}
+      </ol>
+    </div>
   </div>
 </section>

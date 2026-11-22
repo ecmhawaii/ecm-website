@@ -1,0 +1,57 @@
+---
+// Large service list.
+// - Phones, and any screen with JS off: native <details>. JS off = every item open, so all text
+//   and photos are visible. With JS on phones: one open at a time, tap to switch.
+// - Desktop with JS: big linked service names; hovering or focusing one shows its photo and
+//   one-line description in a preview panel beside the list (decorative copy, aria-hidden;
+//   the line is also inside each link for screen readers).
+import PhotoSlot from './PhotoSlot.astro';
+import Eyebrow from './Eyebrow.astro';
+import { home, ui } from '../content/site';
+const num = (i: number) => String(i + 1).padStart(2, '0');
+---
+<section class="section svc" aria-labelledby="svc-h">
+  <div class="container">
+    <Eyebrow text={home.servicesEyebrow} />
+    <h2 id="svc-h" data-reveal>{home.servicesHeading}</h2>
+
+    <div class="svc-list" data-svc-list>
+      {home.servicesList.map((s, i) => (
+        <details class="svc-item" open data-svc-item data-reveal>
+          <summary class="svc-name"><span class="svc-num" aria-hidden="true">{num(i)}</span>{s.name}</summary>
+          <div class="svc-body">
+            <PhotoSlot image={s.image} ratio="photo" sizes="100vw" widths={[480, 800]} class="svc-photo" />
+            <p>{s.line}</p>
+            <a class="link-arrow" href={s.href}>{ui.learnMore}<span class="sr-only">: {s.name}</span></a>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <div class="svc-desk" data-svc-desk>
+      <ul class="svc-desk-list">
+        {home.servicesList.map((s, i) => (
+          <li data-reveal>
+            <a class="svc-desk-link" href={s.href} data-svc-index={i}>
+              <span class="svc-num" aria-hidden="true">{num(i)}</span>
+              <span class="svc-desk-name">{s.name}</span>
+              <span class="sr-only">: {s.line}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="svc-preview" aria-hidden="true" data-reveal>
+        {home.servicesList.map((s, i) => (
+          <div class:list={['svc-preview-item', i === 0 && 'is-active']} data-svc-preview={i}>
+            <PhotoSlot image={s.image} ratio="photo" sizes="40vw" widths={[480, 800, 1000]} />
+            <p>{s.line}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  import { initServicesList } from '../scripts/services-list';
+  initServicesList();
+</script>

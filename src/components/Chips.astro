@@ -1,9 +1,0 @@
----
-interface Props { label: string; items: Array<{ label: string; href: string }> }
-const { label, items } = Astro.props;
----
-<nav class="chips" aria-label={label}>
-  <ul>
-    {items.map((c) => <li><a class="chip" href={c.href}>{c.label}</a></li>)}
-  </ul>
-</nav>
