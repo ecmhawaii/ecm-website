@@ -20,3 +20,24 @@ Unsplash License (free to use). Each page was checked as a "Free Photo" page by 
 | crew | https://images.unsplash.com/photo-1587582423116-ec07293f0395 | PLACEHOLDER |
 
 Every image added to the site gets a row here: file, where it came from, licence, and whether it is a placeholder.
+
+## ECM job photos (from the live ecmhawaii.com portfolio, 2026-11-21)
+
+ECM's own job photos, copied from the live builder site by the PM with Ellard's go-ahead (Jesse's work, partners agreement). Renamed so no homeowner names appear, phone camera metadata (including any GPS location) stripped, long edge capped at 2400px. Groupings follow the live site's portfolio captions; where a photo's job is not stated it is marked "job unconfirmed".
+
+| File | Job (per live site) | Status |
+| --- | --- | --- |
+| projects/acs-hope-lodge-exterior.jpg | American Cancer Society Hope Lodge, Honolulu | ECM job. Small (709px wide): use only at card size |
+| projects/acs-hope-lodge-sign.jpg | American Cancer Society Hope Lodge | ECM job |
+| projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | Hope Lodge interior restoration and ceiling work | ECM job (grouping per live site order) |
+| projects/acs-hope-lodge-pergola-1.jpg, -2.jpg | Hope Lodge aluminum pergola system | ECM job (grouping per live site order) |
+| projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | Concrete walkway in a garden courtyard | ECM job, which project unconfirmed |
+| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | Bamboo floor remodel, Kaneohe residence | ECM job, before and after |
+| projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | Concrete driveway and walkway, Salt Lake residence | ECM job, before and during |
+| projects/longs-drip-edge-before.jpg, longs-drip-edge-after.jpg, longs-drip-edge-1/2/3.jpg | Longs Drugs stores, Oahu: metal drip edge replacement | ECM job |
+
+Not imported, on purpose:
+- "Hawaii Residential" photo on the live home page: an Unsplash stock photo, not ECM work.
+- long-s-drug-store-support-commercial-oahu-honolulu-drip-edge: carries an "AI-generated content" mark, so it is not a real job photo.
+- longs-drug-pali-outside (night storefront) and projects.png: origin unknown, may not be ECM's own photos.
+- acs-logo: no longer on the server (404). ACS is named in text only, no logo.
