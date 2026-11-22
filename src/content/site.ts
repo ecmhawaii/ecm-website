@@ -16,8 +16,9 @@ export const business = {
   phoneDisplay: '(808) 987-5782',
   phoneHref: 'tel:+18089875782',
   phoneE164: '+1-808-987-5782',
-  license: 'Hawaii contractor license BC-37929',
-  licenseShort: 'License BC-37929',
+  // License ID as listed by Hawaii DCCA public license search (checked 2026-11-22). BC is the class prefix, not the ID; BC-37929 returns no result there.
+  license: 'Hawaii contractor license CT-37929',
+  licenseShort: 'License CT-37929',
   licenseClass: 'Class B General Building',
   email: 'info@ecmhawaii.com',
   emailHref: 'mailto:info@ecmhawaii.com',
@@ -144,7 +145,7 @@ export const ui = {
 };
 
 // Credentials strip: confirmed facts only. Shown with a middle dot between items.
-export const credentials = [`Hawaii license BC-37929`, business.licenseClass, business.veteranOwned, business.islandsLine];
+export const credentials = [`Hawaii license CT-37929`, business.licenseClass, business.veteranOwned, business.islandsLine];
 
 export const howItWorks = {
   eyebrow: 'Process',
@@ -212,7 +213,7 @@ export const home = {
 export const services = {
   title: 'Services | Elite Construction Management',
   description:
-    'Custom homes, ADUs, additions, remodels and commercial tenant improvements. Licensed Hawaii general contractor BC-37929.',
+    'Custom homes, ADUs, additions, remodels and commercial tenant improvements. Licensed Hawaii general contractor CT-37929.',
   h1: 'What we build',
   intro: 'Open a category to read more, or go straight to the estimate form.',
   items: [
@@ -354,7 +355,7 @@ export const serviceDetail: Record<string, ServicePage> = {
     path: '/commercial-tenant-improvements',
     title: 'Commercial Tenant Improvements in Hawaii | Elite Construction Management',
     description:
-      'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor BC-37929 in Kapolei.',
+      'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor CT-37929 in Kapolei.',
     h1: 'Commercial tenant improvements',
     intro: ['Build outs and renovations for retail, office and other commercial spaces.'],
     image: 'longsStore',
@@ -699,7 +700,7 @@ export const planningGuideByType: Record<string, string> = {
 // FAQ blocks, keyed by page. Empty = no FAQ section and no FAQPage structured data.
 // Answers use ONLY confirmed facts. No prices, timelines, permit rules or guarantees.
 const Q = {
-  licensed: { q: 'Are you a licensed contractor?', a: 'Yes. Elite Construction Management holds Hawaii contractor license BC-37929, Class B General Building.' },
+  licensed: { q: 'Are you a licensed contractor?', a: 'Yes. Elite Construction Management holds Hawaii contractor license CT-37929, Class B General Building.' },
   islands: { q: 'What islands do you serve?', a: 'We work on Oahu, Maui and Hawaii Island. We are based in Kapolei.' },
   adus: { q: 'Do you build ADUs and ohana units?', a: 'Yes. We build ADUs, ohana units and additions. We handle the build and coordinate permits and inspections.' },
   commercial: { q: 'Do you do commercial build outs?', a: 'Yes. We do build outs and renovations for retail, office and other commercial spaces. We have worked on projects for Longs Drugs, American Cancer Society, Tesla and Buffalo Wild Wings.' },
