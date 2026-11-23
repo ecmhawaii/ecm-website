@@ -2,23 +2,26 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import EstimateBand from '../components/EstimateBand.astro';
-import { guidesHub, guides, guidePath, ui } from '../content/site';
+import { guidesHub, ui } from '../content/site';
+import { publishedGuides } from '../lib/guides';
 const isDraft = guidesHub.status === 'draft';
 ---
 <Base title={guidesHub.title} description={guidesHub.description} noindex={isDraft} crumbs={[{ name: guidesHub.h1, path: '/guides' }]}>
   <PageHead h1={guidesHub.h1} lead={guidesHub.intro || undefined} badge={isDraft ? ui.draftBadge : undefined} />
-  <!-- INTRO SLOT: guidesHub.intro in site.ts -->
   <section class="section">
     <div class="container">
-      <ul class="card-grid">
-        {guides.map((g) => (
-          <li class="card"><a class="card-link" href={guidePath(g.slug)}>
-            {g.h1} <span aria-hidden="true">&rsaquo;</span>
-            {g.status === 'draft' && <span class="draft-badge draft-badge-sm">{ui.draftBadge}</span>}
-          </a></li>
+      <ul class="guide-list">
+        {publishedGuides.map((g) => (
+          <li class="card lift">
+            <a class="guide-card" href={g.href}>
+              <h2 class="card-title">{g.h1}</h2>
+              <p>{g.description}</p>
+              <span class="link-arrow" aria-hidden="true">{ui.learnMore}</span>
+            </a>
+          </li>
         ))}
       </ul>
-      <p class="inline-cta"><a class="btn" href="/start-your-project">{ui.estimateButton}</a></p>
+      <p class="inline-cta"><a class="btn btn-arrow" href="/start-your-project">{ui.estimateButton}</a></p>
     </div>
   </section>
   <EstimateBand />

@@ -10,6 +10,7 @@ import Financing from './Financing.astro';
 import Faq from './Faq.astro';
 import EstimateBand from './EstimateBand.astro';
 import EstimateButton from './EstimateButton.astro';
+import RelatedGuide from './RelatedGuide.astro';
 import { serviceDetail, services, business, ui } from '../content/site';
 import { faqSchema } from '../lib/schema';
 
@@ -43,6 +44,7 @@ const crumbs = [
           <h2 id={`${sec.id}-h`} data-reveal>{sec.heading}</h2>
           {sec.text && <p data-reveal>{sec.text}</p>}
           {sec.list && <ul class="check-list" data-stagger>{sec.list.map((li) => <li>{li}</li>)}</ul>}
+          <RelatedGuide page={s.key} section={sec.id} />
           <EstimateButton />
         </div>
         {sec.image && <div class="split-media" data-reveal><PhotoSlot image={sec.image} ratio="photo" sizes="(min-width: 960px) 50vw, 100vw" /></div>}

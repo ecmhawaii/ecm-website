@@ -142,6 +142,9 @@ export const ui = {
   draftBadge: 'DRAFT, content pending',
   faqHeading: 'Questions and answers',
   onThisPage: 'On this page',
+  guideEyebrow: 'Guide',
+  sourcesChecked: 'Sources checked',
+  relatedGuide: 'Related guide',
 };
 
 // Credentials strip: confirmed facts only. Shown with a middle dot between items.
@@ -588,9 +591,10 @@ export const notFound = {
 };
 
 // ---------------------------------------------------------------------------
-// GUIDES. Structure only. The PM writes the content.
+// GUIDES.
+// Final guides live as approved Markdown in src/content/guides/*.md (loaded by src/lib/guides.ts).
+// Only guides that are still drafts stay in the `guides` array below.
 // status 'draft': page shows a DRAFT badge, gets noindex and stays out of the sitemap.
-// Change to 'final' only when the PM's FINAL COPY lands.
 // ---------------------------------------------------------------------------
 export type Guide = {
   slug: string;
@@ -603,11 +607,11 @@ export type Guide = {
 };
 
 export const guidesHub = {
-  status: 'draft' as 'draft' | 'final',
+  status: 'final' as 'draft' | 'final',
   title: 'Building Guides | Elite Construction Management',
   description: 'Guides for planning ADUs, custom homes and remodels in Hawaii, from Elite Construction Management.',
   h1: 'Guides',
-  intro: '',
+  intro: 'Plain guides to building and remodeling in Hawaii, based on published sources and checked on the date shown.',
 };
 
 export const guides: Guide[] = [
@@ -628,56 +632,6 @@ export const guides: Guide[] = [
       { id: 'questions', heading: 'Questions to ask a contractor', body: [] },
     ],
   },
-  {
-    slug: 'cost-to-build-a-house-in-hawaii',
-    status: 'draft',
-    title: 'Cost to Build a House in Hawaii | Elite Construction Management',
-    description: 'What goes into the cost of building a house in Hawaii, from Elite Construction Management.',
-    h1: 'What it costs to build a house in Hawaii',
-    intro: '',
-    sections: [
-      { id: 'drivers', heading: 'What drives the cost', body: [] },
-      { id: 'site', heading: 'Land and site work', body: [] },
-      { id: 'design-permits', heading: 'Design and permits', body: [] },
-      { id: 'materials', heading: 'Materials and shipping', body: [] },
-      { id: 'labor', heading: 'Labor', body: [] },
-      { id: 'contingency', heading: 'Planning for the unexpected', body: [] },
-      { id: 'estimate', heading: 'Getting a reliable estimate', body: [] },
-    ],
-  },
-  {
-    slug: 'hiring-a-general-contractor-in-hawaii',
-    status: 'draft',
-    title: 'Hiring a General Contractor in Hawaii | Elite Construction Management',
-    description: 'What to check before hiring a general contractor in Hawaii, from Elite Construction Management.',
-    h1: 'Hiring a general contractor in Hawaii',
-    intro: '',
-    sections: [
-      { id: 'license', heading: 'Check the license', body: [] },
-      { id: 'insurance', heading: 'Insurance and bonding', body: [] },
-      { id: 'scope', heading: 'Get the scope in writing', body: [] },
-      { id: 'bids', heading: 'Comparing bids', body: [] },
-      { id: 'payments', heading: 'Payment schedule', body: [] },
-      { id: 'communication', heading: 'Communication during the job', body: [] },
-      { id: 'red-flags', heading: 'Red flags', body: [] },
-    ],
-  },
-  {
-    slug: 'bathroom-remodel-cost-honolulu',
-    status: 'draft',
-    title: 'Bathroom Remodel Cost in Honolulu | Elite Construction Management',
-    description: 'What affects the cost of a bathroom remodel in Honolulu, from Elite Construction Management.',
-    h1: 'Bathroom remodel cost in Honolulu',
-    intro: '',
-    sections: [
-      { id: 'factors', heading: 'What affects the cost', body: [] },
-      { id: 'layout', heading: 'Keeping or changing the layout', body: [] },
-      { id: 'finishes', heading: 'Fixtures, tile and finishes', body: [] },
-      { id: 'trades', heading: 'Plumbing and electrical', body: [] },
-      { id: 'permits', heading: 'Permits', body: [] },
-      { id: 'budget', heading: 'Setting your budget', body: [] },
-    ],
-  },
 ];
 
 export const guidePath = (slug: string) => `/guides/${slug}`;
@@ -688,7 +642,16 @@ export const draftPaths = [
   ...guides.filter((g) => g.status === 'draft').map((g) => guidePath(g.slug)),
 ];
 
+// One related guide link per page, placed after the named section (service pages) or under
+// the estimate form. Links only render when the guide is final.
+export const relatedGuides: Record<string, { slug: string; afterSection?: string }> = {
+  remodeling: { slug: 'bathroom-remodel-cost-honolulu', afterSection: 'bathrooms' },
+  customHomes: { slug: 'cost-to-build-a-house-in-hawaii', afterSection: 'what-it-involves' },
+  estimate: { slug: 'hiring-a-general-contractor-in-hawaii' },
+};
+
 // Thank you page: which guide to suggest to someone who picked "Just planning".
+// Only final guides are linked; a draft entry falls back to `default`.
 export const planningGuideByType: Record<string, string> = {
   'Custom home': 'cost-to-build-a-house-in-hawaii',
   'ADU or ohana unit': 'adu-oahu',
@@ -722,9 +685,7 @@ export const faqs: Record<string, Array<{ q: string; a: string }>> = {
   remodeling: [Q.remodels, Q.smallJobs, Q.trades, Q.estimate],
   commercial: [Q.commercial, Q.licensed, Q.islands, Q.trades],
   'guide:adu-oahu': [],
-  'guide:cost-to-build-a-house-in-hawaii': [],
-  'guide:hiring-a-general-contractor-in-hawaii': [],
-  'guide:bathroom-remodel-cost-honolulu': [],
+  // Final guides take their FAQ from the ## FAQ section of their Markdown file.
 };
 
 // GUIDE CONTENT slots on service pages: short excerpts or links the PM adds later.

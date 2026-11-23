@@ -1,8 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
-import { business, thankYou as t, slots, guides, guidePath, planningGuideByType, ui } from '../content/site';
-const guideList = guides.map((g) => ({ slug: g.slug, h1: g.h1, href: guidePath(g.slug) }));
+import { business, thankYou as t, slots, planningGuideByType, ui } from '../content/site';
+import { publishedGuides } from '../lib/guides';
+// Only final guides are suggested; a draft mapping falls back to the default guide.
+const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.href }));
 ---
 <Base title={t.title} description={t.description} crumbs={[{ name: t.title.split(' |')[0], path: '/thank-you' }]}>
   <PageHead h1={t.h1} />
@@ -45,8 +47,7 @@ const guideList = guides.map((g) => ({ slug: g.slug, h1: g.h1, href: guidePath(g
     } else if (data.timeline === 'Just planning') {
       const map = JSON.parse(root.dataset.guideMap || '{}') as Record<string, string>;
       const list = JSON.parse(root.dataset.guides || '[]') as Array<{ slug: string; h1: string; href: string }>;
-      const slug = map[data.type] || map.default;
-      const guide = list.find((g) => g.slug === slug);
+      const guide = list.find((g) => g.slug === map[data.type]) || list.find((g) => g.slug === map.default);
       if (guide) {
         const link = root.querySelector<HTMLAnchorElement>('[data-guide-link]')!;
         link.href = guide.href;

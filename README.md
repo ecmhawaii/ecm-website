@@ -18,6 +18,7 @@ Netlify builds this repo from `main` (`npm run build`, publish folder `dist`, se
 ## Where things live
 
 - `src/content/site.ts`: all visible text, plus on/off switches for hidden slots (reviews, Instagram, financing, Trusted By, insurance line, reply time), guide status and FAQs.
+- `src/content/guides/*.md`: approved final guides (frontmatter: slug, status, title, description, h1, checked). Rendered by `src/lib/guides.ts` with no wording changes: citation markers become links to Sources, the `## FAQ` section feeds the FAQ block and FAQPage data, `checked` drives "Sources checked" and Article `dateModified`. Drafts still live in the `guides` array in `site.ts`.
 - `src/content/images.ts`: every image slot. Swap a real photo in by editing one line.
 - `src/assets/images/SOURCES.md`: where every image came from and its status.
 - `site.config.mjs`: the canonical site URL (`SITE`) and the site-wide noindex switch.

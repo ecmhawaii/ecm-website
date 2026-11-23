@@ -6,7 +6,8 @@ import '@fontsource/archivo/700.css';
 import '../styles/global.css';
 import { Image, getImage } from 'astro:assets';
 import { SITE, SITE_NOINDEX } from '../../site.config.mjs';
-import { business, nav, servicePages, ui, guides, guidePath } from '../content/site';
+import { business, nav, servicePages, ui } from '../content/site';
+import { publishedGuides } from '../lib/guides';
 import { logo, hero } from '../content/images';
 
 export interface Crumb { name: string; path: string }
@@ -184,7 +185,7 @@ const onEstimatePage = path === '/start-your-project';
             <p class="footer-head">{ui.footerGuides}</p>
             <ul>
               <li><a href="/guides">{ui.footerGuides}</a></li>
-              {guides.map((g) => <li><a href={guidePath(g.slug)}>{g.h1}</a></li>)}
+              {publishedGuides.map((g) => <li><a href={g.href}>{g.h1}</a></li>)}
             </ul>
           </nav>
           <nav aria-label={ui.footerCompanyLabel}>

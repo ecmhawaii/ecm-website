@@ -537,3 +537,42 @@ html { scroll-padding-bottom: 96px; }
 /* Below-the-fold sections skip rendering until near the viewport, so their photos are not
    fetched while the LCP photo loads. 'auto' remembers the real size once rendered. */
 .cv-auto { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+
+/* ---------------------------------------------------------------------
+   Guides (final copy rendered from Markdown)
+   --------------------------------------------------------------------- */
+.checked-line { margin: 4px 0 0; color: var(--on-dark-2); font-size: 0.95rem; font-weight: 600; }
+.guide-layout { display: grid; gap: 28px; }
+@media (min-width: 1100px) {
+  .guide-layout { grid-template-columns: 260px minmax(0, 1fr); gap: 56px; align-items: start; }
+  .guide-layout .toc { position: sticky; top: 24px; margin: 0; }
+}
+.guide-prose { max-width: 72ch; min-width: 0; }
+.guide-prose h2 { margin-top: 1.8em; scroll-margin-top: 16px; font-size: clamp(1.35rem, 4.2vw, 1.8rem); }
+.guide-prose h2:first-child { margin-top: 0; }
+.guide-prose ul, .guide-prose ol { padding-left: 1.4em; margin: 0 0 1.2em; }
+.guide-prose li { margin-bottom: 8px; }
+.guide-prose strong { color: var(--ink); }
+.guide-prose a { overflow-wrap: anywhere; }
+.cite { font-size: 0.72em; line-height: 0; vertical-align: super; white-space: nowrap; }
+.cite a { text-decoration: none; font-weight: 700; padding: 0 1px; }
+.cite a:hover, .cite a:focus-visible { text-decoration: underline; }
+.table-wrap { overflow-x: auto; margin: 0 0 1.4em; border: 1px solid var(--border); border-radius: var(--radius); -webkit-overflow-scrolling: touch; }
+.table-wrap:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.table-wrap table { border-collapse: collapse; width: 100%; min-width: 300px; font-size: 0.95rem; }
+.table-wrap th, .table-wrap td { padding: 10px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+.table-wrap thead th { background: var(--paper-3); color: var(--ink); font-weight: 700; }
+.table-wrap tbody tr:nth-child(even) { background: var(--paper-2); }
+.table-wrap tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 480px) { .table-wrap th, .table-wrap td { padding: 8px 9px; font-size: 0.9rem; } }
+.guide-sources { background: var(--paper-2); }
+.guide-sources ol { padding-left: 1.6em; }
+.guide-sources li { margin-bottom: 10px; font-size: 0.95rem; scroll-margin-top: 16px; }
+.guide-sources li:target { background: var(--brand-tint); outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 4px; }
+.faq .panel .cite a { min-height: 0; }
+.guide-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .guide-list { grid-template-columns: repeat(3, 1fr); } }
+.guide-card { display: block; padding: 22px 20px; color: var(--ink); text-decoration: none; height: 100%; }
+.guide-card p { color: var(--ink-2); }
+.related-guide { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 18px 0 0; padding: 12px 16px; border-left: 4px solid var(--brand); background: var(--brand-tint); border-radius: 0 var(--radius) var(--radius) 0; }
+.related-label { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
