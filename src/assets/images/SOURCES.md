@@ -106,3 +106,21 @@ All through Astro's Image component. Slot keys in `src/content/images.ts` are th
 | projects/mililani-kitchen-2.jpg | /portfolio, Mililani gallery ("Kitchen") |
 | projects/mililani-bathroom-1.jpg, mililani-bathroom-2.jpg | /portfolio, Mililani gallery ("Bathroom") |
 | projects/waianae-remodel-exterior-before-2.jpg, waianae-addition-framing-2.jpg, waianae-addition-roof.jpg, waianae-kitchen-before-2.jpg, waianae-kitchen-after-2.jpg, waianae-kitchen-after-3.jpg, waianae-bathroom-before-2.jpg, waianae-bathroom-after-2.jpg, waianae-bathroom-vanity-after.jpg, waianae-second-unit-kitchenette-2.jpg | Registered in images.ts with alt text, not placed on a page yet |
+
+## ECM job photos from Bleys Wright's flips, set 2 (2026-11-23)
+
+Same source and terms as the set above: Bleys owns the photos, approved website use, staging was real furniture, and ECM built these jobs (Bleys via Ellard, 2026-11-23; ECM Standing Decision). All are the listing photos Bleys commissioned. Renamed so no street address appears, metadata stripped, long edge capped at 2400px. Checked for faces, plates and third party phone numbers: none found. Note: the files marked 1067px are the largest versions in Bleys's folder.
+
+| File | Job | Status |
+| --- | --- | --- |
+| projects/hawaii-island-new-home-exterior-1.jpg | New single family home, Puna district, Hawaii Island | ECM job, finished. 1067px wide only |
+| projects/hawaii-island-new-home-exterior-2.jpg, -3.jpg | Two more new single family homes, same area | ECM job, finished. 2400px |
+| projects/hawaii-island-new-home-exterior-4.jpg | Another new home, same area | ECM job, finished. 1067px wide only |
+| projects/hawaii-island-new-home-entry.jpg | Entry porch of a new home | ECM job, finished. 2400px |
+| projects/hawaii-island-new-home-great-room-1.jpg | Great room and kitchen | ECM job, finished, staged. 2400px |
+| projects/hawaii-island-new-home-great-room-2.jpg, hawaii-island-new-home-living-dining.jpg | Great room, living and dining | ECM job, finished, staged. 1067px wide only |
+| projects/hawaii-island-new-home-kitchen-1.jpg | Kitchen | ECM job, finished, staged. 2400px |
+| projects/hawaii-island-new-home-kitchen-2.jpg, -3.jpg | Kitchens | ECM job, finished, staged. 1067px wide only |
+| projects/hawaii-island-new-home-bathroom-1.jpg, hawaii-island-new-home-shower.jpg, hawaii-island-new-home-double-vanity.jpg | Bathrooms | ECM job, finished, staged. 1067px wide only |
+| projects/hawaii-island-new-home-barn-door.jpg | Interior barn door detail | ECM job, finished. 2400px |
+| projects/waianae-remodel-2-kitchen.jpg, waianae-remodel-2-shower.jpg | A second Waianae, Oahu home remodel (not the remodel and addition above) | ECM job, finished, staged. 2400px |
