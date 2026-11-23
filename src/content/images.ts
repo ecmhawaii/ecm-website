@@ -30,6 +30,36 @@ import longs3 from '../assets/images/projects/longs-drip-edge-3.jpg';
 import longsBefore from '../assets/images/projects/longs-drip-edge-before.jpg';
 import longsAfter from '../assets/images/projects/longs-drip-edge-after.jpg';
 
+// ECM job photos from Bleys Wright's flips (SOURCES.md), Waianae and Mililani.
+import mililaniBathroom1 from '../assets/images/projects/mililani-bathroom-1.jpg';
+import mililaniBathroom2 from '../assets/images/projects/mililani-bathroom-2.jpg';
+import mililaniKitchen1 from '../assets/images/projects/mililani-kitchen-1.jpg';
+import mililaniKitchen2 from '../assets/images/projects/mililani-kitchen-2.jpg';
+import mililaniRemodelDiningKitchen from '../assets/images/projects/mililani-remodel-dining-kitchen.jpg';
+import mililaniRemodelLivingRoom from '../assets/images/projects/mililani-remodel-living-room.jpg';
+import waianaeAdditionFraming1 from '../assets/images/projects/waianae-addition-framing-1.jpg';
+import waianaeAdditionFraming2 from '../assets/images/projects/waianae-addition-framing-2.jpg';
+import waianaeAdditionFraming3 from '../assets/images/projects/waianae-addition-framing-3.jpg';
+import waianaeAdditionHouseWrap from '../assets/images/projects/waianae-addition-house-wrap.jpg';
+import waianaeAdditionRoof from '../assets/images/projects/waianae-addition-roof.jpg';
+import waianaeAdditionSidingDone from '../assets/images/projects/waianae-addition-siding-done.jpg';
+import waianaeBathroomAfter1 from '../assets/images/projects/waianae-bathroom-after-1.jpg';
+import waianaeBathroomAfter2 from '../assets/images/projects/waianae-bathroom-after-2.jpg';
+import waianaeBathroomBefore1 from '../assets/images/projects/waianae-bathroom-before-1.jpg';
+import waianaeBathroomBefore2 from '../assets/images/projects/waianae-bathroom-before-2.jpg';
+import waianaeBathroomVanityAfter from '../assets/images/projects/waianae-bathroom-vanity-after.jpg';
+import waianaeKitchenAfter1 from '../assets/images/projects/waianae-kitchen-after-1.jpg';
+import waianaeKitchenAfter2 from '../assets/images/projects/waianae-kitchen-after-2.jpg';
+import waianaeKitchenAfter3 from '../assets/images/projects/waianae-kitchen-after-3.jpg';
+import waianaeKitchenBefore1 from '../assets/images/projects/waianae-kitchen-before-1.jpg';
+import waianaeKitchenBefore2 from '../assets/images/projects/waianae-kitchen-before-2.jpg';
+import waianaeRemodelDemo from '../assets/images/projects/waianae-remodel-demo.jpg';
+import waianaeRemodelExteriorBefore1 from '../assets/images/projects/waianae-remodel-exterior-before-1.jpg';
+import waianaeRemodelExteriorBefore2 from '../assets/images/projects/waianae-remodel-exterior-before-2.jpg';
+import waianaeSecondUnitKitchenette1 from '../assets/images/projects/waianae-second-unit-kitchenette-1.jpg';
+import waianaeSecondUnitKitchenette2 from '../assets/images/projects/waianae-second-unit-kitchenette-2.jpg';
+import waianaeShowerAfter from '../assets/images/projects/waianae-shower-after.jpg';
+
 const unsplash = (id: string, w: number) =>
   `https://images.unsplash.com/${id}?w=${w}&q=80&auto=format`;
 
@@ -73,12 +103,44 @@ export const photos: Record<string, ImageSlot> = {
   longsStore:     job(longs2, 'Longs Drugs store front with the new metal drip edge', 'upper'),
   longsSign:      job(longs3, 'Longs Drugs sign below the roof edge during drip edge replacement', 'top'),
 
-  // Sample stock photos: only where no real ECM photo fits yet.
+  // ECM job photos, Waianae and Mililani (keys are the file names).
+  'mililani-bathroom-1': job(mililaniBathroom1, 'Remodeled bathroom in a Mililani home with a tiled shower, a vanity and a round mirror'),
+  'mililani-bathroom-2': job(mililaniBathroom2, 'Remodeled bathroom in a Mililani home with a tiled tub and shower and a vanity'),
+  'mililani-kitchen-1': job(mililaniKitchen1, 'Remodeled kitchen in a Mililani home with white cabinets and stainless steel appliances'),
+  'mililani-kitchen-2': job(mililaniKitchen2, 'Remodeled kitchen in a Mililani home with white cabinets, a range and a dishwasher'),
+  'mililani-remodel-dining-kitchen': job(mililaniRemodelDiningKitchen, 'Dining area and kitchen in a remodeled Mililani home'),
+  'mililani-remodel-living-room': job(mililaniRemodelLivingRoom, 'Living room in a remodeled Mililani home'),
+  'waianae-addition-framing-1': job(waianaeAdditionFraming1, 'Wood framing for a new addition beside a Waianae home'),
+  'waianae-addition-framing-2': job(waianaeAdditionFraming2, 'Wall framing for the new addition at a Waianae home'),
+  'waianae-addition-framing-3': job(waianaeAdditionFraming3, 'Framing for the new addition at a Waianae home, with the mountains behind'),
+  'waianae-addition-house-wrap': job(waianaeAdditionHouseWrap, 'New addition at a Waianae home with house wrap on the walls'),
+  'waianae-addition-roof': job(waianaeAdditionRoof, 'New addition at a Waianae home with the roof on and siding going up'),
+  'waianae-addition-siding-done': job(waianaeAdditionSidingDone, 'New addition with a second unit at a Waianae home, during construction'),
+  'waianae-bathroom-after-1': job(waianaeBathroomAfter1, 'Remodeled bathroom in a Waianae home with a tub, tiled walls and a vanity'),
+  'waianae-bathroom-after-2': job(waianaeBathroomAfter2, 'Remodeled bathroom in a Waianae home with a tiled tub surround and a vanity'),
+  'waianae-bathroom-before-1': job(waianaeBathroomBefore1, 'Original bathroom in a Waianae home before the remodel'),
+  'waianae-bathroom-before-2': job(waianaeBathroomBefore2, 'Original bathroom with pink tile in a Waianae home before the remodel'),
+  'waianae-bathroom-vanity-after': job(waianaeBathroomVanityAfter, 'Remodeled bathroom in a Waianae home with a vanity, a round mirror and a tiled shower'),
+  'waianae-kitchen-after-1': job(waianaeKitchenAfter1, 'Remodeled kitchen in a Waianae home with white cabinets and stainless steel appliances'),
+  'waianae-kitchen-after-2': job(waianaeKitchenAfter2, 'Remodeled kitchen in a Waianae home with white cabinets, a range and a range hood'),
+  'waianae-kitchen-after-3': job(waianaeKitchenAfter3, 'Remodeled kitchen in a Waianae home with white cabinets and a small dining table'),
+  'waianae-kitchen-before-1': job(waianaeKitchenBefore1, 'Original kitchen in a Waianae home before the remodel'),
+  'waianae-kitchen-before-2': job(waianaeKitchenBefore2, 'Another view of the original kitchen in a Waianae home before the remodel'),
+  'waianae-remodel-demo': job(waianaeRemodelDemo, 'Waianae home during demolition, with the yard cleared'),
+  'waianae-remodel-exterior-before-1': job(waianaeRemodelExteriorBefore1, 'Waianae home before the remodel, with weathered wood siding'),
+  'waianae-remodel-exterior-before-2': job(waianaeRemodelExteriorBefore2, 'Side of the Waianae home before the remodel, with weathered wood siding'),
+  'waianae-second-unit-kitchenette-1': job(waianaeSecondUnitKitchenette1, 'Kitchenette in the second unit of a Waianae home, with white cabinets and a window'),
+  'waianae-second-unit-kitchenette-2': job(waianaeSecondUnitKitchenette2, 'Kitchenette in the second unit of a Waianae home, with a small dining table'),
+  'waianae-shower-after': job(waianaeShowerAfter, 'Tiled shower in a remodeled Waianae bathroom'),
+
+  // Service slots now filled with ECM job photos (2026-11-23).
+  kitchen:  job(mililaniKitchen1, 'Remodeled kitchen in a Mililani home with white cabinets and stainless steel appliances'),
+  bathroom: job(waianaeBathroomAfter1, 'Remodeled bathroom in a Waianae home with a tub, tiled walls and a vanity'),
+  adu:      job(waianaeAdditionSidingDone, 'New addition with a second unit at a Waianae home, during construction', 'bottom'),
+
+  // Sample stock photo: only where no real ECM photo fits yet (custom homes).
   home:     stock('photo-1791882895731-a46380dc545e', 'Sample photo of a house'),
-  adu:      stock('photo-1774847408513-bebd160c419a', 'Sample photo of a small detached home'),
-  kitchen:  stock('photo-1617228069096-4638a7ffc906', 'Sample photo of a kitchen'),
-  bathroom: stock('photo-1763485956310-55f3c0e822d5', 'Sample photo of a bathroom'),
 };
 
 // Home page photo slider, in order (all ECM job photos).
-export const sliderKeys = ['pergola1', 'longsStore', 'bambooAfter', 'walk3', 'drivewayDuring', 'acsSign', 'longsAfter'];
+export const sliderKeys = ['pergola1', 'waianae-kitchen-after-1', 'longsStore', 'mililani-kitchen-1', 'bambooAfter', 'waianae-addition-framing-3', 'walk3', 'drivewayDuring', 'acsSign', 'longsAfter'];

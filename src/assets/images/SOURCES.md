@@ -14,9 +14,9 @@ v3 (2026-11-22): only the four slots with no matching ECM photo still use stock.
 | Slot | URL | Used on (v3) | Status |
 | --- | --- | --- | --- |
 | home | https://images.unsplash.com/photo-1791882895731-a46380dc545e | Home services list (Custom homes), /custom-homes photo hero | PLACEHOLDER |
-| adu | https://images.unsplash.com/photo-1774847408513-bebd160c419a | Home services list (ADUs and additions), /adu-oahu photo hero | PLACEHOLDER |
-| kitchen | https://images.unsplash.com/photo-1617228069096-4638a7ffc906 | /remodeling, Kitchen remodels section | PLACEHOLDER |
-| bathroom | https://images.unsplash.com/photo-1763485956310-55f3c0e822d5 | /remodeling, Bathroom remodels section | PLACEHOLDER |
+| adu | https://images.unsplash.com/photo-1774847408513-bebd160c419a | Not used since 2026-11-23 (slot now waianae-addition-siding-done) | Retired |
+| kitchen | https://images.unsplash.com/photo-1617228069096-4638a7ffc906 | Not used since 2026-11-23 (slot now mililani-kitchen-1) | Retired |
+| bathroom | https://images.unsplash.com/photo-1763485956310-55f3c0e822d5 | Not used since 2026-11-23 (slot now waianae-bathroom-after-1) | Retired |
 | commercial | https://images.unsplash.com/photo-1758448500688-3ababa93fd67 | Not used in v3 (replaced by ECM Longs Drugs photos) | Retired |
 | framing | https://images.unsplash.com/photo-1777105939822-21228c81916d | Not used in v3 | Retired |
 | crew | https://images.unsplash.com/photo-1587582423116-ec07293f0395 | Not used in v3 (replaced by ECM job site photos) | Retired |
@@ -81,3 +81,28 @@ Two residential jobs ECM built for Bleys Wright's real estate investing projects
 | projects/mililani-remodel-living-room.jpg, mililani-remodel-dining-kitchen.jpg | Mililani, Oahu: whole house remodel | ECM job, after (listing photo, staged) |
 | projects/mililani-kitchen-1.jpg, -2.jpg | Same job, kitchen | ECM job, after (listing photo, staged) |
 | projects/mililani-bathroom-1.jpg, -2.jpg | Same job, bathrooms | ECM job, after (listing photo, staged) |
+
+## Where the Waianae and Mililani photos are used (2026-11-23)
+
+All through Astro's Image component. Slot keys in `src/content/images.ts` are the file names (without .jpg), plus the service slots named below.
+
+| File | Used on |
+| --- | --- |
+| projects/waianae-remodel-exterior-before-1.jpg | /portfolio, Waianae gallery ("Before") |
+| projects/waianae-remodel-demo.jpg | /portfolio, Waianae gallery ("During demolition") |
+| projects/waianae-addition-framing-1.jpg | /portfolio, Waianae gallery ("Addition framing") |
+| projects/waianae-addition-framing-3.jpg | /portfolio, Waianae gallery ("Addition framing"); home slider |
+| projects/waianae-addition-house-wrap.jpg | /portfolio, Waianae gallery ("Addition wrapped") |
+| projects/waianae-addition-siding-done.jpg | `adu` slot: home services list (ADUs and additions), /adu-oahu photo header; /portfolio, Waianae gallery ("Addition sided") |
+| projects/waianae-kitchen-before-1.jpg | /portfolio, Waianae gallery ("Kitchen before") |
+| projects/waianae-kitchen-after-1.jpg | /portfolio, Waianae card cover and gallery ("Kitchen after"); home featured project card; home slider |
+| projects/waianae-bathroom-before-1.jpg | /portfolio, Waianae gallery ("Bathroom before") |
+| projects/waianae-shower-after.jpg | /portfolio, Waianae gallery ("Bathroom after") |
+| projects/waianae-bathroom-after-1.jpg | `bathroom` slot: /remodeling, Bathroom remodels section; /portfolio, Waianae gallery ("Bathroom after") |
+| projects/waianae-second-unit-kitchenette-1.jpg | /portfolio, Waianae gallery ("Second unit kitchenette") |
+| projects/mililani-kitchen-1.jpg | `kitchen` slot: /remodeling, Kitchen remodels section; home services list (Remodels); /portfolio, Mililani card cover; home slider |
+| projects/mililani-remodel-living-room.jpg | /portfolio, Mililani gallery ("Living room") |
+| projects/mililani-remodel-dining-kitchen.jpg | /portfolio, Mililani gallery ("Dining and kitchen") |
+| projects/mililani-kitchen-2.jpg | /portfolio, Mililani gallery ("Kitchen") |
+| projects/mililani-bathroom-1.jpg, mililani-bathroom-2.jpg | /portfolio, Mililani gallery ("Bathroom") |
+| projects/waianae-remodel-exterior-before-2.jpg, waianae-addition-framing-2.jpg, waianae-addition-roof.jpg, waianae-kitchen-before-2.jpg, waianae-kitchen-after-2.jpg, waianae-kitchen-after-3.jpg, waianae-bathroom-before-2.jpg, waianae-bathroom-after-2.jpg, waianae-bathroom-vanity-after.jpg, waianae-second-unit-kitchenette-2.jpg | Registered in images.ts with alt text, not placed on a page yet |

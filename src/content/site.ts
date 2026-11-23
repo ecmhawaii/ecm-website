@@ -190,12 +190,13 @@ export const home = {
   servicesList: [
     { name: 'Custom homes', line: 'New homes from plans you bring or plans developed with your architect or designer.', image: 'home', href: '/custom-homes' },
     { name: 'ADUs and additions', line: 'An ADU or addition adds space without moving.', image: 'adu', href: '/adu-oahu' },
-    { name: 'Remodels', line: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.', image: 'bambooAfter', href: '/remodeling' },
+    { name: 'Remodels', line: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.', image: 'mililani-kitchen-1', href: '/remodeling' },
     { name: 'Commercial', line: 'Build outs and renovations for retail, office and other commercial spaces.', image: 'longsStore', href: '/commercial-tenant-improvements' },
   ],
   featuredEyebrow: 'Recent work',
   featuredHeading: 'Featured projects',
-  featured: ['acs-hope-lodge', 'longs-drugs', 'kaneohe-bamboo-floor'],
+  // Three slots. Waianae replaced the Kaneohe bamboo floor (2026-11-23); swap back here if wanted.
+  featured: ['acs-hope-lodge', 'longs-drugs', 'waianae-remodel-addition'],
   sliderEyebrow: 'On the job',
   sliderHeading: 'From the job site',
   bandImage: 'pergolaView',
@@ -205,7 +206,7 @@ export const home = {
   serviceCards: [
     { name: 'Custom homes and new construction', href: '/custom-homes', image: 'home' },
     { name: 'ADUs and additions', href: '/adu-oahu', image: 'adu' },
-    { name: 'Remodels', href: '/remodeling', image: 'bambooAfter' },
+    { name: 'Remodels', href: '/remodeling', image: 'mililani-kitchen-1' },
     { name: 'Commercial tenant improvements', href: '/commercial-tenant-improvements', image: 'longsStore' },
   ],
 };
@@ -396,7 +397,7 @@ export type Project = {
 export const projects = {
   title: 'Projects | Elite Construction Management',
   description:
-    'Projects by Elite Construction Management, a general contractor in Kapolei, Hawaii: American Cancer Society Hope Lodge, Longs Drugs stores and residential work on Oahu.',
+    'Projects by Elite Construction Management: American Cancer Society Hope Lodge, Longs Drugs, and residential remodels and an addition in Waianae and Mililani.',
   h1: 'Our projects',
   text: 'A few recent jobs. Ask us about similar projects when you request an estimate.',
   eyebrow: 'Portfolio',
@@ -430,6 +431,45 @@ export const projects = {
         { image: 'longsAfter', caption: 'Metal drip edge replacement, after' },
         { image: 'longs1', caption: 'Metal drip edge replacement' },
         { image: 'longsSign', caption: 'Metal drip edge replacement' },
+      ],
+    },
+    // Waianae and Mililani: wording supplied by the PM (2026-11-23). Before and after shots are
+    // different angles, so no compare slider; the gallery order puts the pairs side by side.
+    {
+      id: 'waianae-remodel-addition',
+      name: 'Waianae remodel and addition',
+      type: 'Remodel and addition',
+      place: 'Waianae, Oahu',
+      summary: 'Gut remodel of an older home plus a new addition with a second unit, including a new kitchen, bathrooms and a kitchenette.',
+      cover: 'waianae-kitchen-after-1',
+      gallery: [
+        { image: 'waianae-remodel-exterior-before-1', caption: 'Before' },
+        { image: 'waianae-remodel-demo', caption: 'During demolition' },
+        { image: 'waianae-addition-framing-1', caption: 'Addition framing' },
+        { image: 'waianae-addition-framing-3', caption: 'Addition framing' },
+        { image: 'waianae-addition-house-wrap', caption: 'Addition wrapped' },
+        { image: 'waianae-addition-siding-done', caption: 'Addition sided' },
+        { image: 'waianae-kitchen-before-1', caption: 'Kitchen before' },
+        { image: 'waianae-kitchen-after-1', caption: 'Kitchen after' },
+        { image: 'waianae-bathroom-before-1', caption: 'Bathroom before' },
+        { image: 'waianae-shower-after', caption: 'Bathroom after' },
+        { image: 'waianae-bathroom-after-1', caption: 'Bathroom after' },
+        { image: 'waianae-second-unit-kitchenette-1', caption: 'Second unit kitchenette' },
+      ],
+    },
+    {
+      id: 'mililani-remodel',
+      name: 'Mililani remodel',
+      type: 'Remodel',
+      place: 'Mililani, Oahu',
+      summary: 'Home remodel with a new kitchen and bathrooms.',
+      cover: 'mililani-kitchen-1',
+      gallery: [
+        { image: 'mililani-remodel-living-room', caption: 'Living room' },
+        { image: 'mililani-remodel-dining-kitchen', caption: 'Dining and kitchen' },
+        { image: 'mililani-kitchen-2', caption: 'Kitchen' },
+        { image: 'mililani-bathroom-1', caption: 'Bathroom' },
+        { image: 'mililani-bathroom-2', caption: 'Bathroom' },
       ],
     },
     {
