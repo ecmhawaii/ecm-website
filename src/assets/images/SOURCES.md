@@ -62,3 +62,22 @@ All through Astro's Image component (resized, WebP). Slot names are in `src/cont
 | projects/longs-drip-edge-1.jpg, -3.jpg | longs1, longsSign | /portfolio gallery |
 | projects/longs-drip-edge-2.jpg | longsStore | Home Commercial service, featured card, slider; /commercial-tenant-improvements photo hero |
 | hero-diamond-head.jpg | hero | Home hero and share card (still unconfirmed, see above) |
+
+## ECM job photos from Bleys Wright's flips (2026-11-23)
+
+Two residential jobs ECM built for Bleys Wright's real estate investing projects. Bleys owns all of these photos and approved ECM using them on its website; staging in the finished photos was real furniture, not digital (Bleys via Ellard, 2026-11-23; ECM Standing Decision). Construction and before photos are phone shots; finished photos are the listing photos Bleys commissioned. Copied by the PM from Bleys's OneDrive with Ellard's go-ahead. Renamed so no street address appears, camera metadata (including any GPS location) stripped, long edge capped at 2400px. One truck licence plate blurred (waianae-addition-roof.jpg). One exterior cropped to remove a third party's phone number (waianae-addition-siding-done.jpg). Left out: the aerial of the finished house (makes the home easy to locate) and a shot with a worker's face.
+
+| File | Job | Status |
+| --- | --- | --- |
+| projects/waianae-remodel-exterior-before-1.jpg, -2.jpg | Waianae, Oahu: whole house remodel plus new addition with a second unit | ECM job, before |
+| projects/waianae-remodel-demo.jpg | Same job, demolition | ECM job, during |
+| projects/waianae-addition-framing-1.jpg, -2.jpg, -3.jpg | Same job, addition framing | ECM job, during |
+| projects/waianae-addition-roof.jpg, waianae-addition-house-wrap.jpg, waianae-addition-siding-done.jpg | Same job, addition roofed, wrapped, sided | ECM job, during |
+| projects/waianae-kitchen-before-1.jpg, -2.jpg | Same job, original kitchen | ECM job, before |
+| projects/waianae-kitchen-after-1.jpg, -2.jpg, -3.jpg | Same job, new kitchen | ECM job, after (listing photo, staged) |
+| projects/waianae-bathroom-before-1.jpg, -2.jpg | Same job, original bathroom | ECM job, before |
+| projects/waianae-bathroom-after-1.jpg, -2.jpg, waianae-bathroom-vanity-after.jpg, waianae-shower-after.jpg | Same job, new bathrooms | ECM job, after (listing photo, staged) |
+| projects/waianae-second-unit-kitchenette-1.jpg, -2.jpg | Same job, kitchenette in the second unit | ECM job, after (listing photo, staged). Describe as a second unit unless Jesse confirms it was permitted as an ADU or ohana |
+| projects/mililani-remodel-living-room.jpg, mililani-remodel-dining-kitchen.jpg | Mililani, Oahu: whole house remodel | ECM job, after (listing photo, staged) |
+| projects/mililani-kitchen-1.jpg, -2.jpg | Same job, kitchen | ECM job, after (listing photo, staged) |
+| projects/mililani-bathroom-1.jpg, -2.jpg | Same job, bathrooms | ECM job, after (listing photo, staged) |
