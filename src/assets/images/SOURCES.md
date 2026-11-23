@@ -3,7 +3,7 @@
 | File | Source | Status |
 | --- | --- | --- |
 | ecm-logo.png | ECM's own logo, copied from the live ecmhawaii.com builder site | ECM's brand. Use approved by Ellard for the draft 2026-11-21. Jesse to send the original file (Answer Sheet row 22). |
-| hero-diamond-head.jpg | Hero photo on the live ecmhawaii.com builder site | Origin unknown (ECM, bought, or downloaded). Draft use only until Jesse confirms (Answer Sheet row 22). Swap before launch if not confirmed. Also used for the share card (og:image). |
+| hero-diamond-head.jpg | Hero photo on the live ecmhawaii.com builder site | Origin unknown (ECM, bought, or downloaded). **Not used since 2026-11-23** (hero is now projects/hawaii-island-new-home-exterior-2.jpg). Kept in the repo; not imported anywhere. |
 
 ## Placeholder photos (hotlinked, draft only)
 
@@ -11,9 +11,11 @@ Unsplash License (free to use). Each page was checked as a "Free Photo" page by 
 
 v3 (2026-11-22): only the four slots with no matching ECM photo still use stock.
 
+**2026-11-23: all stock retired.** No Unsplash photo is used anywhere, the `unsplash` and `stock` helpers are removed from `src/content/images.ts`, and `images.unsplash.com` is removed from the CSP in `public/_headers`.
+
 | Slot | URL | Used on (v3) | Status |
 | --- | --- | --- | --- |
-| home | https://images.unsplash.com/photo-1791882895731-a46380dc545e | Home services list (Custom homes), /custom-homes photo hero | PLACEHOLDER |
+| home | https://images.unsplash.com/photo-1791882895731-a46380dc545e | Not used since 2026-11-23 (slot now hawaii-island-new-home-great-room-1) | Retired |
 | adu | https://images.unsplash.com/photo-1774847408513-bebd160c419a | Not used since 2026-11-23 (slot now waianae-addition-siding-done) | Retired |
 | kitchen | https://images.unsplash.com/photo-1617228069096-4638a7ffc906 | Not used since 2026-11-23 (slot now mililani-kitchen-1) | Retired |
 | bathroom | https://images.unsplash.com/photo-1763485956310-55f3c0e822d5 | Not used since 2026-11-23 (slot now waianae-bathroom-after-1) | Retired |
@@ -124,3 +126,23 @@ Same source and terms as the set above: Bleys owns the photos, approved website 
 | projects/hawaii-island-new-home-bathroom-1.jpg, hawaii-island-new-home-shower.jpg, hawaii-island-new-home-double-vanity.jpg | Bathrooms | ECM job, finished, staged. 1067px wide only |
 | projects/hawaii-island-new-home-barn-door.jpg | Interior barn door detail | ECM job, finished. 2400px |
 | projects/waianae-remodel-2-kitchen.jpg, waianae-remodel-2-shower.jpg | A second Waianae, Oahu home remodel (not the remodel and addition above) | ECM job, finished, staged. 2400px |
+
+## Where the set 2 photos are used (2026-11-23)
+
+| File | Used on |
+| --- | --- |
+| projects/hawaii-island-new-home-exterior-2.jpg | **Home hero and share card (og:image, twitter:image)**; /portfolio, Hawaii Island card cover |
+| projects/hawaii-island-new-home-exterior-1.jpg | /portfolio, Hawaii Island gallery ("New home"). Not the hero: only 1067px wide, soft when stretched to desktop widths |
+| projects/hawaii-island-new-home-exterior-3.jpg, -4.jpg | /portfolio, Hawaii Island gallery ("New home") |
+| projects/hawaii-island-new-home-entry.jpg | /portfolio, Hawaii Island gallery ("Entry porch") |
+| projects/hawaii-island-new-home-great-room-1.jpg | `home` slot: /custom-homes photo header, home services list (Custom homes); /portfolio, Hawaii Island gallery ("Great room and kitchen") |
+| projects/hawaii-island-new-home-living-dining.jpg | /portfolio, Hawaii Island gallery ("Living and dining") |
+| projects/hawaii-island-new-home-kitchen-1.jpg | Home slider; /portfolio, Hawaii Island gallery ("Kitchen") |
+| projects/hawaii-island-new-home-kitchen-3.jpg | /portfolio, Hawaii Island gallery ("Kitchen") |
+| projects/hawaii-island-new-home-bathroom-1.jpg | /portfolio, Hawaii Island gallery ("Bathroom") |
+| projects/hawaii-island-new-home-shower.jpg | /portfolio, Hawaii Island gallery ("Shower and tub") |
+| projects/hawaii-island-new-home-double-vanity.jpg | /portfolio, Hawaii Island gallery ("Double vanity") |
+| projects/hawaii-island-new-home-barn-door.jpg | /portfolio, Hawaii Island gallery ("Barn door detail") |
+| projects/waianae-remodel-2-kitchen.jpg | /portfolio, Waianae home remodel card cover and gallery ("Kitchen") |
+| projects/waianae-remodel-2-shower.jpg | /portfolio, Waianae home remodel gallery ("Shower") |
+| projects/hawaii-island-new-home-great-room-2.jpg, hawaii-island-new-home-kitchen-2.jpg | Registered in images.ts with alt text, not placed on a page yet |

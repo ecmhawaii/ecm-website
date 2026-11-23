@@ -1,8 +1,7 @@
 # Netlify response headers for every page and file.
-# PLACEHOLDER: images.unsplash.com in img-src is only for the draft's sample photos.
-# Remove it when the placeholders are replaced (npm run check:launch fails until then).
+# Images are self-hosted only (img-src 'self'). The Unsplash sample photos were retired 2026-11-23.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://images.unsplash.com; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin

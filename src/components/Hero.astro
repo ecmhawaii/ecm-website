@@ -13,11 +13,11 @@ const { eyebrow, h1, line } = Astro.props;
   <div class="hero-media" data-parallax>
     <Image
       src={hero.src}
-      alt=""
+      alt={hero.alt}
       width={1920}
       widths={[640, 960, 1280, 1600, 1920]}
       sizes="100vw"
-      quality={70}
+      quality={60}
       format="webp"
       priority
       class="hero-img"

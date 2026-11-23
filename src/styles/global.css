@@ -576,3 +576,17 @@ html { scroll-padding-bottom: 96px; }
 .guide-card p { color: var(--ink-2); }
 .related-guide { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 18px 0 0; padding: 12px 16px; border-left: 4px solid var(--brand); background: var(--brand-tint); border-radius: 0 var(--radius) var(--radius) 0; }
 .related-label { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+
+/* Phones: never break a credential (e.g. the license number) across lines. */
+@media (max-width: 959px) {
+  .cred-strip li { white-space: nowrap; }
+}
+@media (max-width: 429px) {
+  .cred-strip ul { font-size: 0.64rem; letter-spacing: 0.03em; }
+  .cred-strip li:nth-child(odd):not(:last-child)::after { margin: 0 6px; }
+}
+/* Very narrow phones: one credential per line, no separators. */
+@media (max-width: 359px) {
+  .cred-strip ul { grid-template-columns: auto; gap: 2px 0; }
+  .cred-strip li:nth-child(odd):not(:last-child)::after { content: none; }
+}

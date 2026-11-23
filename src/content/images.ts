@@ -1,14 +1,14 @@
 // EVERY image slot on the site lives here. To change a photo, edit one line.
 //
 // Local photos (ECM job photos) are imported and optimized by Astro's Image component.
-// Remote sample photos are plain URLs.
+// Remote photos (plain URLs) are still supported by PhotoSlot, but none are used: every slot is
+// an ECM job photo since 2026-11-23.
 //   placeholder: true  = sample stock photo. Shows a visible "Sample photo" tag and makes
 //                        `npm run check:launch` fail. Never caption one as an ECM job.
 //   src: ''            = no photo yet, shows a plain gray block.
 // Every image used must have a row in src/assets/images/SOURCES.md.
 
 import type { ImageMetadata } from 'astro';
-import heroDiamondHead from '../assets/images/hero-diamond-head.jpg';
 import ecmLogo from '../assets/images/ecm-logo.png';
 
 import acsExterior from '../assets/images/projects/acs-hope-lodge-exterior.jpg';
@@ -29,6 +29,25 @@ import longs2 from '../assets/images/projects/longs-drip-edge-2.jpg';
 import longs3 from '../assets/images/projects/longs-drip-edge-3.jpg';
 import longsBefore from '../assets/images/projects/longs-drip-edge-before.jpg';
 import longsAfter from '../assets/images/projects/longs-drip-edge-after.jpg';
+
+// ECM job photos, set 2 (SOURCES.md): Hawaii Island new homes and a second Waianae remodel.
+import hawaiiIslandNewHomeBarnDoor from '../assets/images/projects/hawaii-island-new-home-barn-door.jpg';
+import hawaiiIslandNewHomeBathroom1 from '../assets/images/projects/hawaii-island-new-home-bathroom-1.jpg';
+import hawaiiIslandNewHomeDoubleVanity from '../assets/images/projects/hawaii-island-new-home-double-vanity.jpg';
+import hawaiiIslandNewHomeEntry from '../assets/images/projects/hawaii-island-new-home-entry.jpg';
+import hawaiiIslandNewHomeExterior1 from '../assets/images/projects/hawaii-island-new-home-exterior-1.jpg';
+import hawaiiIslandNewHomeExterior2 from '../assets/images/projects/hawaii-island-new-home-exterior-2.jpg';
+import hawaiiIslandNewHomeExterior3 from '../assets/images/projects/hawaii-island-new-home-exterior-3.jpg';
+import hawaiiIslandNewHomeExterior4 from '../assets/images/projects/hawaii-island-new-home-exterior-4.jpg';
+import hawaiiIslandNewHomeGreatRoom1 from '../assets/images/projects/hawaii-island-new-home-great-room-1.jpg';
+import hawaiiIslandNewHomeGreatRoom2 from '../assets/images/projects/hawaii-island-new-home-great-room-2.jpg';
+import hawaiiIslandNewHomeKitchen1 from '../assets/images/projects/hawaii-island-new-home-kitchen-1.jpg';
+import hawaiiIslandNewHomeKitchen2 from '../assets/images/projects/hawaii-island-new-home-kitchen-2.jpg';
+import hawaiiIslandNewHomeKitchen3 from '../assets/images/projects/hawaii-island-new-home-kitchen-3.jpg';
+import hawaiiIslandNewHomeLivingDining from '../assets/images/projects/hawaii-island-new-home-living-dining.jpg';
+import hawaiiIslandNewHomeShower from '../assets/images/projects/hawaii-island-new-home-shower.jpg';
+import waianaeRemodel2Kitchen from '../assets/images/projects/waianae-remodel-2-kitchen.jpg';
+import waianaeRemodel2Shower from '../assets/images/projects/waianae-remodel-2-shower.jpg';
 
 // ECM job photos from Bleys Wright's flips (SOURCES.md), Waianae and Mililani.
 import mililaniBathroom1 from '../assets/images/projects/mililani-bathroom-1.jpg';
@@ -60,8 +79,6 @@ import waianaeSecondUnitKitchenette1 from '../assets/images/projects/waianae-sec
 import waianaeSecondUnitKitchenette2 from '../assets/images/projects/waianae-second-unit-kitchenette-2.jpg';
 import waianaeShowerAfter from '../assets/images/projects/waianae-shower-after.jpg';
 
-const unsplash = (id: string, w: number) =>
-  `https://images.unsplash.com/${id}?w=${w}&q=80&auto=format`;
 
 export type ImageSlot = {
   src: ImageMetadata | string;
@@ -77,10 +94,12 @@ export type ImageSlot = {
 // Local, optimized by Astro's Image component.
 export const logo = { src: ecmLogo, alt: 'Elite Construction Management logo' };
 // Hero: origin unknown, draft use only until Jesse confirms (see SOURCES.md).
-export const hero = { src: heroDiamondHead, alt: 'Diamond Head and the Honolulu coastline', placeholder: true };
+// Hero (2026-11-23): Ellard picked exterior-1, but it is only 1067px wide and looked soft when
+// stretched to 1440 and 1920px wide (1.35x to 1.8x upscale). exterior-2 (2400px) stays sharp.
+const HERO_SRC = hawaiiIslandNewHomeExterior2;
+export const hero = { src: HERO_SRC, alt: 'New single family home built by Elite Construction Management on Hawaii Island', placeholder: false };
 
 const job = (src: ImageMetadata, alt: string, position?: ImageSlot['position']): ImageSlot => ({ src, alt, placeholder: false, position });
-const stock = (id: string, alt: string): ImageSlot => ({ src: unsplash(id, 1600), alt, placeholder: true, width: 1600, height: 1067 });
 
 export const photos: Record<string, ImageSlot> = {
   // ECM job photos (SOURCES.md: "ECM job photos").
@@ -137,10 +156,27 @@ export const photos: Record<string, ImageSlot> = {
   kitchen:  job(mililaniKitchen1, 'Remodeled kitchen in a Mililani home with white cabinets and stainless steel appliances'),
   bathroom: job(waianaeBathroomAfter1, 'Remodeled bathroom in a Waianae home with a tub, tiled walls and a vanity'),
   adu:      job(waianaeAdditionSidingDone, 'New addition with a second unit at a Waianae home, during construction', 'bottom'),
+  home:     job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on Hawaii Island'),
 
-  // Sample stock photo: only where no real ECM photo fits yet (custom homes).
-  home:     stock('photo-1791882895731-a46380dc545e', 'Sample photo of a house'),
+  // ECM job photos, set 2: Hawaii Island new homes and a second Waianae remodel (keys are the file names).
+  'hawaii-island-new-home-barn-door': job(hawaiiIslandNewHomeBarnDoor, 'Sliding barn door in a new home on Hawaii Island'),
+  'hawaii-island-new-home-bathroom-1': job(hawaiiIslandNewHomeBathroom1, 'Bathroom in a new home on Hawaii Island with a tub, marble-look tile and a long vanity'),
+  'hawaii-island-new-home-double-vanity': job(hawaiiIslandNewHomeDoubleVanity, 'Bathroom with a double vanity in a new home on Hawaii Island'),
+  'hawaii-island-new-home-entry': job(hawaiiIslandNewHomeEntry, 'Entry porch of a new home on Hawaii Island'),
+  'hawaii-island-new-home-exterior-1': job(hawaiiIslandNewHomeExterior1, 'New single family home built by Elite Construction Management on Hawaii Island'),
+  'hawaii-island-new-home-exterior-2': job(hawaiiIslandNewHomeExterior2, 'New single family home on Hawaii Island'),
+  'hawaii-island-new-home-exterior-3': job(hawaiiIslandNewHomeExterior3, 'Another new single family home on Hawaii Island'),
+  'hawaii-island-new-home-exterior-4': job(hawaiiIslandNewHomeExterior4, 'Front of a new home on Hawaii Island with a covered porch and French doors'),
+  'hawaii-island-new-home-great-room-1': job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on Hawaii Island'),
+  'hawaii-island-new-home-great-room-2': job(hawaiiIslandNewHomeGreatRoom2, 'Great room with a wood accent wall in a new home on Hawaii Island'),
+  'hawaii-island-new-home-kitchen-1': job(hawaiiIslandNewHomeKitchen1, 'Kitchen with an island and stainless steel appliances in a new home on Hawaii Island'),
+  'hawaii-island-new-home-kitchen-2': job(hawaiiIslandNewHomeKitchen2, 'Kitchen with white cabinets and an island in a new home on Hawaii Island'),
+  'hawaii-island-new-home-kitchen-3': job(hawaiiIslandNewHomeKitchen3, 'Kitchen with a stone island and white cabinets in a new home on Hawaii Island'),
+  'hawaii-island-new-home-living-dining': job(hawaiiIslandNewHomeLivingDining, 'Living and dining area in a new home on Hawaii Island'),
+  'hawaii-island-new-home-shower': job(hawaiiIslandNewHomeShower, 'Tiled shower and tub in a new home on Hawaii Island'),
+  'waianae-remodel-2-kitchen': job(waianaeRemodel2Kitchen, 'Remodeled kitchen with white cabinets in a Waianae home'),
+  'waianae-remodel-2-shower': job(waianaeRemodel2Shower, 'Remodeled bathroom with a dark tiled shower in a Waianae home'),
 };
 
 // Home page photo slider, in order (all ECM job photos).
-export const sliderKeys = ['pergola1', 'waianae-kitchen-after-1', 'longsStore', 'mililani-kitchen-1', 'bambooAfter', 'waianae-addition-framing-3', 'walk3', 'drivewayDuring', 'acsSign', 'longsAfter'];
+export const sliderKeys = ['pergola1', 'hawaii-island-new-home-kitchen-1', 'waianae-kitchen-after-1', 'longsStore', 'mililani-kitchen-1', 'bambooAfter', 'waianae-addition-framing-3', 'walk3', 'drivewayDuring', 'acsSign', 'longsAfter'];

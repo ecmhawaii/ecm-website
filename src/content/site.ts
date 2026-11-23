@@ -397,7 +397,7 @@ export type Project = {
 export const projects = {
   title: 'Projects | Elite Construction Management',
   description:
-    'Projects by Elite Construction Management: American Cancer Society Hope Lodge, Longs Drugs, and residential remodels and an addition in Waianae and Mililani.',
+    'Projects by Elite Construction Management: Hope Lodge, Longs Drugs, new homes on Hawaii Island, and remodels and an addition in Waianae and Mililani.',
   h1: 'Our projects',
   text: 'A few recent jobs. Ask us about similar projects when you request an estimate.',
   eyebrow: 'Portfolio',
@@ -470,6 +470,42 @@ export const projects = {
         { image: 'mililani-kitchen-2', caption: 'Kitchen' },
         { image: 'mililani-bathroom-1', caption: 'Bathroom' },
         { image: 'mililani-bathroom-2', caption: 'Bathroom' },
+      ],
+    },
+    // Hawaii Island new homes and a second Waianae remodel: PM wording (2026-11-23).
+    // Built as new homes for sale: never caption them as custom homes.
+    {
+      id: 'hawaii-island-new-homes',
+      name: 'Hawaii Island new homes',
+      type: 'New homes',
+      place: 'Hawaii Island',
+      summary: 'New single family homes built on Hawaii Island.',
+      cover: 'hawaii-island-new-home-exterior-2',
+      gallery: [
+        { image: 'hawaii-island-new-home-exterior-1', caption: 'New home' },
+        { image: 'hawaii-island-new-home-exterior-3', caption: 'New home' },
+        { image: 'hawaii-island-new-home-exterior-4', caption: 'New home' },
+        { image: 'hawaii-island-new-home-entry', caption: 'Entry porch' },
+        { image: 'hawaii-island-new-home-great-room-1', caption: 'Great room and kitchen' },
+        { image: 'hawaii-island-new-home-living-dining', caption: 'Living and dining' },
+        { image: 'hawaii-island-new-home-kitchen-1', caption: 'Kitchen' },
+        { image: 'hawaii-island-new-home-kitchen-3', caption: 'Kitchen' },
+        { image: 'hawaii-island-new-home-bathroom-1', caption: 'Bathroom' },
+        { image: 'hawaii-island-new-home-shower', caption: 'Shower and tub' },
+        { image: 'hawaii-island-new-home-double-vanity', caption: 'Double vanity' },
+        { image: 'hawaii-island-new-home-barn-door', caption: 'Barn door detail' },
+      ],
+    },
+    {
+      id: 'waianae-remodel-2',
+      name: 'Waianae home remodel',
+      type: 'Remodel',
+      place: 'Waianae, Oahu',
+      summary: 'Home remodel with a new kitchen and bathroom.',
+      cover: 'waianae-remodel-2-kitchen',
+      gallery: [
+        { image: 'waianae-remodel-2-kitchen', caption: 'Kitchen' },
+        { image: 'waianae-remodel-2-shower', caption: 'Shower' },
       ],
     },
     {
