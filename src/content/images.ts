@@ -49,7 +49,7 @@ import hawaiiIslandNewHomeShower from '../assets/images/projects/hawaii-island-n
 import waianaeRemodel2Kitchen from '../assets/images/projects/waianae-remodel-2-kitchen.jpg';
 import waianaeRemodel2Shower from '../assets/images/projects/waianae-remodel-2-shower.jpg';
 
-// ECM job photos from Bleys Wright's flips (SOURCES.md), Waianae and Mililani.
+// ECM job photos from a repeat client's investment properties (SOURCES.md), Waianae and Mililani.
 import mililaniBathroom1 from '../assets/images/projects/mililani-bathroom-1.jpg';
 import mililaniBathroom2 from '../assets/images/projects/mililani-bathroom-2.jpg';
 import mililaniKitchen1 from '../assets/images/projects/mililani-kitchen-1.jpg';
@@ -93,7 +93,6 @@ export type ImageSlot = {
 
 // Local, optimized by Astro's Image component.
 export const logo = { src: ecmLogo, alt: 'Elite Construction Management logo' };
-// Hero: origin unknown, draft use only until Jesse confirms (see SOURCES.md).
 // Hero (2026-11-23): Ellard picked exterior-1, but it is only 1067px wide and looked soft when
 // stretched to 1440 and 1920px wide (1.35x to 1.8x upscale). exterior-2 (2400px) stays sharp.
 const HERO_SRC = hawaiiIslandNewHomeExterior2;

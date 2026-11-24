@@ -503,8 +503,10 @@ html { scroll-padding-bottom: 96px; }
 .nav-mobile[open] summary { background: var(--ink); color: var(--on-dark); }
 
 /* ---------------------------------------------------------------------
-   Motion. Elements are hidden for animation ONLY when the browser runs scripts AND the
+   Motion. Elements wait to animate (opacity 0) ONLY when the browser runs scripts AND the
    visitor has not asked for reduced motion (CSS media queries, no blocking script).
+   - Opacity and transform only, never visibility or display: elements waiting to animate
+     stay in the Tab order, and anything that receives keyboard focus shows at once.
    - JS off or reduced motion: nothing is hidden, nothing moves.
    - html.motion-off (set by the module when it is late or cannot run): nothing hidden.
    - Safety net: if the motion module never starts, a CSS animation shows everything at 2.6s.
@@ -514,10 +516,12 @@ html { scroll-padding-bottom: 96px; }
   html:not(.motion-off) [data-stagger] > *,
   html:not(.motion-off) [data-hero-fade],
   html:not(.motion-off) [data-hero-title],
-  html:not(.motion-off) [data-split-words] { visibility: hidden; }
+  html:not(.motion-off) [data-split-words] { opacity: 0; }
   html:not(.motion-ready):not(.motion-off) :is([data-reveal], [data-stagger] > *, [data-hero-fade], [data-hero-title], [data-split-words]) { animation: ecm-show 0s 2.6s forwards; }
+  /* Reveal on focus: a keyboard user never lands on an invisible control. */
+  :is([data-reveal], [data-stagger] > *, [data-hero-fade], [data-hero-title], [data-split-words]):focus-within { opacity: 1 !important; transform: none !important; }
 }
-@keyframes ecm-show { to { visibility: visible; } }
+@keyframes ecm-show { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
   .lift:hover, .card:has(a:hover) { transform: none !important; }
@@ -589,4 +593,11 @@ html { scroll-padding-bottom: 96px; }
 @media (max-width: 359px) {
   .cred-strip ul { grid-template-columns: auto; gap: 2px 0; }
   .cred-strip li:nth-child(odd):not(:last-child)::after { content: none; }
+}
+
+/* Phones: the hero eyebrow sits on the bright sky of the hero photo. Darker top of the
+   overlay and white eyebrow text keep it at 4.5:1 or better (pre-launch audit finding 7). */
+@media (max-width: 959px) {
+  .hero-overlay { background: linear-gradient(180deg, rgba(17, 17, 17, 0.66) 0%, rgba(17, 17, 17, 0.72) 45%, rgba(17, 17, 17, 0.9) 100%); }
+  .hero .eyebrow { color: var(--on-dark); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
 }

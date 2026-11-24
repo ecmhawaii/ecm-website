@@ -17,7 +17,10 @@ const gallery = await Promise.all(
   (p.gallery ?? []).map(async (g) => {
     const slot = photos[g.image];
     const src = slot.src as ImageMetadata;
-    const full = await getImage({ src, width: Math.min(1600, src.width), format: 'webp', quality: 78 });
+    // Capped so no full-size lightbox file is over 400 kB (pre-launch audit finding 28).
+    // Long edge at most 1600px (tall phone photos too), WebP quality 65.
+    const scale = Math.min(1, 1600 / Math.max(src.width, src.height));
+    const full = await getImage({ src, width: Math.round(src.width * scale), format: 'webp', quality: 65 });
     return { ...g, full: full.src, alt: slot.alt };
   })
 );

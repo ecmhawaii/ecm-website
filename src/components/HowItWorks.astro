@@ -10,7 +10,7 @@ import Eyebrow from './Eyebrow.astro';
       <div class="steps-line" aria-hidden="true"><span data-steps-line></span></div>
       <ol class="steps">
         {howItWorks.steps.map((s) => (
-          <li data-reveal><strong>{s.title}</strong><p>{s.text}</p></li>
+          <li data-reveal><strong>{s.title}</strong>{s.text && <p>{s.text}</p>}</li>
         ))}
       </ol>
     </div>

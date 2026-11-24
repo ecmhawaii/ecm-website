@@ -27,7 +27,7 @@ export function faqSchemaFromItems(items: Array<{ q: string; aText: string }>): 
 }
 
 /** Article structured data for a final guide. dateModified comes from the `checked` field. */
-export function articleSchema(g: { h1: string; description: string; checkedISO: string; path: string }): object {
+export function articleSchema(g: { h1: string; description: string; checkedISO: string; publishedISO: string; path: string; image?: string }): object {
   const url = new URL(g.path, SITE).href;
   const org = { '@type': 'Organization', '@id': `${SITE}/#business`, name: business.name, url: `${SITE}/` };
   return {
@@ -35,7 +35,9 @@ export function articleSchema(g: { h1: string; description: string; checkedISO: 
     '@type': 'Article',
     headline: g.h1,
     description: g.description,
+    datePublished: g.publishedISO,
     dateModified: g.checkedISO,
+    ...(g.image ? { image: new URL(g.image, SITE).href } : {}),
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     url,
     author: org,

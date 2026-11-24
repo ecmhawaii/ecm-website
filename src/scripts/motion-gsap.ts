@@ -2,7 +2,8 @@
 // Loaded by scripts/motion.ts only after the hero photo and fonts are ready, so it never
 // competes with the LCP image and SplitText measures lines in the real font.
 // CSS hides animated elements only when scripting is on and reduced motion is off;
-// this module animates them in.
+// this module animates them in. Opacity and transform only, never visibility, so elements
+// waiting to animate stay in the Tab order (WCAG 2.1.1).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
@@ -24,18 +25,18 @@ export function init() {
   const intro = gsap.timeline({ defaults: { ease } });
   if (title) {
     const split = SplitText.create(title, { type: 'lines', mask: 'lines', aria: 'auto' });
-    gsap.set(title, { autoAlpha: 1 });
+    gsap.set(title, { opacity: 1 });
     // Under 700ms in total for the headline: 0.45s plus at most 0.2s of stagger.
     intro.from(split.lines, { yPercent: 105, duration: 0.45, stagger: Math.min(0.05, 0.2 / Math.max(1, split.lines.length - 1)) });
   }
   if (fades.length) {
-    intro.fromTo(fades, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08 }, title ? '-=0.25' : 0);
+    intro.fromTo(fades, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 }, title ? '-=0.25' : 0);
   }
 
   // ---- Big hook statement: words rise as it scrolls in ----
   for (const el of gsap.utils.toArray<HTMLElement>('[data-split-words]')) {
     const split = SplitText.create(el, { type: 'words', mask: 'words', aria: 'auto' });
-    gsap.set(el, { autoAlpha: 1 });
+    gsap.set(el, { opacity: 1 });
     gsap.from(split.words, {
       yPercent: 100, duration: 0.8, ease, stagger: 0.05,
       scrollTrigger: { trigger: el, start: 'top 82%', once: true },
@@ -46,13 +47,13 @@ export function init() {
   ScrollTrigger.batch('[data-reveal]', {
     start: 'top 88%',
     once: true,
-    onEnter: (els) => gsap.fromTo(els, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.7, ease, stagger: 0.08, overwrite: true }),
+    onEnter: (els) => gsap.fromTo(els, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease, stagger: 0.08, overwrite: true }),
   });
   // Cards and photos stagger in.
   for (const group of gsap.utils.toArray<HTMLElement>('[data-stagger]')) {
     const items = [...group.children] as HTMLElement[];
-    gsap.fromTo(items, { autoAlpha: 0, y: 36 }, {
-      autoAlpha: 1, y: 0, duration: 0.8, ease, stagger: 0.1,
+    gsap.fromTo(items, { opacity: 0, y: 36 }, {
+      opacity: 1, y: 0, duration: 0.8, ease, stagger: 0.1,
       scrollTrigger: { trigger: group, start: 'top 85%', once: true },
     });
   }

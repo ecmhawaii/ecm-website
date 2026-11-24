@@ -136,7 +136,7 @@ export const ui = {
   submit: 'Send',
   honeypotLabel: 'Leave this field empty',
   learnMore: 'Learn more',
-  sliderLabel: 'Sample photos',
+  sliderLabel: 'Job site photos',
   sliderPrev: 'Previous photo',
   sliderNext: 'Next photo',
   draftBadge: 'DRAFT, content pending',
@@ -159,7 +159,8 @@ export const howItWorks = {
       title: 'Site visit.',
       text: 'We walk the property with you and talk through scope, budget and timing.',
     },
-    { title: 'Proposal.', text: 'You get a fixed price contract with the scope written out.' },
+    // Finding 3 (2026-11-24): the fixed price sentence was removed pending Jesse's attorney.
+    { title: 'Proposal.', text: '' },
     {
       title: 'Build.',
       text: 'Our crew and licensed subs do the work, and you get regular updates.',
@@ -188,7 +189,7 @@ export const home = {
   servicesHeading: 'What we build',
   // Big service list: name, one line (confirmed copy), photo slot, page.
   servicesList: [
-    { name: 'Custom homes', line: 'New homes from plans you bring or plans developed with your architect or designer.', image: 'home', href: '/custom-homes' },
+    { name: 'Custom homes and new construction', line: 'New homes from plans you bring or plans developed with your architect or designer.', image: 'home', href: '/custom-homes' },
     { name: 'ADUs and additions', line: 'An ADU or addition adds space without moving.', image: 'adu', href: '/adu-oahu' },
     { name: 'Remodels', line: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.', image: 'mililani-kitchen-1', href: '/remodeling' },
     { name: 'Commercial', line: 'Build outs and renovations for retail, office and other commercial spaces.', image: 'longsStore', href: '/commercial-tenant-improvements' },
@@ -236,7 +237,7 @@ export const services = {
     {
       id: 'remodels',
       name: 'Remodels',
-      text: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts so the price is set up front.',
+      text: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.',
       href: '/remodeling',
     },
     {
@@ -326,12 +327,12 @@ export const serviceDetail: Record<string, ServicePage> = {
   remodeling: {
     key: 'remodeling',
     path: '/remodeling',
-    title: 'Kitchen and Bathroom Remodeling in Hawaii | Elite Construction Management',
+    title: 'Home Remodeling in Hawaii | Elite Construction Management',
     description:
       'Kitchen, bathroom and whole home remodels by Elite Construction Management, a licensed Hawaii general contractor based in Kapolei. Request an estimate.',
     h1: 'Home remodeling: kitchens, bathrooms and whole homes',
     intro: [
-      'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts so the price is set up front.',
+      'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.',
     ],
     image: 'bambooAfter',
     sections: [
@@ -357,7 +358,7 @@ export const serviceDetail: Record<string, ServicePage> = {
   commercial: {
     key: 'commercial',
     path: '/commercial-tenant-improvements',
-    title: 'Commercial Tenant Improvements in Hawaii | Elite Construction Management',
+    title: 'Tenant Improvements in Hawaii | Elite Construction Management',
     description:
       'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor CT-37929 in Kapolei.',
     h1: 'Commercial tenant improvements',
@@ -711,6 +712,9 @@ export const guides: Guide[] = [
 ];
 
 export const guidePath = (slug: string) => `/guides/${slug}`;
+
+// First publication date of the final guides (Article datePublished).
+export const guidesPublished = '2026-11-24';
 
 // Paths kept out of the sitemap because they are still drafts (read by astro.config.mjs).
 export const draftPaths = [

@@ -1,5 +1,6 @@
-# LAUNCH VERSION. Not live yet. At launch, replace public/robots.txt with this file.
-# Allows all crawlers, with explicit groups for search engines and AI search and answer bots.
+# robots.txt for ecmhawaii.com: allows all crawlers, with explicit groups for search engines
+# and AI search and answer bots. (Kept in public/robots.launch.txt until launch, then copied
+# over public/robots.txt.)
 
 User-agent: *
 Allow: /

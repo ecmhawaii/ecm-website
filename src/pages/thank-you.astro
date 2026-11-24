@@ -6,7 +6,7 @@ import { publishedGuides } from '../lib/guides';
 // Only final guides are suggested; a draft mapping falls back to the default guide.
 const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.href }));
 ---
-<Base title={t.title} description={t.description} crumbs={[{ name: t.title.split(' |')[0], path: '/thank-you' }]}>
+<Base title={t.title} description={t.description} noindex crumbs={[{ name: t.title.split(' |')[0], path: '/thank-you' }]}>
   <PageHead h1={t.h1} />
   <section class="section">
     <div class="container prose" data-thanks data-guides={JSON.stringify(guideList)} data-guide-map={JSON.stringify(planningGuideByType)}>

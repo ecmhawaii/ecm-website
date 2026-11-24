@@ -7,14 +7,15 @@ import PageHead from '../../components/PageHead.astro';
 import Faq from '../../components/Faq.astro';
 import EstimateBand from '../../components/EstimateBand.astro';
 import EstimateButton from '../../components/EstimateButton.astro';
-import { guides as draftGuides, guidesHub, guidePath, ui } from '../../content/site';
+import { guides as draftGuides, guidesHub, guidePath, guidesPublished, ui } from '../../content/site';
 import { finalGuides } from '../../lib/guides';
 import { faqSchema, faqSchemaFromItems, articleSchema } from '../../lib/schema';
 
 export function getStaticPaths() {
   return [
     ...finalGuides.map((g) => ({ params: { slug: g.slug }, props: { kind: 'final' as const, slug: g.slug } })),
-    ...draftGuides.map((g) => ({ params: { slug: g.slug }, props: { kind: 'draft' as const, slug: g.slug } })),
+    // Draft guides are built only in dev (`astro dev`), never in the production build.
+    ...(import.meta.env.DEV ? draftGuides : []).map((g) => ({ params: { slug: g.slug }, props: { kind: 'draft' as const, slug: g.slug } })),
   ];
 }
 const { kind, slug } = Astro.props;
@@ -27,11 +28,11 @@ const crumbs = [
   { name: h1, path },
 ];
 const schema = final
-  ? [articleSchema({ h1: final.h1, description: final.description, checkedISO: final.checkedISO, path }), ...faqSchemaFromItems(final.faq)]
+  ? [articleSchema({ h1: final.h1, description: final.description, checkedISO: final.checkedISO, publishedISO: guidesPublished, path, image: final.bodyHtml.match(/<img[^>]+src="([^"]+)"/)?.[1] }), ...faqSchemaFromItems(final.faq)]
   : faqSchema(`guide:${slug}`);
 ---
 {final ? (
-  <Base title={final.title} description={final.description} crumbs={crumbs} schema={schema}>
+  <Base title={final.title} description={final.description} crumbs={crumbs} schema={schema} ogType="article">
     <PageHead h1={final.h1} eyebrow={ui.guideEyebrow}>
       <p class="checked-line"><time datetime={final.checkedISO}>{ui.sourcesChecked} {final.checkedLabel}</time></p>
     </PageHead>

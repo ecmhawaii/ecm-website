@@ -3,7 +3,7 @@
 | File | Source | Status |
 | --- | --- | --- |
 | ecm-logo.png | ECM's own logo, copied from the live ecmhawaii.com builder site | ECM's brand. Use approved by Ellard for the draft 2026-11-21. Jesse to send the original file (Answer Sheet row 22). |
-| hero-diamond-head.jpg | Hero photo on the live ecmhawaii.com builder site | Origin unknown (ECM, bought, or downloaded). **Not used since 2026-11-23** (hero is now projects/hawaii-island-new-home-exterior-2.jpg). Kept in the repo; not imported anywhere. |
+| hero-diamond-head.jpg | Hero photo on the live ecmhawaii.com builder site | Origin unknown (ECM, bought, or downloaded). Retired 2026-11-23 (hero is now projects/hawaii-island-new-home-exterior-2.jpg) and **deleted from the repo 2026-11-24** (pre-launch audit finding 23). |
 
 ## Placeholder photos (hotlinked, draft only)
 
@@ -57,17 +57,16 @@ All through Astro's Image component (resized, WebP). Slot names are in `src/cont
 | projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | acsCeiling1, acsCeiling2 | /portfolio gallery |
 | projects/acs-hope-lodge-pergola-1.jpg | pergola1 | Home slider, /about photo, /portfolio gallery |
 | projects/acs-hope-lodge-pergola-2.jpg | pergolaView | Home full-width photo band, /portfolio gallery |
-| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | /portfolio before and after slider; after also on home (Remodels, featured card, slider) and the /remodeling photo hero |
+| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | /portfolio before and after slider; after also in the home slider and the /remodeling photo hero |
 | projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | drivewayBefore, drivewayDuring | /portfolio before and during slider (no finished photo on file); during also in the home slider |
 | projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | walk1, walk2, walk3 | /portfolio gallery; walk3 in the home slider |
 | projects/longs-drip-edge-before.jpg, -after.jpg | longsBefore, longsAfter | /portfolio gallery; after in the home slider |
 | projects/longs-drip-edge-1.jpg, -3.jpg | longs1, longsSign | /portfolio gallery |
 | projects/longs-drip-edge-2.jpg | longsStore | Home Commercial service, featured card, slider; /commercial-tenant-improvements photo hero |
-| hero-diamond-head.jpg | hero | Home hero and share card (still unconfirmed, see above) |
 
-## ECM job photos from Bleys Wright's flips (2026-11-23)
+## ECM job photos from a repeat client's investment properties (2026-11-23)
 
-Two residential jobs ECM built for Bleys Wright's real estate investing projects. Bleys owns all of these photos and approved ECM using them on its website; staging in the finished photos was real furniture, not digital (Bleys via Ellard, 2026-11-23; ECM Standing Decision). Construction and before photos are phone shots; finished photos are the listing photos Bleys commissioned. Copied by the PM from Bleys's OneDrive with Ellard's go-ahead. Renamed so no street address appears, camera metadata (including any GPS location) stripped, long edge capped at 2400px. One truck licence plate blurred (waianae-addition-roof.jpg). One exterior cropped to remove a third party's phone number (waianae-addition-siding-done.jpg). Left out: the aerial of the finished house (makes the home easy to locate) and a shot with a worker's face.
+Two residential jobs ECM built for a repeat client's investment properties. The client owns all of these photos and approved ECM using them on its website; staging in the finished photos was real furniture, not digital (the client via Ellard, 2026-11-23; ECM Standing Decision). Construction and before photos are phone shots; finished photos are the listing photos the client commissioned. Copied by the PM from the client's OneDrive with Ellard's go-ahead. Renamed so no street address appears, camera metadata (including any GPS location) stripped, long edge capped at 2400px. One truck licence plate blurred (waianae-addition-roof.jpg). One exterior cropped to remove a third party's phone number (waianae-addition-siding-done.jpg). Left out: the aerial of the finished house (makes the home easy to locate) and a shot with a worker's face.
 
 | File | Job | Status |
 | --- | --- | --- |
@@ -109,9 +108,9 @@ All through Astro's Image component. Slot keys in `src/content/images.ts` are th
 | projects/mililani-bathroom-1.jpg, mililani-bathroom-2.jpg | /portfolio, Mililani gallery ("Bathroom") |
 | projects/waianae-remodel-exterior-before-2.jpg, waianae-addition-framing-2.jpg, waianae-addition-roof.jpg, waianae-kitchen-before-2.jpg, waianae-kitchen-after-2.jpg, waianae-kitchen-after-3.jpg, waianae-bathroom-before-2.jpg, waianae-bathroom-after-2.jpg, waianae-bathroom-vanity-after.jpg, waianae-second-unit-kitchenette-2.jpg | Registered in images.ts with alt text, not placed on a page yet |
 
-## ECM job photos from Bleys Wright's flips, set 2 (2026-11-23)
+## ECM job photos from a repeat client's investment properties, set 2 (2026-11-23)
 
-Same source and terms as the set above: Bleys owns the photos, approved website use, staging was real furniture, and ECM built these jobs (Bleys via Ellard, 2026-11-23; ECM Standing Decision). All are the listing photos Bleys commissioned. Renamed so no street address appears, metadata stripped, long edge capped at 2400px. Checked for faces, plates and third party phone numbers: none found. Note: the files marked 1067px are the largest versions in Bleys's folder.
+Same source and terms as the set above: the client owns the photos, approved website use, staging was real furniture, and ECM built these jobs (the client via Ellard, 2026-11-23; ECM Standing Decision). All are the listing photos the client commissioned. Renamed so no street address appears, metadata stripped, long edge capped at 2400px. Checked for faces, plates and third party phone numbers: none found. Note: the files marked 1067px are the largest versions in the client's folder.
 
 | File | Job | Status |
 | --- | --- | --- |
