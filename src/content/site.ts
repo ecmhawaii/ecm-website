@@ -90,9 +90,11 @@ export const slots = {
   },
 };
 
+// Header navigation (desktop order). Services opens a dropdown of servicePages plus "All services".
 export const nav = [
   { label: 'Services', href: '/services' },
   { label: 'Projects', href: '/portfolio' },
+  { label: 'Guides', href: '/guides' },
   { label: 'About', href: '/about' },
 ];
 
@@ -106,6 +108,8 @@ export const servicePages = [
 export const ui = {
   skipLink: 'Skip to main content',
   menu: 'Menu',
+  allServices: 'All services',
+  servicesMenuLabel: 'Services menu',
   home: 'Home',
   callButton: `Call ${business.phoneDisplay}`,
   callShort: 'Call',
@@ -204,7 +208,7 @@ export const home = {
   featured: ['acs-hope-lodge', 'longs-drugs', 'waianae-remodel-addition'],
   sliderEyebrow: 'On the job',
   sliderHeading: 'From the job site',
-  bandImage: 'pergolaView',
+  bandImage: 'hawaii-island-new-home-great-room-1',
   faqEyebrow: 'FAQ',
   faqHeading: 'Common questions',
   // Kept for pages that still link by service card.
@@ -228,30 +232,39 @@ export const services = {
   items: [
     {
       id: 'custom-homes',
+      // Recent projects shown at the bottom of this panel on /services (ids in projects.cards, max 4).
+      related: ['hawaii-island-new-homes'],
       name: 'Custom homes and new construction',
       text: 'Already have plans? We build from them. Starting with just an idea or a lot? We connect you with an architect or designer and take it from first drawings to move in. We manage permits, subs and inspections the whole way.',
       href: '/custom-homes',
     },
     {
       id: 'adus-additions',
+      // Recent projects shown at the bottom of this panel on /services (ids in projects.cards, max 4).
+      related: ['waianae-remodel-addition'],
       name: 'ADUs and additions',
       text: 'An ADU or addition adds space without moving. We handle the build and coordinate permits and inspections.',
       href: '/adu-oahu',
     },
     {
       id: 'remodels',
+      // Recent projects shown at the bottom of this panel on /services (ids in projects.cards, max 4).
+      related: ['waianae-remodel-addition', 'mililani-remodel', 'waianae-remodel-2', 'kaneohe-bamboo-floor'],
       name: 'Remodels',
       text: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.',
       href: '/remodeling',
     },
     {
       id: 'commercial',
+      // Recent projects shown at the bottom of this panel on /services (ids in projects.cards, max 4).
+      related: ['acs-hope-lodge', 'longs-drugs'],
       name: 'Commercial tenant improvements',
       text: 'Build outs and renovations for retail, office and other commercial spaces.',
       href: '/commercial-tenant-improvements',
     },
   ],
   subsLine: 'Plumbing and electrical are done by licensed subcontractors.',
+  relatedLabel: 'Recent projects',
 };
 
 export type ServiceSection = { id: string; heading: string; text?: string; list?: string[]; image?: string };
@@ -368,7 +381,7 @@ export const serviceDetail: Record<string, ServicePage> = {
       'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor CT-37929 in Kapolei.',
     h1: 'Commercial tenant improvement contractor',
     intro: ['Build outs and renovations for retail, office and other commercial spaces.'],
-    image: 'acsSign',
+    image: 'acsExterior',
     sections: [
       {
         id: 'what-it-involves',

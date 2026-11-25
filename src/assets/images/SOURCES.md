@@ -31,7 +31,7 @@ ECM's own job photos, copied from the live builder site by the PM with Ellard's 
 
 | File | Job (per live site) | Status |
 | --- | --- | --- |
-| projects/acs-hope-lodge-exterior.jpg | American Cancer Society Hope Lodge, Honolulu | ECM job. Small (709px wide): use only at card size |
+| projects/acs-hope-lodge-exterior.jpg | American Cancer Society Hope Lodge, Honolulu | ECM job. Small (709px wide). Card size, plus the /commercial-tenant-improvements photo header since 2026-11-25 (Ellard), served at its native 709px and never upscaled at build |
 | projects/acs-hope-lodge-sign.jpg | American Cancer Society Hope Lodge | ECM job |
 | projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | Hope Lodge interior restoration and ceiling work | ECM job (grouping per live site order) |
 | projects/acs-hope-lodge-pergola-2.jpg | Hope Lodge aluminum pergola system | ECM job (grouping per live site order). The install photo acs-hope-lodge-pergola-1.jpg was removed from the site and deleted from the repo 2026-11-25 (Ellard) |
@@ -54,16 +54,16 @@ All through Astro's Image component (resized, WebP). Slot names are in `src/cont
 
 | File | Slot | Used on |
 | --- | --- | --- |
-| projects/acs-hope-lodge-exterior.jpg | acsExterior | /portfolio gallery (card size only) |
-| projects/acs-hope-lodge-sign.jpg | acsSign | Home Commercial service (services list), /commercial-tenant-improvements photo hero, home featured project card, home slider, /portfolio |
+| projects/acs-hope-lodge-exterior.jpg | acsExterior | /commercial-tenant-improvements photo header (since 2026-11-25, native 709px, no server crop, CSS position pos-sign); /portfolio gallery |
+| projects/acs-hope-lodge-sign.jpg | acsSign | Home Commercial service (services list), Commercial service card, home featured project card, /portfolio. Since 2026-11-25 no longer the commercial page header or in the home slider |
 | projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | acsCeiling1, acsCeiling2 | /portfolio gallery |
-| projects/acs-hope-lodge-pergola-2.jpg | pergolaView | Home full-width photo band, /portfolio gallery |
-| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | before: /portfolio compare slider; after: home slider and the /remodeling photo hero |
+| projects/acs-hope-lodge-pergola-2.jpg | pergolaView | /portfolio, Hope Lodge gallery only. Since 2026-11-25 no longer the home photo band |
+| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | before: /portfolio compare slider; after: /remodeling photo hero. Since 2026-11-25 no longer in the home slider |
 | projects/bamboo-floor-after-aligned.jpg | bambooAfterAligned | /portfolio compare slider ("after") only |
 | projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | drivewayBefore, drivewayDuring | before: registered, not placed (the slider uses the aligned copy); during: /portfolio compare slider and the home slider |
 | projects/driveway-salt-lake-before-aligned.jpg | drivewayBeforeAligned | /portfolio compare slider ("before") only |
-| projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | walk1, walk2, walk3 | /portfolio gallery; walk3 in the home slider |
-| projects/longs-drip-edge-before.jpg, -after.jpg | longsBefore, longsAfter | /portfolio gallery; after in the home slider |
+| projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | walk1, walk2, walk3 | /portfolio gallery; walk2 in the home slider ("From the job site"). walk3 left out of the slider 2026-11-25: two crew faces are readable |
+| projects/longs-drip-edge-before.jpg, -after.jpg | longsBefore, longsAfter | /portfolio gallery. Since 2026-11-25 no longer in the home slider |
 | projects/longs-drip-edge-1.jpg, -3.jpg | longs1, longsSign | /portfolio gallery |
 | projects/longs-drip-edge-2.jpg | longsStore | Longs Drugs portfolio card cover and home featured card. Since 2026-11-25 no longer on the Commercial service, the commercial page or the slider |
 
@@ -93,23 +93,24 @@ All through Astro's Image component. Slot keys in `src/content/images.ts` are th
 | File | Used on |
 | --- | --- |
 | projects/waianae-remodel-exterior-before-1.jpg | /portfolio, Waianae gallery ("Before") |
-| projects/waianae-remodel-demo.jpg | /portfolio, Waianae gallery ("During demolition") |
-| projects/waianae-addition-framing-1.jpg | /portfolio, Waianae gallery ("Addition framing") |
+| projects/waianae-remodel-demo.jpg | /portfolio, Waianae gallery ("During demolition"); home slider |
+| projects/waianae-addition-framing-1.jpg | /portfolio, Waianae gallery ("Addition framing"); home slider |
 | projects/waianae-addition-framing-3.jpg | /portfolio, Waianae gallery ("Addition framing"); home slider |
-| projects/waianae-addition-house-wrap.jpg | /portfolio, Waianae gallery ("Addition wrapped") |
+| projects/waianae-addition-house-wrap.jpg | /portfolio, Waianae gallery ("Addition wrapped"); home slider |
+| projects/waianae-addition-framing-2.jpg, waianae-addition-roof.jpg | Home slider (since 2026-11-25). The truck plate in waianae-addition-roof.jpg is blurred in the file |
 | projects/waianae-addition-siding-done.jpg | `adu` slot: home services list (ADUs and additions), /adu-oahu photo header; /portfolio, Waianae gallery ("Addition sided") |
 | projects/waianae-kitchen-before-1.jpg | /portfolio, Waianae gallery ("Kitchen before") |
-| projects/waianae-kitchen-after-1.jpg | /portfolio, Waianae card cover and gallery ("Kitchen after"); home featured project card; home slider |
+| projects/waianae-kitchen-after-1.jpg | /portfolio, Waianae card cover and gallery ("Kitchen after"); home featured project card. Since 2026-11-25 no longer in the home slider |
 | projects/waianae-bathroom-before-1.jpg | /portfolio, Waianae gallery ("Bathroom before") |
 | projects/waianae-shower-after.jpg | /portfolio, Waianae gallery ("Bathroom after") |
 | projects/waianae-bathroom-after-1.jpg | `bathroom` slot: /remodeling, Bathroom remodels section; /portfolio, Waianae gallery ("Bathroom after") |
 | projects/waianae-second-unit-kitchenette-1.jpg | /portfolio, Waianae gallery ("Second unit kitchenette") |
-| projects/mililani-kitchen-1.jpg | `kitchen` slot: /remodeling, Kitchen remodels section; home services list (Remodels); /portfolio, Mililani card cover; home slider |
+| projects/mililani-kitchen-1.jpg | `kitchen` slot: /remodeling, Kitchen remodels section; home services list (Remodels); /portfolio, Mililani card cover. Since 2026-11-25 no longer in the home slider |
 | projects/mililani-remodel-living-room.jpg | /portfolio, Mililani gallery ("Living room") |
 | projects/mililani-remodel-dining-kitchen.jpg | /portfolio, Mililani gallery ("Dining and kitchen") |
 | projects/mililani-kitchen-2.jpg | /portfolio, Mililani gallery ("Kitchen") |
 | projects/mililani-bathroom-1.jpg, mililani-bathroom-2.jpg | /portfolio, Mililani gallery ("Bathroom") |
-| projects/waianae-remodel-exterior-before-2.jpg, waianae-addition-framing-2.jpg, waianae-addition-roof.jpg, waianae-kitchen-before-2.jpg, waianae-kitchen-after-2.jpg, waianae-kitchen-after-3.jpg, waianae-bathroom-before-2.jpg, waianae-bathroom-after-2.jpg, waianae-bathroom-vanity-after.jpg, waianae-second-unit-kitchenette-2.jpg | Registered in images.ts with alt text, not placed on a page yet |
+| projects/waianae-remodel-exterior-before-2.jpg, waianae-kitchen-before-2.jpg, waianae-kitchen-after-2.jpg, waianae-kitchen-after-3.jpg, waianae-bathroom-before-2.jpg, waianae-bathroom-after-2.jpg, waianae-bathroom-vanity-after.jpg, waianae-second-unit-kitchenette-2.jpg | Registered in images.ts with alt text, not placed on a page yet |
 
 ## ECM job photos from a repeat client's investment properties, set 2 (2026-11-23)
 
@@ -137,9 +138,9 @@ Same source and terms as the set above: the client owns the photos, approved web
 | projects/hawaii-island-new-home-exterior-1.jpg | /portfolio, Big Island gallery ("New home"). Not the hero: only 1067px wide, soft when stretched to desktop widths |
 | projects/hawaii-island-new-home-exterior-3.jpg, -4.jpg | /portfolio, Big Island gallery ("New home"); exterior-4 is also the /about photo since 2026-11-25 |
 | projects/hawaii-island-new-home-entry.jpg | /portfolio, Big Island gallery ("Entry porch") |
-| projects/hawaii-island-new-home-great-room-1.jpg | `home` slot: /custom-homes photo header, home services list (Custom homes); /portfolio, Big Island gallery ("Great room and kitchen") |
+| projects/hawaii-island-new-home-great-room-1.jpg | `home` slot: /custom-homes photo header, home services list (Custom homes); home full-width photo band (since 2026-11-25); /portfolio, Big Island gallery ("Great room and kitchen") |
 | projects/hawaii-island-new-home-living-dining.jpg | /portfolio, Big Island gallery ("Living and dining") |
-| projects/hawaii-island-new-home-kitchen-1.jpg | Home slider; /portfolio, Big Island gallery ("Kitchen") |
+| projects/hawaii-island-new-home-kitchen-1.jpg | /portfolio, Big Island gallery ("Kitchen"). Since 2026-11-25 no longer in the home slider |
 | projects/hawaii-island-new-home-kitchen-3.jpg | /portfolio, Big Island gallery ("Kitchen") |
 | projects/hawaii-island-new-home-bathroom-1.jpg | /portfolio, Big Island gallery ("Bathroom") |
 | projects/hawaii-island-new-home-shower.jpg | /portfolio, Big Island gallery ("Shower and tub") |

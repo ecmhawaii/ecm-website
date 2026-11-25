@@ -89,6 +89,8 @@ export type ImageSlot = {
   placeholder: boolean;
   /** CSS object-position for crops, e.g. 'bottom'. */
   position?: string;
+  /** Never crop on the server: the source is small and every pixel is needed (CSS crops instead). */
+  keepAspect?: boolean;
   /** Intrinsic size for remote images (local ones carry their own). */
   width?: number;
   height?: number;
@@ -101,11 +103,12 @@ export const logo = { src: ecmLogo, alt: 'Elite Construction Management logo' };
 const HERO_SRC = hawaiiIslandNewHomeExterior2;
 export const hero = { src: HERO_SRC, alt: 'New single family home built by Elite Construction Management on the Big Island', placeholder: false };
 
-const job = (src: ImageMetadata, alt: string, position?: ImageSlot['position']): ImageSlot => ({ src, alt, placeholder: false, position });
+const job = (src: ImageMetadata, alt: string, position?: ImageSlot['position'], keepAspect?: boolean): ImageSlot => ({ src, alt, placeholder: false, position, keepAspect });
 
 export const photos: Record<string, ImageSlot> = {
   // ECM job photos (SOURCES.md: "ECM job photos").
-  acsExterior:    job(acsExterior, 'American Cancer Society Clarence T.C. Ching Hope Lodge building in Honolulu'),
+  // Commercial page header (2026-11-25). Only 709px wide: never upscaled or cropped on the server.
+  acsExterior:    job(acsExterior, 'American Cancer Society Clarence T.C. Ching Hope Lodge, Honolulu', 'sign', true),
   acsSign:        job(acsSign, 'American Cancer Society Hope Lodge sign on the building', 'upper'),
   acsCeiling1:    job(acsCeiling1, 'Open ceiling section during interior restoration and ceiling work at Hope Lodge', 'top'),
   acsCeiling2:    job(acsCeiling2, 'Finished ceiling panel after interior restoration and ceiling work at Hope Lodge', 'top'),
@@ -114,11 +117,11 @@ export const photos: Record<string, ImageSlot> = {
   bambooAfter:    job(bambooAfter, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
   bambooAfterAligned: job(bambooAfterAligned, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
   walk1:          job(walk1, 'Garden courtyard with a concrete walkway', 'bottom'),
-  walk2:          job(walk2, 'Concrete walkway forms and rebar set in a garden courtyard', 'lower'),
+  walk2:          job(walk2, 'Forms and steel mesh set for a new concrete walkway in a garden courtyard, before the pour', 'lower'),
   walk3:          job(walk3, 'Crew finishing the concrete walkway pour', 'lower'),
   drivewayBefore: job(drivewayBefore, 'Salt Lake residence before the concrete driveway, gravel lot', 'lower'),
   drivewayBeforeAligned: job(drivewayBeforeAligned, 'Salt Lake residence before the concrete driveway, gravel lot', 'center'),
-  drivewayDuring: job(drivewayDuring, 'Crew pouring the concrete driveway and walkway at a Salt Lake residence', 'center'),
+  drivewayDuring: job(drivewayDuring, 'Crew placing and finishing a new concrete driveway and walkway at a Salt Lake home', 'center'),
   longsBefore:    job(longsBefore, 'Longs Drugs store roof edge before the metal drip edge replacement', 'upper'),
   longsAfter:     job(longsAfter, 'Longs Drugs store roof edge after the metal drip edge replacement', 'upper'),
   longs1:         job(longs1, 'Longs Drugs store roof edge during the metal drip edge replacement', 'upper'),
@@ -132,11 +135,11 @@ export const photos: Record<string, ImageSlot> = {
   'mililani-kitchen-2': job(mililaniKitchen2, 'Remodeled kitchen in a Mililani home with white cabinets, a range and a dishwasher'),
   'mililani-remodel-dining-kitchen': job(mililaniRemodelDiningKitchen, 'Dining area and kitchen in a remodeled Mililani home'),
   'mililani-remodel-living-room': job(mililaniRemodelLivingRoom, 'Living room in a remodeled Mililani home'),
-  'waianae-addition-framing-1': job(waianaeAdditionFraming1, 'Wood framing for a new addition beside a Waianae home'),
-  'waianae-addition-framing-2': job(waianaeAdditionFraming2, 'Wall framing for the new addition at a Waianae home'),
-  'waianae-addition-framing-3': job(waianaeAdditionFraming3, 'Framing for the new addition at a Waianae home, with the mountains behind'),
-  'waianae-addition-house-wrap': job(waianaeAdditionHouseWrap, 'New addition at a Waianae home with house wrap on the walls'),
-  'waianae-addition-roof': job(waianaeAdditionRoof, 'New addition at a Waianae home with the roof on and siding going up'),
+  'waianae-addition-framing-1': job(waianaeAdditionFraming1, 'Wall framing underway for a new addition beside a Waianae home'),
+  'waianae-addition-framing-2': job(waianaeAdditionFraming2, 'Wall framing in progress on the new slab for a Waianae home addition'),
+  'waianae-addition-framing-3': job(waianaeAdditionFraming3, 'Wall and roof framing going up for a new addition at a Waianae home'),
+  'waianae-addition-house-wrap': job(waianaeAdditionHouseWrap, 'House wrap on the walls and siding ready to install at a Waianae home addition'),
+  'waianae-addition-roof': job(waianaeAdditionRoof, 'Roof sheathing on and new siding up at a Waianae home addition, before roofing'),
   'waianae-addition-siding-done': job(waianaeAdditionSidingDone, 'New addition with a second unit at a Waianae home, during construction'),
   'waianae-bathroom-after-1': job(waianaeBathroomAfter1, 'Remodeled bathroom in a Waianae home with a tub, tiled walls and a vanity'),
   'waianae-bathroom-after-2': job(waianaeBathroomAfter2, 'Remodeled bathroom in a Waianae home with a tiled tub surround and a vanity'),
@@ -148,7 +151,7 @@ export const photos: Record<string, ImageSlot> = {
   'waianae-kitchen-after-3': job(waianaeKitchenAfter3, 'Remodeled kitchen in a Waianae home with white cabinets and a small dining table'),
   'waianae-kitchen-before-1': job(waianaeKitchenBefore1, 'Original kitchen in a Waianae home before the remodel'),
   'waianae-kitchen-before-2': job(waianaeKitchenBefore2, 'Another view of the original kitchen in a Waianae home before the remodel'),
-  'waianae-remodel-demo': job(waianaeRemodelDemo, 'Waianae home during demolition, with the yard cleared'),
+  'waianae-remodel-demo': job(waianaeRemodelDemo, 'Demolition underway at a Waianae home, with debris in the yard'),
   'waianae-remodel-exterior-before-1': job(waianaeRemodelExteriorBefore1, 'Waianae home before the remodel, with weathered wood siding'),
   'waianae-remodel-exterior-before-2': job(waianaeRemodelExteriorBefore2, 'Side of the Waianae home before the remodel, with weathered wood siding'),
   'waianae-second-unit-kitchenette-1': job(waianaeSecondUnitKitchenette1, 'Kitchenette in the second unit of a Waianae home, with white cabinets and a window'),
@@ -170,7 +173,7 @@ export const photos: Record<string, ImageSlot> = {
   'hawaii-island-new-home-exterior-2': job(hawaiiIslandNewHomeExterior2, 'New single family home on the Big Island'),
   'hawaii-island-new-home-exterior-3': job(hawaiiIslandNewHomeExterior3, 'Another new single family home on the Big Island'),
   'hawaii-island-new-home-exterior-4': job(hawaiiIslandNewHomeExterior4, 'Front of a new home on the Big Island with a covered porch and French doors'),
-  'hawaii-island-new-home-great-room-1': job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on the Big Island'),
+  'hawaii-island-new-home-great-room-1': job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on the Big Island', 'lower'),
   'hawaii-island-new-home-great-room-2': job(hawaiiIslandNewHomeGreatRoom2, 'Great room with a wood accent wall in a new home on the Big Island'),
   'hawaii-island-new-home-kitchen-1': job(hawaiiIslandNewHomeKitchen1, 'Kitchen with an island and stainless steel appliances in a new home on the Big Island'),
   'hawaii-island-new-home-kitchen-2': job(hawaiiIslandNewHomeKitchen2, 'Kitchen with white cabinets and an island in a new home on the Big Island'),
@@ -182,4 +185,9 @@ export const photos: Record<string, ImageSlot> = {
 };
 
 // Home page photo slider, in order (all ECM job photos).
-export const sliderKeys = ['hawaii-island-new-home-kitchen-1', 'waianae-kitchen-after-1', 'mililani-kitchen-1', 'bambooAfter', 'waianae-addition-framing-3', 'walk3', 'drivewayDuring', 'acsSign', 'longsAfter'];
+// "From the job site" (2026-11-25): work in progress only, in Ellard's order.
+// walk3 (concrete-walkway-3) dropped: two crew faces are clearly readable in the crop.
+export const sliderKeys = [
+  'waianae-addition-framing-3', 'drivewayDuring', 'waianae-addition-framing-1', 'waianae-addition-framing-2', 'walk2',
+  'waianae-addition-house-wrap', 'waianae-addition-roof', 'waianae-remodel-demo',
+];

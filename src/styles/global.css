@@ -2,6 +2,7 @@
    steel blue #2D5C9B for buttons. Contrast checked for WCAG AA.
    No inline styles anywhere (the Content-Security-Policy blocks them). */
 :root {
+  --header-h: 64px; /* sticky header height incl. hairline (phones); 73px on desktop */
   --ink: #111111;
   --ink-2: #333333;
   --paper: #ffffff;
@@ -24,7 +25,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: 16px; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header-h); }
 body {
   margin: 0;
   background: var(--paper);
@@ -274,6 +275,8 @@ html { scroll-padding-bottom: 96px; }
 .pos-center { object-position: 50% 50%; }
 .pos-lower { object-position: 50% 60%; }
 .pos-bottom { object-position: 50% 75%; }
+/* Hope Lodge exterior: keeps the sign and the building face in frame on narrow screens. */
+.pos-sign { object-position: 42% 55%; }
 .sample-tag { position: absolute; left: 10px; top: 10px; z-index: 2; background: rgba(17, 17, 17, 0.85); color: var(--on-dark); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; }
 .photo-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 12px; color: var(--ink-2); font-weight: 700; }
 .photo-caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 24px 12px 10px; background: linear-gradient(transparent, rgba(17, 17, 17, 0.8)); color: var(--on-dark); font-size: 0.9rem; }
@@ -630,7 +633,7 @@ html { scroll-padding-bottom: 96px; }
    Call / Estimate bar. Bottom padding keeps the credentials strip above that bar. Nothing
    below the hero is on screen at load, so nothing there can shift when web fonts arrive. */
 @media (max-width: 959px) {
-  .hero { min-height: calc(100svh - 73px); padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+  .hero { min-height: calc(100svh - var(--header-h)); padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
 }
 /* Phones: the hero eyebrow fits one line in the fallback font but can wrap to two in Archivo.
    Reserve two lines so the swap never moves it or the headline below (no layout shift). */
@@ -638,3 +641,70 @@ html { scroll-padding-bottom: 96px; }
   .hero .eyebrow { min-height: calc(2 * 1.6 * 0.78rem); align-items: flex-start; line-height: 1.6; }
   .hero .eyebrow::before { margin-top: calc(0.8 * 0.78rem); }
 }
+
+/* ---------------------------------------------------------------------
+   Sticky glass header (Ellard, 2026-11-25). Frosted white with a hairline; solid white where
+   backdrop-filter is unsupported or the visitor prefers reduced transparency. 86% white keeps
+   every header text color AA even over a black photo scrolling beneath (brand blue 4.9:1).
+   --------------------------------------------------------------------- */
+.site-header {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.12);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header { background: var(--paper); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .site-header { background: var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+.header-bar { min-height: 63px; }
+@media (min-width: 960px) { :root { --header-h: 73px; } .header-bar { min-height: 72px; } }
+/* Mobile menu: scrolls inside the screen under the sticky header. */
+.nav-mobile nav { max-height: calc(100svh - var(--header-h)); overflow-y: auto; overscroll-behavior: contain; }
+/* Anchor targets clear the sticky header (html scroll-padding-top) plus a little air. */
+[id], .guide-prose h2, .guide-sources li, .project, .accordion details { scroll-margin-top: 16px; }
+
+/* Header phone: never wraps; hidden where the full row does not fit (hero Call button and the
+   mobile bar cover calling). Width set by measurement, see the PR. */
+.nav-desktop .nav-phone { white-space: nowrap; }
+
+/* Services dropdown (desktop) */
+.nav-dd { position: relative; }
+.nav-dd-toggle {
+  display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 12px;
+  background: none; border: 0; cursor: pointer; color: var(--ink);
+  font: inherit; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.9rem;
+}
+.nav-dd-toggle:hover, .nav-dd-toggle[aria-current], .nav-dd.is-open .nav-dd-toggle { color: var(--brand); }
+.nav-dd-toggle[aria-current] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.nav-dd-chevron { width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform 0.2s ease; }
+.nav-dd.is-open .nav-dd-chevron { transform: translateY(1px) rotate(-135deg); }
+.nav-desktop .nav-dd-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 2; min-width: 290px; margin: 0; padding: 8px;
+  list-style: none; display: grid; gap: 2px; background: var(--paper);
+  border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 16px 32px rgba(17, 17, 17, 0.14);
+}
+.nav-desktop .nav-dd-menu a {
+  display: flex; align-items: center; min-height: var(--tap); padding: 0 12px; border-radius: 6px;
+  text-transform: none; letter-spacing: 0; font-size: 1rem; font-weight: 600; color: var(--ink); text-decoration: none;
+}
+.nav-desktop .nav-dd-menu a:hover, .nav-desktop .nav-dd-menu a:focus-visible { background: var(--brand-tint); color: var(--brand-dark); text-decoration: none; }
+.nav-desktop .nav-dd-menu a[aria-current='page'] { color: var(--brand); text-decoration: underline; text-decoration-thickness: 2px; }
+.nav-dd-all { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 4px; }
+/* 960 to 1199px: the full row does not fit, so the header phone is hidden (never the nav
+   items) and the wordmark keeps its two-line form. */
+@media (min-width: 960px) and (max-width: 1199px) {
+  .nav-phone-item { display: none; }
+  .brand-line { display: block; }
+}
+
+/* /services: recent projects at the bottom of each open panel. Cards wrap on phones. */
+.related-projects { margin-top: 26px; }
+.related-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); }
+@media (min-width: 640px) { .related-grid { gap: 14px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); } }
+.related-grid .card-body { padding: 12px 14px 14px; }
+/* A p, not a heading: the panels have no heading above them (summary), so an h3 would skip levels. */
+.related-grid .card-title { font-family: var(--font-heading); font-weight: 700; color: var(--ink); line-height: 1.22; font-size: 1rem; margin: 0; }

@@ -1,0 +1,28 @@
+---
+// "Recent projects" cards for a /services panel: cover photo, type and name, each linking to
+// its /portfolio entry. Same card look as Featured projects. At most 4. Photos load lazily
+// (and closed panels are not rendered, so their photos are not fetched at all).
+import PhotoSlot from './PhotoSlot.astro';
+import { projects, services } from '../content/site';
+interface Props { ids: string[]; headingId: string }
+const { ids, headingId } = Astro.props;
+const items = ids.map((id) => projects.cards.find((c) => c.id === id)).filter((c): c is NonNullable<typeof c> => !!c).slice(0, 4);
+---
+{items.length > 0 && (
+  <div class="related-projects">
+    <p class="sub-head" id={headingId}>{services.relatedLabel}</p>
+    <ul class="related-grid" aria-labelledby={headingId}>
+      {items.map((p) => (
+        <li class="card lift">
+          <a class="project-link" href={`/portfolio#${p.id}`}>
+            <PhotoSlot image={p.cover} ratio="photo" sizes="(min-width: 960px) 200px, (min-width: 640px) 30vw, 50vw" widths={[320, 480, 640]} />
+            <div class="card-body">
+              <p class="card-meta">{p.type}</p>
+              <p class="card-title">{p.name}</p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}

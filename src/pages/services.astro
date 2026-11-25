@@ -4,6 +4,7 @@ import PageHead from '../components/PageHead.astro';
 import CredentialsStrip from '../components/CredentialsStrip.astro';
 import Financing from '../components/Financing.astro';
 import Faq from '../components/Faq.astro';
+import RelatedProjects from '../components/RelatedProjects.astro';
 import EstimateBand from '../components/EstimateBand.astro';
 import { services, ui } from '../content/site';
 import { faqSchema } from '../lib/schema';
@@ -23,6 +24,7 @@ import { faqSchema } from '../lib/schema';
                 <a class="btn btn-outline" href={item.href}>{ui.learnMore}<span class="sr-only">: {item.name}</span></a>
                 <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
               </div>
+              <RelatedProjects ids={item.related ?? []} headingId={`${item.id}-projects`} />
             </div>
           </details>
         ))}

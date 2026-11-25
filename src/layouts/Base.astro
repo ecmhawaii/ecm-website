@@ -72,6 +72,8 @@ const breadcrumb_ld = crumbs.length
 
 const ld = [business_ld, breadcrumb_ld, ...schema].filter(Boolean);
 const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
+// The Services section is /services plus the four service pages.
+const servicesCurrent = path === '/services' ? 'page' : servicePages.some((sp) => sp.href === path) ? 'true' : undefined;
 const onEstimatePage = path === '/start-your-project';
 // "Elite Construction" / "Management": split at the last space.
 const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), business.name.slice(business.name.lastIndexOf(' ') + 1)];
@@ -119,10 +121,26 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
         </a>
         <nav class="nav-desktop" aria-label={ui.mainNavLabel}>
           <ul>
-            {nav.map((item) => (
-              <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
-            ))}
-            <li><a class="nav-phone" href={business.phoneHref}>{business.phoneDisplay}</a></li>
+            {nav.map((item) =>
+              item.href === '/services' ? (
+                <li class="nav-dd" data-nav-dd>
+                  {/* JS off: a plain link to /services. JS on: replaced by the disclosure button below. */}
+                  <a class="nav-dd-link" href={item.href} aria-current={servicesCurrent}>{item.label}</a>
+                  <button type="button" class="nav-dd-toggle" aria-expanded="false" aria-controls="nav-services-menu" aria-current={servicesCurrent} hidden data-dd-toggle>
+                    {item.label}<span class="nav-dd-chevron" aria-hidden="true"></span>
+                  </button>
+                  <ul class="nav-dd-menu" id="nav-services-menu" hidden data-dd-menu>
+                    {servicePages.map((sp) => (
+                      <li><a href={sp.href} aria-current={path === sp.href ? 'page' : undefined}>{sp.label}</a></li>
+                    ))}
+                    <li class="nav-dd-all"><a href="/services" aria-current={path === '/services' ? 'page' : undefined}>{ui.allServices}</a></li>
+                  </ul>
+                </li>
+              ) : (
+                <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+              )
+            )}
+            <li class="nav-phone-item"><a class="nav-phone" href={business.phoneHref}>{business.phoneDisplay}</a></li>
             <li><a class="btn" href="/start-your-project">{ui.estimateButton}</a></li>
           </ul>
         </nav>
@@ -132,10 +150,12 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
             <ul>
               <li><a href="/">{ui.home}</a></li>
               {nav.map((item) => (
-                <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
-              ))}
-              {servicePages.map((item) => (
-                <li class="sub"><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+                <Fragment>
+                  <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+                  {item.href === '/services' && servicePages.map((sp) => (
+                    <li class="sub"><a href={sp.href} aria-current={isCurrent(sp.href) ? 'page' : undefined}>{sp.label}</a></li>
+                  ))}
+                </Fragment>
               ))}
               <li><a href="/start-your-project">{ui.estimateButton}</a></li>
               <li><a href={business.phoneHref}>{ui.callButton}</a></li>
@@ -199,7 +219,7 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
             <p class="footer-head">{ui.footerCompanyLabel}</p>
             <ul>
               <li><a href="/">{ui.home}</a></li>
-              {nav.filter((n) => n.href !== '/services').map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+              {nav.filter((n) => n.href !== '/services' && n.href !== '/guides').map((item) => <li><a href={item.href}>{item.label}</a></li>)}
               <li><a href="/start-your-project">{ui.estimateButton}</a></li>
               <li><a href="/subcontractors">{ui.footerSubcontractors}</a></li>
             </ul>
@@ -219,6 +239,8 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
     </div>
     <script>
       import '../scripts/motion';
+      import { initNav } from '../scripts/nav';
+      initNav();
     </script>
   </body>
 </html>

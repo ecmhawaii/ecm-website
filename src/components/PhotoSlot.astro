@@ -37,9 +37,10 @@ const pos = `pos-${p?.position ?? 'center'}`;
 const localW = isLocal ? (p.src as ImageMetadata).width : 0;
 // Crop on the server to the shape the slot shows, so no hidden pixels are downloaded.
 const aspects: Record<string, number> = { photo: 4 / 3, square: 1, tall: 3 / 4, wide: 16 / 9 };
-const aspect = crop ?? aspects[ratio];
+const aspect = p?.keepAspect ? undefined : crop ?? aspects[ratio];
 const sharpPos: Record<string, string> = { top: 'top', upper: 'center', center: 'center', lower: 'center', bottom: 'bottom' };
-const fitWidths = isLocal ? (widths.filter((w) => w <= localW).length ? widths.filter((w) => w <= localW) : [localW]) : [];
+// Never upscale: drop widths larger than the source and offer the source width itself instead.
+const fitWidths = isLocal ? [...new Set([...widths.filter((w) => w <= localW), ...(widths.some((w) => w > localW) ? [localW] : [])])] : [];
 ---
 <figure class:list={['photo', `ratio-${ratio}`, cls]} data-placeholder={p?.placeholder && (isLocal || remote) ? 'true' : undefined}>
   {isLocal ? (
