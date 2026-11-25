@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import EstimateBand from '../components/EstimateBand.astro';
+import Draft from '../components/Draft.astro';
+import { readiness } from '../content/readiness';
 import { guidesHub, ui } from '../content/site';
 import { publishedGuides } from '../lib/guides';
 const isDraft = guidesHub.status === 'draft';
@@ -21,6 +23,11 @@ const isDraft = guidesHub.status === 'draft';
           </li>
         ))}
       </ul>
+      <Draft item={readiness} class="callout readiness-promo">
+        <h2 class="card-title">{readiness.promoHeading}</h2>
+        <p>{readiness.promoText}</p>
+        <a class="btn btn-outline btn-arrow" href={readiness.path}>{readiness.promoLink}</a>
+      </Draft>
       <p class="inline-cta"><a class="btn btn-arrow" href="/start-your-project">{ui.estimateButton}</a></p>
     </div>
   </section>

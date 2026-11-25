@@ -1,0 +1,120 @@
+---
+// Project readiness check (src/content/readiness.ts). confirm:false: built on previews with a
+// Draft badge and noindex, left out of production until confirmed. Runs in the browser and
+// sends no answers; the step counter gets only "readiness start" and "readiness finish".
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { readiness, readiness as r } from '../../content/readiness';
+import { checklists } from '../../content/checklists';
+import { serviceDetail, ui } from '../../content/site';
+import { finalGuides } from '../../lib/guides';
+import { shown, draftBadge } from '../../lib/draft';
+
+export function getStaticPaths() {
+  return shown(readiness) ? [{ params: { tool: readiness.path.split('/').pop()! } }] : [];
+}
+const isDraft = draftBadge(r);
+const titleFor = (href: string) => finalGuides.find((g) => `/guides/${g.slug}` === href)?.h1 ?? (href === serviceDetail.adu.path ? serviceDetail.adu.h1 : href);
+// Links per project type. A checklist link only when that checklist is built.
+const links = Object.fromEntries(Object.entries(r.matchByType).map(([type, m]) => {
+  const cl = checklists.find((c) => c.slug === m.checklist);
+  return [type, { guideHref: m.href, guideLabel: titleFor(m.href), checklistHref: cl && shown(cl) ? `/checklists/${cl.slug}` : '', checklistLabel: cl ? cl.title.replace(/^Checklist: /, '') : '' }];
+}));
+const params = Object.fromEntries(r.questions.filter((q) => q.param).map((q) => [q.name, q.param]));
+---
+<Base title={r.title} description={r.description} noindex={isDraft} crumbs={[{ name: r.h1, path: r.path }]}>
+  <PageHead h1={r.h1} lead={r.intro} />
+  <section class="section">
+    <div class:list={['container', 'form-wrap', isDraft && 'draft-block']} data-draft={isDraft ? r.id : undefined}>
+      {isDraft && <p><span class="draft-tag">{ui.draftTag}</span></p>}
+      <noscript><p class="callout">{r.noscript} <a href="/start-your-project">{ui.estimateButton}</a></p></noscript>
+      <form class="form readiness-form" data-readiness hidden data-links={JSON.stringify(links)} data-tiers={JSON.stringify(r.tiers)} data-params={JSON.stringify(params)}>
+        {r.questions.map((q, qi) => (
+          <fieldset class="field readiness-q">
+            <legend class="sub-label">{qi + 1}. {q.legend}</legend>
+            <div class:list={['choices', q.options.length > 4 ? 'choices-3' : 'choices-2']}>
+              {q.options.map((o) => (
+                <label class="choice">
+                  <input type="radio" name={q.name} value={o.label} data-points={o.points} />
+                  <span>{o.label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        ))}
+        <p class="step-error" role="alert" hidden data-missing>{r.missing}</p>
+        <button type="submit" class="btn btn-lg">{r.submit}</button>
+      </form>
+
+      <section class="readiness-result callout" hidden data-result aria-live="polite" tabindex="-1">
+        <p class="eyebrow">{r.resultEyebrow}</p>
+        <h2 data-result-heading></h2>
+        <p data-result-text></p>
+        <h3 class="card-title">{r.nextHeading}</h3>
+        <ul class="readiness-next">
+          <li>{r.guideLead} <a href="/guides" data-guide-link></a></li>
+          <li data-checklist-item>{r.checklistLead} <a href="/guides" data-checklist-link></a></li>
+        </ul>
+        <p class="btn-row btn-row-left">
+          <a class="btn btn-lg btn-arrow" href="/start-your-project" data-estimate-link>{r.estimateButton}</a>
+          <button type="button" class="btn btn-lg btn-outline" data-restart>{r.restart}</button>
+        </p>
+      </section>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { count } from '../../scripts/funnel';
+  // Everything here runs in the browser. Answers are never sent anywhere.
+  const form = document.querySelector<HTMLFormElement>('[data-readiness]');
+  const result = document.querySelector<HTMLElement>('[data-result]');
+  if (form && result) {
+    type Tier = { key: string; min: number; heading: string; text: string };
+    type Link = { guideHref: string; guideLabel: string; checklistHref: string; checklistLabel: string };
+    const tiers = JSON.parse(form.dataset.tiers || '[]') as Tier[];
+    const links = JSON.parse(form.dataset.links || '{}') as Record<string, Link>;
+    const params = JSON.parse(form.dataset.params || '{}') as Record<string, string>;
+    const names = [...new Set([...form.querySelectorAll<HTMLInputElement>('input[type=radio]')].map((i) => i.name))];
+    const missing = form.querySelector<HTMLElement>('[data-missing]')!;
+    form.hidden = false;
+    form.addEventListener('change', () => { count('readiness', 'start', 0); missing.hidden = true; }, { once: false });
+
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const picked = names.map((n) => form.querySelector<HTMLInputElement>(`input[name="${n}"]:checked`));
+      const firstMissing = picked.findIndex((p) => !p);
+      if (firstMissing !== -1) {
+        missing.hidden = false;
+        form.querySelector<HTMLInputElement>(`input[name="${names[firstMissing]}"]`)?.focus();
+        return;
+      }
+      const score = picked.reduce((sum, p) => sum + (Number(p!.dataset.points) || 0), 0);
+      const tier = tiers.find((t) => score >= t.min) || tiers[tiers.length - 1];
+      const answer = (n: string) => picked[names.indexOf(n)]?.value || '';
+      const link = links[answer('type')] || links.Other;
+      result.querySelector('[data-result-heading]')!.textContent = tier.heading;
+      result.querySelector('[data-result-text]')!.textContent = tier.text;
+      const guide = result.querySelector<HTMLAnchorElement>('[data-guide-link]')!;
+      guide.href = link.guideHref; guide.textContent = link.guideLabel;
+      const clItem = result.querySelector<HTMLElement>('[data-checklist-item]')!;
+      const cl = result.querySelector<HTMLAnchorElement>('[data-checklist-link]')!;
+      clItem.hidden = !link.checklistHref;
+      if (link.checklistHref) { cl.href = link.checklistHref; cl.textContent = link.checklistLabel; }
+      // Only project type, island and timeline, as exact option values, go in the estimate link.
+      const q = new URLSearchParams();
+      for (const [name, param] of Object.entries(params)) { const v = answer(name); if (v) q.set(param, v); }
+      result.querySelector<HTMLAnchorElement>('[data-estimate-link]')!.href = `/start-your-project?${q.toString()}`;
+      form.hidden = true;
+      result.hidden = false;
+      result.focus();
+      count('readiness', 'finish', 0);
+    });
+
+    result.querySelector('[data-restart]')!.addEventListener('click', () => {
+      result.hidden = true;
+      form.hidden = false;
+      form.querySelector<HTMLInputElement>('input[type=radio]')?.focus();
+    });
+  }
+</script>

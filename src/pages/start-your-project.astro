@@ -173,6 +173,14 @@ const total = 6;
       input.disabled = !picked;
       input.required = picked;
     };
+    // Preselect from the readiness check's "Start my estimate" link (?type=&island=&timeline=).
+    // Only exact option values are used; anything else is ignored. No personal data is passed.
+    const pre = new URLSearchParams(location.search);
+    for (const [param, name] of [['type', 'project-type'], ['island', 'island'], ['timeline', 'timeline']]) {
+      const v = pre.get(param);
+      const input = v ? [...form.querySelectorAll<HTMLInputElement>(`input[type=radio][name="${name}"]`)].find((i) => i.value === v) : undefined;
+      if (input) input.checked = true;
+    }
     others.forEach(syncOther);
     const error = form.querySelector<HTMLElement>('[data-step-error]')!;
     let current = 0;

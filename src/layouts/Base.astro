@@ -12,6 +12,7 @@ import { logo, hero } from '../content/images';
 import Phone from '../components/Phone.astro';
 import Draft from '../components/Draft.astro';
 import { legalPages } from '../content/legal';
+import { readiness } from '../content/readiness';
 import { shown } from '../lib/draft';
 
 export interface Crumb { name: string; path: string }
@@ -221,6 +222,7 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
             <ul>
               <li><a href="/guides">{ui.footerGuides}</a></li>
               {publishedGuides.map((g) => <li><a href={g.href}>{g.h1}</a></li>)}
+              {shown(readiness) && <li><Draft inline item={readiness}><a href={readiness.path}>{readiness.promoLink}</a></Draft></li>}
             </ul>
           </nav>
           <nav aria-label={ui.footerCompanyLabel}>

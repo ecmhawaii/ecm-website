@@ -3,9 +3,10 @@ import sitemap from '@astrojs/sitemap';
 import { SITE } from './site.config.mjs';
 import { draftPaths } from './src/content/site.ts';
 import { legalPages } from './src/content/legal.ts';
+import { readiness } from './src/content/readiness.ts';
 
 // Unconfirmed pages (confirm:false) stay out of the sitemap; production does not build them at all.
-const excluded = ['/thank-you', ...draftPaths, ...legalPages.filter((p) => !p.confirm).map((p) => p.path)];
+const excluded = ['/thank-you', ...draftPaths, ...[...legalPages, readiness].filter((p) => !p.confirm).map((p) => p.path)];
 // Printable checklists are noindex and never in the sitemap.
 const excludedPrefixes = ['/checklists/'];
 

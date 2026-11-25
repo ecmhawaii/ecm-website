@@ -775,3 +775,11 @@ html { scroll-padding-bottom: 96px; }
   a { color: #000000; }
   .checklist-source a::after { content: ' (ecmhawaii.com' attr(href) ')'; }
 }
+
+/* Project readiness check */
+.readiness-form { gap: 28px; }
+.readiness-q legend { margin-bottom: 10px; font-size: 1.05rem; }
+.readiness-result h2 { margin-top: 4px; }
+.readiness-result:focus { outline: none; }
+.readiness-next { padding-left: 20px; }
+.readiness-promo { margin-top: 32px; }
