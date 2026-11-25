@@ -39,6 +39,8 @@ const f = c.fields;
         >
           <input type="hidden" name="form-name" value={c.formName} />
           <input type="hidden" name="subject" value={c.defaultSubject} data-subject-prefix={c.subjectPrefix} />
+          <input type="hidden" name="lead-type" value={c.leadType} />
+          <input type="hidden" name="source-page" value="/contact" />
           <p class="hidden-field">
             <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
           </p>

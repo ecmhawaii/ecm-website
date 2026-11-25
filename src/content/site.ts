@@ -605,6 +605,8 @@ export const estimate = {
   questionLead: 'Just have a question?',
   questionLink: 'Send us a message.',
   formName: 'estimate',
+  // Hidden lead-type field: the lead log (ops/lead-log) sorts leads by it.
+  leadType: 'estimate',
   formVersion: 'v2-multistep',
   defaultSubject: 'New lead: estimate request',
   subjectPrefix: 'New lead',
@@ -663,6 +665,15 @@ export const estimate = {
       bestTime: 'Best time to call',
       bestTimes: ['Morning', 'Afternoon', 'Evening', 'Any time'],
       notes: 'Anything else about the project (optional)',
+      // How did you hear about us (Ellard, 2026-11-25). Optional; "Other" uses the same
+      // show-and-require text field pattern as project type and island.
+      heardAbout: {
+        label: 'How did you hear about us? (optional)',
+        name: 'heard-about',
+        otherLabel: 'Where did you hear about us?',
+        otherName: 'heard-about-other',
+        options: ['Google search', 'Google Maps', 'Instagram', 'Facebook', 'Friend or family', 'Architect or designer', 'Saw an ECM job sign', 'Other'],
+      },
     },
   },
 };
@@ -706,6 +717,7 @@ export const contact = {
   messageHeading: 'Send a message',
   messageLine: 'For questions that are not an estimate request. We reply by email within one business day.',
   formName: 'contact',
+  leadType: 'contact',
   // Email subject for Netlify's alert (hidden "subject" field). JS adds the visitor's subject.
   defaultSubject: 'Website message',
   subjectPrefix: 'Website message',

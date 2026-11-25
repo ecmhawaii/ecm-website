@@ -29,6 +29,7 @@ const total = 6;
         <input type="hidden" name="subject" value={e.defaultSubject} data-subject-prefix={e.subjectPrefix} />
         <input type="hidden" name="source-page" value="unknown" />
         <input type="hidden" name="form-version" value={e.formVersion} />
+        <input type="hidden" name="lead-type" value={e.leadType} />
         <p class="hidden-field">
           <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
         </p>
@@ -106,6 +107,18 @@ const total = 6;
             <label for="notes">{s.contact.notes}</label>
             <textarea id="notes" name="notes"></textarea>
           </div>
+          <div class="field">
+            <label for="heard-about">{s.contact.heardAbout.label}</label>
+            <select id="heard-about" name={s.contact.heardAbout.name}>
+              <option value="">{ui.selectPlaceholder}</option>
+              {s.contact.heardAbout.options.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+          {/* Shown and required only when "Other" is picked (JS). JS off: visible and optional. */}
+          <div class="field other-field" data-other-for={s.contact.heardAbout.name}>
+            <label for="heard-about-other">{s.contact.heardAbout.otherLabel}</label>
+            <input id="heard-about-other" name={s.contact.heardAbout.otherName} type="text" maxlength="120" autocomplete="off" />
+          </div>
         </fieldset>
 
         <p class="step-error" role="alert" hidden data-step-error>{e.chooseOne}</p>
@@ -142,7 +155,8 @@ const total = 6;
     // Hidden ones are disabled, so they are never validated or submitted.
     const others = [...form.querySelectorAll<HTMLElement>('[data-other-for]')];
     const syncOther = (wrap: HTMLElement) => {
-      const picked = form.querySelector<HTMLInputElement>(`input[type=radio][name="${wrap.dataset.otherFor}"]:checked`)?.value === 'Other';
+      // Works for radio groups and selects ("How did you hear about us?").
+      const picked = (form.elements.namedItem(wrap.dataset.otherFor!) as RadioNodeList | HTMLSelectElement | null)?.value === 'Other';
       const input = wrap.querySelector<HTMLInputElement>('input')!;
       wrap.hidden = !picked;
       input.disabled = !picked;
@@ -193,7 +207,7 @@ const total = 6;
     form.addEventListener('change', (ev) => {
       error.hidden = true;
       const input = ev.target as HTMLInputElement;
-      const otherWrap = input.type === 'radio' ? others.find((w) => w.dataset.otherFor === input.name) : undefined;
+      const otherWrap = input.type === 'radio' || input.tagName === 'SELECT' ? others.find((w) => w.dataset.otherFor === input.name) : undefined;
       if (otherWrap) {
         syncOther(otherWrap);
         // Picked "Other" with a tap or click: go straight to its text field.
