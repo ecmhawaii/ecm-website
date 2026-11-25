@@ -179,11 +179,11 @@ export const ctaBand = {
 };
 
 export const home = {
-  title: 'Elite Construction Management | Hawaii General Contractor',
+  title: 'General Contractor in Honolulu and Oahu | Elite Construction Management',
   description:
     'Kapolei general contractor for custom homes, ADUs, remodels and commercial tenant improvements. Call (808) 987-5782 or request an estimate online.',
   eyebrow: 'Licensed Hawaii general contractor',
-  h1: 'General contractor for homes and businesses in Hawaii',
+  h1: 'General contractor on Oahu for homes and businesses',
   heroLine: 'Custom homes, ADUs and additions, remodels and commercial tenant improvements on Oahu, Maui and the Big Island.',
   hookEyebrow: 'How we work',
   hook: 'One team from the first walkthrough to the final inspection.',
@@ -270,12 +270,13 @@ export const serviceDetail: Record<string, ServicePage> = {
   adu: {
     key: 'adu',
     path: '/adu-oahu',
-    title: 'ADUs and Ohana Units on Oahu | Elite Construction Management',
+    title: 'ADU and Ohana Unit Builder on Oahu | Elite Construction Management',
     description:
       'ADUs, ohana units and additions built by Elite Construction Management, a licensed Hawaii general contractor based in Kapolei. Request an estimate.',
-    h1: 'ADUs and ohana units on Oahu',
+    h1: 'ADU and ohana unit builder on Oahu',
     intro: [
-      'An ADU or addition adds space without moving. We handle the build and coordinate permits and inspections.',
+      // SEO dispatch 2 (2026-11-25): first paragraph uses both 'ADU' and 'ohana unit'.
+      'An ADU, ohana unit or addition adds space without moving. We handle the build and coordinate permits and inspections.',
       'Elite Construction Management is a licensed Hawaii general contractor based in Kapolei.',
     ],
     image: 'adu',
@@ -304,12 +305,12 @@ export const serviceDetail: Record<string, ServicePage> = {
   customHomes: {
     key: 'customHomes',
     path: '/custom-homes',
-    title: 'Custom Home Builder in Hawaii | Elite Construction Management',
+    title: 'Custom Home Builders on Oahu and the Big Island | Elite Construction Management',
     description:
       'Custom homes and new construction by Elite Construction Management, a licensed general contractor based in Kapolei, Hawaii. Request an estimate.',
-    h1: 'Custom homes and new construction',
+    h1: 'Custom home builder in Hawaii',
     intro: [
-      'Already have plans? We build from them. Starting with just an idea or a lot? We connect you with an architect or designer and take it from first drawings to move in. We manage permits, subs and inspections the whole way.',
+      'Already have plans? We build from them. Starting with just an idea or a lot? We connect you with an architect or designer and take it from first drawings to move in. We manage permits, subs and inspections the whole way. Recent work includes new single family homes in Puna on the Big Island.',
     ],
     image: 'home',
     sections: [
@@ -331,10 +332,10 @@ export const serviceDetail: Record<string, ServicePage> = {
   remodeling: {
     key: 'remodeling',
     path: '/remodeling',
-    title: 'Home Remodeling in Hawaii | Elite Construction Management',
+    title: 'Kitchen, Bathroom and Home Remodeling on Oahu | Elite Construction Management',
     description:
       'Kitchen, bathroom and whole home remodels by Elite Construction Management, a licensed Hawaii general contractor based in Kapolei. Request an estimate.',
-    h1: 'Home remodeling: kitchens, bathrooms and whole homes',
+    h1: 'Home remodeling on Oahu: kitchens, bathrooms and whole homes',
     intro: [
       'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.',
     ],
@@ -362,10 +363,10 @@ export const serviceDetail: Record<string, ServicePage> = {
   commercial: {
     key: 'commercial',
     path: '/commercial-tenant-improvements',
-    title: 'Tenant Improvements in Hawaii | Elite Construction Management',
+    title: 'Commercial Tenant Improvement Contractor in Hawaii | Elite Construction Management',
     description:
       'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor CT-37929 in Kapolei.',
-    h1: 'Commercial tenant improvements',
+    h1: 'Commercial tenant improvement contractor',
     intro: ['Build outs and renovations for retail, office and other commercial spaces.'],
     image: 'acsSign',
     sections: [

@@ -2,7 +2,7 @@
 slug: hiring-a-general-contractor-in-hawaii
 status: final
 title: "How to Hire a General Contractor in Hawaii (2026 Guide)"
-description: "How to hire a licensed general contractor in Hawaii: check the license, compare bids, and know what the contract must say and how to pay."
+description: "How to hire a licensed general contractor in Hawaii: look up the license, compare bids, and know what the contract must say and how to pay."
 h1: "How to hire a general contractor in Hawaii"
 checked: 2026-11-22
 ---
@@ -102,6 +102,10 @@ Elite Construction Management (ECM) is a licensed Hawaii general contractor, lic
 ### How do I check a contractor's license in Hawaii?
 
 Use DCCA's license search at [mypvl.dcca.hawaii.gov/public-license-search](https://mypvl.dcca.hawaii.gov/public-license-search) or call 1-844-808-3222. [6] [8]
+
+### How do I look up a contractor license in Hawaii?
+
+DCCA's Professional and Vocational License Search shows license status, classifications and proof of insurance. [6] The search is at [mypvl.dcca.hawaii.gov/public-license-search](https://mypvl.dcca.hawaii.gov/public-license-search). [8] Search by the license ID the state uses, which for contractors starts with CT. A class code such as BC is not the license number and returns no result.
 
 ### Do I need a licensed contractor for a small job?
 
