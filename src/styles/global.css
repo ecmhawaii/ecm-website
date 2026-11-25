@@ -241,6 +241,11 @@ html { scroll-padding-bottom: 96px; }
 .subs-line { margin-top: 28px; }
 .draft-badge { display: inline-block; background: #ffd24d; color: var(--ink); font-weight: 700; font-size: 0.85rem; padding: 4px 10px; border-radius: 4px; margin: 0 0 12px; }
 .draft-badge-sm { margin: 8px 0 0; font-family: var(--font-body); font-size: 0.75rem; display: table; }
+/* Draft gating (src/lib/draft.ts): confirm:false items on previews get a yellow outline and tag. */
+.draft-block { outline: 2px dashed #c99a00; outline-offset: 4px; }
+.draft-inline { outline: 1px dashed #c99a00; outline-offset: 2px; }
+.draft-tag { display: inline-block; background: #ffd24d; color: #111111; font-family: var(--font-body); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.4; padding: 2px 8px; border-radius: 4px; margin: 0 8px 6px 0; vertical-align: middle; }
+@media print { .draft-tag { border: 1px solid #111111; } }
 .draft-note { color: #6b5600; background: #fff6d6; border-left: 4px solid #ffd24d; padding: 8px 12px; }
 .reply-pill { display: inline-flex; align-items: center; gap: 10px; margin: 4px 0 0; padding: 8px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); color: var(--on-dark); font-weight: 700; }
 .reply-pill::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #7fd49b; }

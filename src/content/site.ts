@@ -165,6 +165,8 @@ export const ui = {
   sliderPrev: 'Previous photo',
   sliderNext: 'Next photo',
   draftBadge: 'DRAFT, content pending',
+  // Badge on confirm:false items (deploy previews only, see src/lib/draft.ts).
+  draftTag: 'Draft',
   faqHeading: 'Questions and answers',
   onThisPage: 'On this page',
   guideEyebrow: 'Guide',

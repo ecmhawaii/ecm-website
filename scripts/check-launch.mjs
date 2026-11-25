@@ -18,6 +18,7 @@ const pages = htmlFiles(DIST).map((file) => ({
 }));
 
 const blockers = [];
+const warnings = [];
 const notes = [];
 
 // 1. Placeholder images (sample stock photos or the unconfirmed hero) on any page.
@@ -79,6 +80,34 @@ if (!phoneLine || !phoneValue || phoneValue === placeholder || phoneDigits.lengt
   blockers.push('Set the ECM Twilio number before launch.' + (placeholderPages.length ? ` (phone placeholder on ${placeholderPages.length} pages; PHONE in src/content/site.ts)` : ' (PHONE in src/content/site.ts)'));
 }
 
+// 7. Draft gating (src/lib/draft.ts). Every confirm:false item is listed. Privacy and terms
+// pages that are not confirmed are blockers (the forms and the SMS program link to them);
+// the rest are warnings. A production build must contain no Draft badge.
+const LAUNCH_BLOCKING = ['privacy-page', 'terms-page'];
+const srcFiles = (dir) => readdirSync(dir).flatMap((f) => {
+  const p = join(dir, f);
+  return statSync(p).isDirectory() ? srcFiles(p) : /\.(ts|mjs|astro)$/.test(p) ? [p] : [];
+});
+const unconfirmed = [];
+for (const file of srcFiles('src')) {
+  readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+    if (/^\s*(\/\/|\*)/.test(line)) return; // comments and docs
+    const m = line.match(/\bconfirm:\s*false\b/);
+    if (!m) return;
+    const id = (line.match(/\bid:\s*'([^']+)'/) || [])[1] || '(no id on this line)';
+    unconfirmed.push({ id, where: `${file}:${i + 1}` });
+  });
+}
+for (const u of unconfirmed) {
+  if (LAUNCH_BLOCKING.includes(u.id)) blockers.push(`Not confirmed: ${u.id} (${u.where}). Privacy and terms must be confirmed before launch.`);
+  else warnings.push(`Not confirmed (left out of production): ${u.id} (${u.where})`);
+}
+const draftInBuild = pages.filter((p) => p.html.includes('data-draft='));
+if (draftInBuild.length) {
+  const how = process.env.CONTEXT === 'production' ? '' : ' (this dist was not built with CONTEXT=production; run npm run check:launch)';
+  blockers.push(`Draft badges in the build on ${draftInBuild.length} pages: ${draftInBuild.map((p) => p.path).join(', ')}${how}`);
+}
+
 // Hidden slots (information only, not blockers).
 const slotsBlock = siteTs.slice(siteTs.indexOf('export const slots'), siteTs.indexOf('export const nav'));
 const offSlots = [...slotsBlock.matchAll(/^ {2}(\w+): \{\s*\n\s*enabled: false/gm)].map((m) => m[1]);
@@ -86,6 +115,7 @@ if (offSlots.length) notes.push(`Hidden slots switched off (fine at launch if Je
 
 console.log(`\ncheck:launch for ${SITE}  (${pages.length} built pages)\n`);
 if (notes.length) { console.log('Notes:'); notes.forEach((n) => console.log(`  - ${n}`)); console.log(''); }
+if (warnings.length) { console.log(`Warnings (${warnings.length}):`); warnings.forEach((w) => console.log(`  - ${w}`)); console.log(''); }
 if (blockers.length) {
   console.log(`NOT READY. ${blockers.length} launch blocker(s):`);
   blockers.forEach((b, i) => console.log(`  ${i + 1}. ${b}`));

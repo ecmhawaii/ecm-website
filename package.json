@@ -10,7 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check:launch": "npm run build && node scripts/check-launch.mjs",
+    "check:launch": "node scripts/build-production.mjs && node scripts/check-launch.mjs",
     "indexnow": "node scripts/indexnow-submit.mjs"
   },
   "dependencies": {
