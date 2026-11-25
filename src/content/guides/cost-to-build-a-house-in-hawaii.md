@@ -29,7 +29,7 @@ RLB describes its figures as estimates of hard construction costs, and says cost
 
 The report does not spell out what sits outside hard costs. In construction budgeting, land, design and engineering fees, permit fees and financing are usually counted separately as soft costs, so budget for those on top.
 
-The RLB figures are for Honolulu. We found no solid published cost per square foot for Maui or Hawaii Island, so we do not give one.
+The RLB figures are for Honolulu. We found no solid published cost per square foot for Maui or the Big Island, so we do not give one.
 
 ## Are building costs in Hawaii still going up?
 
@@ -85,7 +85,7 @@ The Hawaii Department of Commerce and Consumer Affairs (DCCA) suggests setting a
 
 ## How ECM can help
 
-Elite Construction Management (ECM) is a licensed Hawaii general contractor, license CT-37929, Class B General Building, and is veteran owned. ECM is based in Kapolei and serves Oahu, Maui and Hawaii Island. ECM builds new homes, ADUs and additions, remodels, and commercial tenant improvements. ECM runs the job from first walkthrough to final inspection, and plumbing and electrical are done by licensed subcontractors. Call (808) 987-5782. ECM calls back the same business day.
+Elite Construction Management (ECM) is a licensed Hawaii general contractor, license CT-37929, Class B General Building, and is veteran owned. ECM is based in Kapolei and serves Oahu, Maui and the Big Island. ECM builds new homes, ADUs and additions, remodels, and commercial tenant improvements. ECM runs the job from first walkthrough to final inspection, and plumbing and electrical are done by licensed subcontractors. Call (808) 987-5782. ECM calls back the same business day.
 
 ## FAQ
 
@@ -113,9 +113,9 @@ Hawaii has a general excise tax. The rate is 4 percent plus a 0.5 percent county
 
 In Honolulu, stamped plans are required when residence work exceeds $180,000 for one story or $162,000 for two stories, and in flood hazard areas, special management areas and special design districts. [5]
 
-### Is it cheaper to build on Hawaii Island than on Oahu?
+### Is it cheaper to build on the Big Island than on Oahu?
 
-We found no published cost per square foot for Hawaii Island. Hawaii County did have the shortest permit time and the lowest median sale price in the UHERO report. [7]
+We found no published cost per square foot for the Big Island. Hawaii County did have the shortest permit time and the lowest median sale price in the UHERO report. [7]
 
 ## Sources
 

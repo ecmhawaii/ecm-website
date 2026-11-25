@@ -1,13 +1,19 @@
 ---
 // Home hero. Everything important sits above the fold on 390x844 and 1440x900:
 // eyebrow, headline, one support line, two buttons and the credentials strip.
-// The photo is the LCP element: never hidden, never faded (motion only scales it).
-import { Image } from 'astro:assets';
+// Load feel (Ellard, 2026-11-25): the hero arrives as one piece, no loader screen.
+// - A tiny blurred copy of the photo (built from HERO_SRC, a few hundred bytes) shows from
+//   first paint, under the real photo, so the hero is never blank or painted top down.
+// - The real photo is the LCP element: never hidden, faded or lazy loaded; fetchpriority high.
+// - The text block fades up together in CSS (data-hero-in, see global.css): one 420ms fade
+//   with a 40ms stagger, no JS needed. JS off or reduced motion: visible at once.
+import { Image, getImage } from 'astro:assets';
 import { hero } from '../content/images';
 import { business, ui } from '../content/site';
 import CredentialsStrip from './CredentialsStrip.astro';
 interface Props { eyebrow: string; h1: string; line: string }
 const { eyebrow, h1, line } = Astro.props;
+const blur = await getImage({ src: hero.src, width: 32, format: 'webp', quality: 40 });
 ---
 <section class="hero" data-placeholder={hero.placeholder ? 'true' : undefined}>
   <div class="hero-media" data-parallax>
@@ -15,7 +21,7 @@ const { eyebrow, h1, line } = Astro.props;
       src={hero.src}
       alt={hero.alt}
       width={1920}
-      widths={[640, 960, 1280, 1600, 1920]}
+      widths={[640, 800, 960, 1280, 1600, 1920]}
       sizes="100vw"
       quality={60}
       format="webp"
@@ -23,13 +29,15 @@ const { eyebrow, h1, line } = Astro.props;
       class="hero-img"
       data-hero-img
     />
+    {/* After the photo in the markup so the photo is requested first; painted underneath it (z-index). */}
+    <img class="hero-blur" src={blur.src} width={blur.attributes.width} height={blur.attributes.height} alt="" aria-hidden="true" decoding="sync" loading="eager" />
   </div>
   <div class="hero-overlay"></div>
   <div class="container hero-inner">
-    <p class="eyebrow eyebrow-light" data-hero-fade>{eyebrow}</p>
-    <h1 class="hero-title" data-hero-title>{h1}</h1>
-    <p class="hero-line" data-hero-fade>{line}</p>
-    <div class="btn-row hero-btns" data-hero-fade>
+    <p class="eyebrow eyebrow-light" data-hero-in="0">{eyebrow}</p>
+    <h1 class="hero-title" data-hero-in="1">{h1}</h1>
+    <p class="hero-line" data-hero-in="2">{line}</p>
+    <div class="btn-row hero-btns" data-hero-in="3">
       <a class="btn btn-lg btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
       <a class="btn btn-lg btn-ghost" href={business.phoneHref}>{ui.callButton}</a>
     </div>

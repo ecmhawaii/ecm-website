@@ -52,6 +52,7 @@ const business_ld: Record<string, unknown> = {
     addressCountry: business.country,
   },
 };
+if (business.hours.openingHours.length) business_ld.openingHours = business.hours.openingHours;
 if (business.areaServed.length) {
   business_ld.areaServed = business.areaServed.map((name) => ({ '@type': 'Place', name }));
 }
@@ -72,6 +73,8 @@ const breadcrumb_ld = crumbs.length
 const ld = [business_ld, breadcrumb_ld, ...schema].filter(Boolean);
 const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
 const onEstimatePage = path === '/start-your-project';
+// "Elite Construction" / "Management": split at the last space.
+const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), business.name.slice(business.name.lastIndexOf(' ') + 1)];
 ---
 <!doctype html>
 <html lang="en">
@@ -111,7 +114,8 @@ const onEstimatePage = path === '/start-your-project';
       <div class="container header-bar">
         <a class="brand" href="/">
           <Image src={logo.src} alt="" width={56} densities={[1, 2]} class="brand-logo" loading="eager" />
-          <span class="brand-name">{business.name}</span>
+          {/* Two fixed lines on phones, so the wordmark keeps its height when the web font loads (no layout shift). */}
+          <span class="brand-name"><span class="brand-line">{brandLines[0]}</span> <span class="brand-line">{brandLines[1]}</span></span>
         </a>
         <nav class="nav-desktop" aria-label={ui.mainNavLabel}>
           <ul>
@@ -171,6 +175,7 @@ const onEstimatePage = path === '/start-your-project';
           <div>
             <p class="footer-head">{ui.footerContactLabel}</p>
             <p><a href={business.phoneHref}>{business.phoneDisplay}</a></p>
+            {business.hours.text && <p class="footer-hours">{business.hours.text}</p>}
             <p><a href={business.emailHref}>{business.email}</a></p>
             <p>{business.city}</p>
             <p class="footer-head footer-head-gap">{ui.footerIslandsLabel}</p>

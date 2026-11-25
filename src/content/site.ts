@@ -25,8 +25,12 @@ export const business = {
   // Confirmed by Jesse (via Ellard, 2026-11-21).
   veteranOwned: 'Veteran owned',
   // Islands Jesse has confirmed ECM serves (2026-11-21). Drives areaServed in structured data.
-  areaServed: ['Oahu', 'Maui', 'Hawaii Island'] as string[],
-  islandsLine: 'Oahu, Maui and Hawaii Island',
+  areaServed: ['Oahu', 'Maui', 'Big Island'] as string[],
+  islandsLine: 'Oahu, Maui and the Big Island',
+  // Business hours. Empty = nothing shows. Fill from Answer Sheet #31; must match the Google listing.
+  //   text:         shown in the footer next to the phone, e.g. 'Mon to Fri, 7am to 4pm' (no dashes)
+  //   openingHours: schema.org format for the JSON-LD, e.g. ['Mo-Fr 07:00-16:00']
+  hours: { text: '', openingHours: [] as string[] },
 };
 
 // Clients ECM has built for. Confirmed by Jesse (via Ellard, 2026-11-21). Names only, as text. No logos.
@@ -180,7 +184,7 @@ export const home = {
     'Kapolei general contractor for custom homes, ADUs, remodels and commercial tenant improvements. Call (808) 987-5782 or request an estimate online.',
   eyebrow: 'Licensed Hawaii general contractor',
   h1: 'General contractor for homes and businesses in Hawaii',
-  heroLine: 'Custom homes, ADUs and additions, remodels and commercial tenant improvements on Oahu, Maui and Hawaii Island.',
+  heroLine: 'Custom homes, ADUs and additions, remodels and commercial tenant improvements on Oahu, Maui and the Big Island.',
   hookEyebrow: 'How we work',
   hook: 'One team from the first walkthrough to the final inspection.',
   intro:
@@ -189,10 +193,10 @@ export const home = {
   servicesHeading: 'What we build',
   // Big service list: name, one line (confirmed copy), photo slot, page.
   servicesList: [
-    { name: 'Custom homes and new construction', line: 'New homes from plans you bring or plans developed with your architect or designer.', image: 'home', href: '/custom-homes' },
+    { name: 'Custom homes and new construction', line: 'New homes built from your plans, or from scratch with an architect or designer we connect you with.', image: 'home', href: '/custom-homes' },
     { name: 'ADUs and additions', line: 'An ADU or addition adds space without moving.', image: 'adu', href: '/adu-oahu' },
     { name: 'Remodels', line: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.', image: 'mililani-kitchen-1', href: '/remodeling' },
-    { name: 'Commercial', line: 'Build outs and renovations for retail, office and other commercial spaces.', image: 'longsStore', href: '/commercial-tenant-improvements' },
+    { name: 'Commercial', line: 'Build outs and renovations for retail, office and other commercial spaces.', image: 'acsSign', href: '/commercial-tenant-improvements' },
   ],
   featuredEyebrow: 'Recent work',
   featuredHeading: 'Featured projects',
@@ -208,7 +212,7 @@ export const home = {
     { name: 'Custom homes and new construction', href: '/custom-homes', image: 'home' },
     { name: 'ADUs and additions', href: '/adu-oahu', image: 'adu' },
     { name: 'Remodels', href: '/remodeling', image: 'mililani-kitchen-1' },
-    { name: 'Commercial tenant improvements', href: '/commercial-tenant-improvements', image: 'longsStore' },
+    { name: 'Commercial tenant improvements', href: '/commercial-tenant-improvements', image: 'acsSign' },
   ],
 };
 
@@ -225,7 +229,7 @@ export const services = {
     {
       id: 'custom-homes',
       name: 'Custom homes and new construction',
-      text: 'We build new homes from plans you bring or plans developed with your architect or designer. We manage permits, subs and inspections through to move in.',
+      text: 'Already have plans? We build from them. Starting with just an idea or a lot? We connect you with an architect or designer and take it from first drawings to move in. We manage permits, subs and inspections the whole way.',
       href: '/custom-homes',
     },
     {
@@ -305,7 +309,7 @@ export const serviceDetail: Record<string, ServicePage> = {
       'Custom homes and new construction by Elite Construction Management, a licensed general contractor based in Kapolei, Hawaii. Request an estimate.',
     h1: 'Custom homes and new construction',
     intro: [
-      'We build new homes from plans you bring or plans developed with your architect or designer. We manage permits, subs and inspections through to move in.',
+      'Already have plans? We build from them. Starting with just an idea or a lot? We connect you with an architect or designer and take it from first drawings to move in. We manage permits, subs and inspections the whole way.',
     ],
     image: 'home',
     sections: [
@@ -363,7 +367,7 @@ export const serviceDetail: Record<string, ServicePage> = {
       'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor CT-37929 in Kapolei.',
     h1: 'Commercial tenant improvements',
     intro: ['Build outs and renovations for retail, office and other commercial spaces.'],
-    image: 'longsStore',
+    image: 'acsSign',
     sections: [
       {
         id: 'what-it-involves',
@@ -398,7 +402,7 @@ export type Project = {
 export const projects = {
   title: 'Projects | Elite Construction Management',
   description:
-    'Projects by Elite Construction Management: Hope Lodge, Longs Drugs, new homes on Hawaii Island, and remodels and an addition in Waianae and Mililani.',
+    'Projects by Elite Construction Management: Hope Lodge, Longs Drugs, new homes on the Big Island, and remodels and an addition in Waianae and Mililani.',
   h1: 'Our projects',
   text: 'A few recent jobs. Ask us about similar projects when you request an estimate.',
   eyebrow: 'Portfolio',
@@ -416,7 +420,6 @@ export const projects = {
         { image: 'acsExterior', caption: 'American Cancer Society Hope Lodge, Honolulu' },
         { image: 'acsCeiling1', caption: 'Interior restoration and ceiling work' },
         { image: 'acsCeiling2', caption: 'Interior restoration and ceiling work' },
-        { image: 'pergola1', caption: 'Aluminum pergola system' },
         { image: 'pergolaView', caption: 'Aluminum pergola system' },
       ],
     },
@@ -473,14 +476,14 @@ export const projects = {
         { image: 'mililani-bathroom-2', caption: 'Bathroom' },
       ],
     },
-    // Hawaii Island new homes and a second Waianae remodel: PM wording (2026-11-23).
+    // Big Island new homes and a second Waianae remodel: PM wording (2026-11-23).
     // Built as new homes for sale: never caption them as custom homes.
     {
       id: 'hawaii-island-new-homes',
-      name: 'Hawaii Island new homes',
+      name: 'Big Island new homes',
       type: 'New homes',
-      place: 'Hawaii Island',
-      summary: 'New single family homes built on Hawaii Island.',
+      place: 'Big Island',
+      summary: 'New single family homes built on the Big Island.',
       cover: 'hawaii-island-new-home-exterior-2',
       gallery: [
         { image: 'hawaii-island-new-home-exterior-1', caption: 'New home' },
@@ -516,7 +519,7 @@ export const projects = {
       place: 'Kaneohe, Oahu',
       summary: 'Bamboo floor remodel at a Kaneohe residence.',
       cover: 'bambooAfter',
-      compare: { before: 'bambooBefore', after: 'bambooAfter', beforeLabel: 'Before', afterLabel: 'After' },
+      compare: { before: 'bambooBefore', after: 'bambooAfterAligned', beforeLabel: 'Before', afterLabel: 'After' },
     },
     {
       id: 'salt-lake-driveway',
@@ -526,7 +529,7 @@ export const projects = {
       summary: 'Concrete driveway and walkway at a Salt Lake residence.',
       cover: 'drivewayDuring',
       // No finished "after" photo on file yet: the second photo is during the pour.
-      compare: { before: 'drivewayBefore', after: 'drivewayDuring', beforeLabel: 'Before', afterLabel: 'During' },
+      compare: { before: 'drivewayBeforeAligned', after: 'drivewayDuring', beforeLabel: 'Before', afterLabel: 'During' },
     },
     {
       id: 'concrete-walkway',
@@ -551,7 +554,7 @@ export const about = {
   h1: 'About Elite Construction Management',
   text: 'Elite Construction Management is a Hawaii general contractor based in Kapolei, led by owner Jesse Alverio. Our crews are backed by licensed subcontractors for plumbing, electrical and other trades.',
   credentialsHeading: 'Credentials',
-  image: 'pergola1',
+  image: 'hawaii-island-new-home-exterior-4',
 };
 
 // Multi-step estimate form. Netlify form name stays "estimate".
@@ -573,6 +576,8 @@ export const estimate = {
     type: {
       legend: 'What kind of project is it?',
       name: 'project-type',
+      otherLabel: 'What kind of project?',
+      otherName: 'project-type-other',
       options: [
         'Custom home',
         'ADU or ohana unit',
@@ -587,8 +592,10 @@ export const estimate = {
     location: {
       legend: 'Where is the project?',
       islandLabel: 'Island',
+      islandOtherLabel: 'Which island or area?',
+      islandOtherName: 'island-other',
       islandName: 'island',
-      islands: ['Oahu', 'Maui', 'Hawaii Island', 'Kauai', 'Other'],
+      islands: ['Oahu', 'Maui', 'Big Island', 'Kauai', 'Other'],
       zipLabel: 'ZIP code',
       zipName: 'zip',
       zipHint: '5 digits',
@@ -744,10 +751,11 @@ export const planningGuideByType: Record<string, string> = {
 // Answers use ONLY confirmed facts. No prices, timelines, permit rules or guarantees.
 const Q = {
   licensed: { q: 'Are you a licensed contractor?', a: 'Yes. Elite Construction Management holds Hawaii contractor license CT-37929, Class B General Building.' },
-  islands: { q: 'What islands do you serve?', a: 'We work on Oahu, Maui and Hawaii Island. We are based in Kapolei.' },
+  islands: { q: 'What islands do you serve?', a: 'We work on Oahu, Maui and the Big Island. We are based in Kapolei.' },
   adus: { q: 'Do you build ADUs and ohana units?', a: 'Yes. We build ADUs, ohana units and additions. We handle the build and coordinate permits and inspections.' },
   commercial: { q: 'Do you do commercial build outs?', a: 'Yes. We do build outs and renovations for retail, office and other commercial spaces. We have worked on projects for Longs Drugs, American Cancer Society, Tesla and Buffalo Wild Wings.' },
-  plans: { q: "Can you build from my architect's plans?", a: 'Yes. We build from plans you bring or plans developed with your architect or designer.' },
+  plans: { q: "Can you build from my architect's plans?", a: 'Yes. And if you do not have plans yet, we connect you with an architect or designer to draw them.' },
+  // ^ 'we connect you with an architect or designer' is audit claim C29: needs Jesse's yes (Answer Sheet #30).
   trades: { q: 'Who does the plumbing and electrical?', a: 'Licensed subcontractors. Our crews are backed by licensed subcontractors for plumbing, electrical and other trades.' },
   estimate: { q: 'How do I get an estimate?', a: 'Fill out the estimate form or call (808) 987-5782. We will follow up to set up a site visit, walk the property with you and talk through scope, budget and timing.' },
   callback: { q: 'How fast will you call me back?', a: "We'll call you back the same business day." },

@@ -15,14 +15,17 @@ import acsExterior from '../assets/images/projects/acs-hope-lodge-exterior.jpg';
 import acsSign from '../assets/images/projects/acs-hope-lodge-sign.jpg';
 import acsCeiling1 from '../assets/images/projects/acs-hope-lodge-ceiling-repair-1.jpg';
 import acsCeiling2 from '../assets/images/projects/acs-hope-lodge-ceiling-repair-2.jpg';
-import acsPergola1 from '../assets/images/projects/acs-hope-lodge-pergola-1.jpg';
 import acsPergola2 from '../assets/images/projects/acs-hope-lodge-pergola-2.jpg';
 import bambooBefore from '../assets/images/projects/bamboo-floor-before.jpg';
 import bambooAfter from '../assets/images/projects/bamboo-floor-after.jpg';
+// Re-framed to line up with the before photo, for the compare slider only (Ellard, 2026-11-25).
+import bambooAfterAligned from '../assets/images/projects/bamboo-floor-after-aligned.jpg';
 import walk1 from '../assets/images/projects/concrete-walkway-1.jpg';
 import walk2 from '../assets/images/projects/concrete-walkway-2.jpg';
 import walk3 from '../assets/images/projects/concrete-walkway-3.jpg';
 import drivewayBefore from '../assets/images/projects/driveway-salt-lake-before.jpg';
+// Re-framed to line up with the during photo, for the compare slider only (Ellard, 2026-11-25).
+import drivewayBeforeAligned from '../assets/images/projects/driveway-salt-lake-before-aligned.jpg';
 import drivewayDuring from '../assets/images/projects/driveway-salt-lake-during.jpg';
 import longs1 from '../assets/images/projects/longs-drip-edge-1.jpg';
 import longs2 from '../assets/images/projects/longs-drip-edge-2.jpg';
@@ -30,7 +33,7 @@ import longs3 from '../assets/images/projects/longs-drip-edge-3.jpg';
 import longsBefore from '../assets/images/projects/longs-drip-edge-before.jpg';
 import longsAfter from '../assets/images/projects/longs-drip-edge-after.jpg';
 
-// ECM job photos, set 2 (SOURCES.md): Hawaii Island new homes and a second Waianae remodel.
+// ECM job photos, set 2 (SOURCES.md): Big Island new homes and a second Waianae remodel.
 import hawaiiIslandNewHomeBarnDoor from '../assets/images/projects/hawaii-island-new-home-barn-door.jpg';
 import hawaiiIslandNewHomeBathroom1 from '../assets/images/projects/hawaii-island-new-home-bathroom-1.jpg';
 import hawaiiIslandNewHomeDoubleVanity from '../assets/images/projects/hawaii-island-new-home-double-vanity.jpg';
@@ -96,7 +99,7 @@ export const logo = { src: ecmLogo, alt: 'Elite Construction Management logo' };
 // Hero (2026-11-23): Ellard picked exterior-1, but it is only 1067px wide and looked soft when
 // stretched to 1440 and 1920px wide (1.35x to 1.8x upscale). exterior-2 (2400px) stays sharp.
 const HERO_SRC = hawaiiIslandNewHomeExterior2;
-export const hero = { src: HERO_SRC, alt: 'New single family home built by Elite Construction Management on Hawaii Island', placeholder: false };
+export const hero = { src: HERO_SRC, alt: 'New single family home built by Elite Construction Management on the Big Island', placeholder: false };
 
 const job = (src: ImageMetadata, alt: string, position?: ImageSlot['position']): ImageSlot => ({ src, alt, placeholder: false, position });
 
@@ -106,14 +109,15 @@ export const photos: Record<string, ImageSlot> = {
   acsSign:        job(acsSign, 'American Cancer Society Hope Lodge sign on the building', 'upper'),
   acsCeiling1:    job(acsCeiling1, 'Open ceiling section during interior restoration and ceiling work at Hope Lodge', 'top'),
   acsCeiling2:    job(acsCeiling2, 'Finished ceiling panel after interior restoration and ceiling work at Hope Lodge', 'top'),
-  pergola1:       job(acsPergola1, 'Aluminum pergola system being installed on the Hope Lodge terrace', 'lower'),
   pergolaView:    job(acsPergola2, 'Aluminum pergola frame at Hope Lodge with a view over Honolulu', 'upper'),
   bambooBefore:   job(bambooBefore, 'Kaneohe residence before the bamboo floor remodel, bare concrete floor', 'lower'),
   bambooAfter:    job(bambooAfter, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
+  bambooAfterAligned: job(bambooAfterAligned, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
   walk1:          job(walk1, 'Garden courtyard with a concrete walkway', 'bottom'),
   walk2:          job(walk2, 'Concrete walkway forms and rebar set in a garden courtyard', 'lower'),
   walk3:          job(walk3, 'Crew finishing the concrete walkway pour', 'lower'),
   drivewayBefore: job(drivewayBefore, 'Salt Lake residence before the concrete driveway, gravel lot', 'lower'),
+  drivewayBeforeAligned: job(drivewayBeforeAligned, 'Salt Lake residence before the concrete driveway, gravel lot', 'center'),
   drivewayDuring: job(drivewayDuring, 'Crew pouring the concrete driveway and walkway at a Salt Lake residence', 'center'),
   longsBefore:    job(longsBefore, 'Longs Drugs store roof edge before the metal drip edge replacement', 'upper'),
   longsAfter:     job(longsAfter, 'Longs Drugs store roof edge after the metal drip edge replacement', 'upper'),
@@ -155,27 +159,27 @@ export const photos: Record<string, ImageSlot> = {
   kitchen:  job(mililaniKitchen1, 'Remodeled kitchen in a Mililani home with white cabinets and stainless steel appliances'),
   bathroom: job(waianaeBathroomAfter1, 'Remodeled bathroom in a Waianae home with a tub, tiled walls and a vanity'),
   adu:      job(waianaeAdditionSidingDone, 'New addition with a second unit at a Waianae home, during construction', 'bottom'),
-  home:     job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on Hawaii Island'),
+  home:     job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on the Big Island'),
 
-  // ECM job photos, set 2: Hawaii Island new homes and a second Waianae remodel (keys are the file names).
-  'hawaii-island-new-home-barn-door': job(hawaiiIslandNewHomeBarnDoor, 'Sliding barn door in a new home on Hawaii Island'),
-  'hawaii-island-new-home-bathroom-1': job(hawaiiIslandNewHomeBathroom1, 'Bathroom in a new home on Hawaii Island with a tub, marble-look tile and a long vanity'),
-  'hawaii-island-new-home-double-vanity': job(hawaiiIslandNewHomeDoubleVanity, 'Bathroom with a double vanity in a new home on Hawaii Island'),
-  'hawaii-island-new-home-entry': job(hawaiiIslandNewHomeEntry, 'Entry porch of a new home on Hawaii Island'),
-  'hawaii-island-new-home-exterior-1': job(hawaiiIslandNewHomeExterior1, 'New single family home built by Elite Construction Management on Hawaii Island'),
-  'hawaii-island-new-home-exterior-2': job(hawaiiIslandNewHomeExterior2, 'New single family home on Hawaii Island'),
-  'hawaii-island-new-home-exterior-3': job(hawaiiIslandNewHomeExterior3, 'Another new single family home on Hawaii Island'),
-  'hawaii-island-new-home-exterior-4': job(hawaiiIslandNewHomeExterior4, 'Front of a new home on Hawaii Island with a covered porch and French doors'),
-  'hawaii-island-new-home-great-room-1': job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on Hawaii Island'),
-  'hawaii-island-new-home-great-room-2': job(hawaiiIslandNewHomeGreatRoom2, 'Great room with a wood accent wall in a new home on Hawaii Island'),
-  'hawaii-island-new-home-kitchen-1': job(hawaiiIslandNewHomeKitchen1, 'Kitchen with an island and stainless steel appliances in a new home on Hawaii Island'),
-  'hawaii-island-new-home-kitchen-2': job(hawaiiIslandNewHomeKitchen2, 'Kitchen with white cabinets and an island in a new home on Hawaii Island'),
-  'hawaii-island-new-home-kitchen-3': job(hawaiiIslandNewHomeKitchen3, 'Kitchen with a stone island and white cabinets in a new home on Hawaii Island'),
-  'hawaii-island-new-home-living-dining': job(hawaiiIslandNewHomeLivingDining, 'Living and dining area in a new home on Hawaii Island'),
-  'hawaii-island-new-home-shower': job(hawaiiIslandNewHomeShower, 'Tiled shower and tub in a new home on Hawaii Island'),
+  // ECM job photos, set 2: Big Island new homes and a second Waianae remodel (keys are the file names).
+  'hawaii-island-new-home-barn-door': job(hawaiiIslandNewHomeBarnDoor, 'Sliding barn door in a new home on the Big Island'),
+  'hawaii-island-new-home-bathroom-1': job(hawaiiIslandNewHomeBathroom1, 'Bathroom in a new home on the Big Island with a tub, marble-look tile and a long vanity'),
+  'hawaii-island-new-home-double-vanity': job(hawaiiIslandNewHomeDoubleVanity, 'Bathroom with a double vanity in a new home on the Big Island'),
+  'hawaii-island-new-home-entry': job(hawaiiIslandNewHomeEntry, 'Entry porch of a new home on the Big Island'),
+  'hawaii-island-new-home-exterior-1': job(hawaiiIslandNewHomeExterior1, 'New single family home built by Elite Construction Management on the Big Island'),
+  'hawaii-island-new-home-exterior-2': job(hawaiiIslandNewHomeExterior2, 'New single family home on the Big Island'),
+  'hawaii-island-new-home-exterior-3': job(hawaiiIslandNewHomeExterior3, 'Another new single family home on the Big Island'),
+  'hawaii-island-new-home-exterior-4': job(hawaiiIslandNewHomeExterior4, 'Front of a new home on the Big Island with a covered porch and French doors'),
+  'hawaii-island-new-home-great-room-1': job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on the Big Island'),
+  'hawaii-island-new-home-great-room-2': job(hawaiiIslandNewHomeGreatRoom2, 'Great room with a wood accent wall in a new home on the Big Island'),
+  'hawaii-island-new-home-kitchen-1': job(hawaiiIslandNewHomeKitchen1, 'Kitchen with an island and stainless steel appliances in a new home on the Big Island'),
+  'hawaii-island-new-home-kitchen-2': job(hawaiiIslandNewHomeKitchen2, 'Kitchen with white cabinets and an island in a new home on the Big Island'),
+  'hawaii-island-new-home-kitchen-3': job(hawaiiIslandNewHomeKitchen3, 'Kitchen with a stone island and white cabinets in a new home on the Big Island'),
+  'hawaii-island-new-home-living-dining': job(hawaiiIslandNewHomeLivingDining, 'Living and dining area in a new home on the Big Island'),
+  'hawaii-island-new-home-shower': job(hawaiiIslandNewHomeShower, 'Tiled shower and tub in a new home on the Big Island'),
   'waianae-remodel-2-kitchen': job(waianaeRemodel2Kitchen, 'Remodeled kitchen with white cabinets in a Waianae home'),
   'waianae-remodel-2-shower': job(waianaeRemodel2Shower, 'Remodeled bathroom with a dark tiled shower in a Waianae home'),
 };
 
 // Home page photo slider, in order (all ECM job photos).
-export const sliderKeys = ['pergola1', 'hawaii-island-new-home-kitchen-1', 'waianae-kitchen-after-1', 'longsStore', 'mililani-kitchen-1', 'bambooAfter', 'waianae-addition-framing-3', 'walk3', 'drivewayDuring', 'acsSign', 'longsAfter'];
+export const sliderKeys = ['hawaii-island-new-home-kitchen-1', 'waianae-kitchen-after-1', 'mililani-kitchen-1', 'bambooAfter', 'waianae-addition-framing-3', 'walk3', 'drivewayDuring', 'acsSign', 'longsAfter'];

@@ -14,10 +14,10 @@ const { h1, lead, badge, eyebrow, photo } = Astro.props;
   {photo && <div class="hero-overlay"></div>}
   <div class="container page-head-inner">
     {badge && <p class="draft-badge">{badge}</p>}
-    {/* Intro motion only on photo heads. Text-only heads paint at once (they are the LCP). */}
-    {eyebrow && <p class="eyebrow eyebrow-light" data-hero-fade={photo ? '' : undefined}>{eyebrow}</p>}
-    <h1 data-hero-title={photo ? '' : undefined}>{h1}</h1>
-    {lead && <p class="lead" data-hero-fade={photo ? '' : undefined}>{lead}</p>}
+    {/* Same CSS fade-up as the home hero, on photo heads only. Text-only heads paint at once (they are the LCP). */}
+    {eyebrow && <p class="eyebrow eyebrow-light" data-hero-in={photo ? '0' : undefined}>{eyebrow}</p>}
+    <h1 data-hero-in={photo ? '1' : undefined}>{h1}</h1>
+    {lead && <p class="lead" data-hero-in={photo ? '2' : undefined}>{lead}</p>}
     <slot />
   </div>
 </section>

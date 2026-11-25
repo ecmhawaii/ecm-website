@@ -34,10 +34,12 @@ ECM's own job photos, copied from the live builder site by the PM with Ellard's 
 | projects/acs-hope-lodge-exterior.jpg | American Cancer Society Hope Lodge, Honolulu | ECM job. Small (709px wide): use only at card size |
 | projects/acs-hope-lodge-sign.jpg | American Cancer Society Hope Lodge | ECM job |
 | projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | Hope Lodge interior restoration and ceiling work | ECM job (grouping per live site order) |
-| projects/acs-hope-lodge-pergola-1.jpg, -2.jpg | Hope Lodge aluminum pergola system | ECM job (grouping per live site order) |
+| projects/acs-hope-lodge-pergola-2.jpg | Hope Lodge aluminum pergola system | ECM job (grouping per live site order). The install photo acs-hope-lodge-pergola-1.jpg was removed from the site and deleted from the repo 2026-11-25 (Ellard) |
 | projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | Concrete walkway in a garden courtyard | ECM job, which project unconfirmed |
 | projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | Bamboo floor remodel, Kaneohe residence | ECM job, before and after |
+| projects/bamboo-floor-after-aligned.jpg | Same job. Made 2026-11-25 from bamboo-floor-after.jpg so it lines up with the before photo: Pillow LANCZOS resize x1.46 to 1775x3153, crop box (507, 105, 1723, 2265), JPEG quality 85, progressive, no EXIF (Ellard approved the PM preview) | ECM job, after. Used only as the "after" in the bamboo compare slider |
 | projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | Concrete driveway and walkway, Salt Lake residence | ECM job, before and during |
+| projects/driveway-salt-lake-before-aligned.jpg | Same job. Made 2026-11-25 from driveway-salt-lake-before.jpg so it lines up with the during photo: Pillow LANCZOS resize to 1398x2484, crop box (92, 262, 1308, 2422), JPEG quality 85, progressive, no EXIF (Ellard approved the PM preview) | ECM job, before. Used only as the "before" in the driveway compare slider |
 | projects/longs-drip-edge-before.jpg, longs-drip-edge-after.jpg, longs-drip-edge-1/2/3.jpg | Longs Drugs stores, Oahu: metal drip edge replacement | ECM job |
 
 Not imported, on purpose:
@@ -53,16 +55,17 @@ All through Astro's Image component (resized, WebP). Slot names are in `src/cont
 | File | Slot | Used on |
 | --- | --- | --- |
 | projects/acs-hope-lodge-exterior.jpg | acsExterior | /portfolio gallery (card size only) |
-| projects/acs-hope-lodge-sign.jpg | acsSign | Home featured project card, home slider, /portfolio |
+| projects/acs-hope-lodge-sign.jpg | acsSign | Home Commercial service (services list), /commercial-tenant-improvements photo hero, home featured project card, home slider, /portfolio |
 | projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | acsCeiling1, acsCeiling2 | /portfolio gallery |
-| projects/acs-hope-lodge-pergola-1.jpg | pergola1 | Home slider, /about photo, /portfolio gallery |
 | projects/acs-hope-lodge-pergola-2.jpg | pergolaView | Home full-width photo band, /portfolio gallery |
-| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | /portfolio before and after slider; after also in the home slider and the /remodeling photo hero |
-| projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | drivewayBefore, drivewayDuring | /portfolio before and during slider (no finished photo on file); during also in the home slider |
+| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | before: /portfolio compare slider; after: home slider and the /remodeling photo hero |
+| projects/bamboo-floor-after-aligned.jpg | bambooAfterAligned | /portfolio compare slider ("after") only |
+| projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | drivewayBefore, drivewayDuring | before: registered, not placed (the slider uses the aligned copy); during: /portfolio compare slider and the home slider |
+| projects/driveway-salt-lake-before-aligned.jpg | drivewayBeforeAligned | /portfolio compare slider ("before") only |
 | projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | walk1, walk2, walk3 | /portfolio gallery; walk3 in the home slider |
 | projects/longs-drip-edge-before.jpg, -after.jpg | longsBefore, longsAfter | /portfolio gallery; after in the home slider |
 | projects/longs-drip-edge-1.jpg, -3.jpg | longs1, longsSign | /portfolio gallery |
-| projects/longs-drip-edge-2.jpg | longsStore | Home Commercial service, featured card, slider; /commercial-tenant-improvements photo hero |
+| projects/longs-drip-edge-2.jpg | longsStore | Longs Drugs portfolio card cover and home featured card. Since 2026-11-25 no longer on the Commercial service, the commercial page or the slider |
 
 ## ECM job photos from a repeat client's investment properties (2026-11-23)
 
@@ -114,7 +117,7 @@ Same source and terms as the set above: the client owns the photos, approved web
 
 | File | Job | Status |
 | --- | --- | --- |
-| projects/hawaii-island-new-home-exterior-1.jpg | New single family home, Puna district, Hawaii Island | ECM job, finished. 1067px wide only |
+| projects/hawaii-island-new-home-exterior-1.jpg | New single family home, Puna district, Big Island | ECM job, finished. 1067px wide only |
 | projects/hawaii-island-new-home-exterior-2.jpg, -3.jpg | Two more new single family homes, same area | ECM job, finished. 2400px |
 | projects/hawaii-island-new-home-exterior-4.jpg | Another new home, same area | ECM job, finished. 1067px wide only |
 | projects/hawaii-island-new-home-entry.jpg | Entry porch of a new home | ECM job, finished. 2400px |
@@ -130,18 +133,18 @@ Same source and terms as the set above: the client owns the photos, approved web
 
 | File | Used on |
 | --- | --- |
-| projects/hawaii-island-new-home-exterior-2.jpg | **Home hero and share card (og:image, twitter:image)**; /portfolio, Hawaii Island card cover |
-| projects/hawaii-island-new-home-exterior-1.jpg | /portfolio, Hawaii Island gallery ("New home"). Not the hero: only 1067px wide, soft when stretched to desktop widths |
-| projects/hawaii-island-new-home-exterior-3.jpg, -4.jpg | /portfolio, Hawaii Island gallery ("New home") |
-| projects/hawaii-island-new-home-entry.jpg | /portfolio, Hawaii Island gallery ("Entry porch") |
-| projects/hawaii-island-new-home-great-room-1.jpg | `home` slot: /custom-homes photo header, home services list (Custom homes); /portfolio, Hawaii Island gallery ("Great room and kitchen") |
-| projects/hawaii-island-new-home-living-dining.jpg | /portfolio, Hawaii Island gallery ("Living and dining") |
-| projects/hawaii-island-new-home-kitchen-1.jpg | Home slider; /portfolio, Hawaii Island gallery ("Kitchen") |
-| projects/hawaii-island-new-home-kitchen-3.jpg | /portfolio, Hawaii Island gallery ("Kitchen") |
-| projects/hawaii-island-new-home-bathroom-1.jpg | /portfolio, Hawaii Island gallery ("Bathroom") |
-| projects/hawaii-island-new-home-shower.jpg | /portfolio, Hawaii Island gallery ("Shower and tub") |
-| projects/hawaii-island-new-home-double-vanity.jpg | /portfolio, Hawaii Island gallery ("Double vanity") |
-| projects/hawaii-island-new-home-barn-door.jpg | /portfolio, Hawaii Island gallery ("Barn door detail") |
+| projects/hawaii-island-new-home-exterior-2.jpg | **Home hero and share card (og:image, twitter:image)**; /portfolio, Big Island card cover |
+| projects/hawaii-island-new-home-exterior-1.jpg | /portfolio, Big Island gallery ("New home"). Not the hero: only 1067px wide, soft when stretched to desktop widths |
+| projects/hawaii-island-new-home-exterior-3.jpg, -4.jpg | /portfolio, Big Island gallery ("New home"); exterior-4 is also the /about photo since 2026-11-25 |
+| projects/hawaii-island-new-home-entry.jpg | /portfolio, Big Island gallery ("Entry porch") |
+| projects/hawaii-island-new-home-great-room-1.jpg | `home` slot: /custom-homes photo header, home services list (Custom homes); /portfolio, Big Island gallery ("Great room and kitchen") |
+| projects/hawaii-island-new-home-living-dining.jpg | /portfolio, Big Island gallery ("Living and dining") |
+| projects/hawaii-island-new-home-kitchen-1.jpg | Home slider; /portfolio, Big Island gallery ("Kitchen") |
+| projects/hawaii-island-new-home-kitchen-3.jpg | /portfolio, Big Island gallery ("Kitchen") |
+| projects/hawaii-island-new-home-bathroom-1.jpg | /portfolio, Big Island gallery ("Bathroom") |
+| projects/hawaii-island-new-home-shower.jpg | /portfolio, Big Island gallery ("Shower and tub") |
+| projects/hawaii-island-new-home-double-vanity.jpg | /portfolio, Big Island gallery ("Double vanity") |
+| projects/hawaii-island-new-home-barn-door.jpg | /portfolio, Big Island gallery ("Barn door detail") |
 | projects/waianae-remodel-2-kitchen.jpg | /portfolio, Waianae home remodel card cover and gallery ("Kitchen") |
 | projects/waianae-remodel-2-shower.jpg | /portfolio, Waianae home remodel gallery ("Shower") |
 | projects/hawaii-island-new-home-great-room-2.jpg, hawaii-island-new-home-kitchen-2.jpg | Registered in images.ts with alt text, not placed on a page yet |

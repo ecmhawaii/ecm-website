@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import ChoiceGroup from '../components/ChoiceGroup.astro';
 import RelatedGuide from '../components/RelatedGuide.astro';
+import Reviews from '../components/Reviews.astro';
 import { estimate as e, ui, business, slots } from '../content/site';
 const s = e.steps;
 const total = 6;
@@ -39,6 +40,11 @@ const total = 6;
         <fieldset class="step" data-step="1">
           <legend class="step-legend" tabindex="-1">{s.type.legend}</legend>
           <ChoiceGroup name={s.type.name} options={s.type.options} />
+          {/* Shown and required only when "Other" is picked (JS). JS off: visible and optional. */}
+          <div class="field other-field" data-other-for={s.type.name}>
+            <label for="project-type-other">{s.type.otherLabel}</label>
+            <input id="project-type-other" name={s.type.otherName} type="text" maxlength="120" autocomplete="off" />
+          </div>
         </fieldset>
 
         <fieldset class="step" data-step="2">
@@ -46,6 +52,10 @@ const total = 6;
           <p class="sub-label" id="island-label">{s.location.islandLabel} <span aria-hidden="true">*</span></p>
           <div role="radiogroup" aria-labelledby="island-label">
             <ChoiceGroup name={s.location.islandName} options={s.location.islands} cols={3} />
+          </div>
+          <div class="field other-field" data-other-for={s.location.islandName}>
+            <label for="island-other">{s.location.islandOtherLabel}</label>
+            <input id="island-other" name={s.location.islandOtherName} type="text" maxlength="120" autocomplete="off" />
           </div>
           <div class="field">
             <label for="zip">{s.location.zipLabel}</label>
@@ -109,6 +119,8 @@ const total = 6;
       <p class="form-alt">{ui.phoneLabel}: <a href={business.phoneHref}>{business.phoneDisplay}</a> · {ui.emailLabel}: <a href={business.emailHref}>{business.email}</a></p>
     </div>
   </section>
+  {/* Reviews slot: hidden until real reviews are enabled in site.ts (slots.reviews). */}
+  <Reviews />
 </Base>
 
 <script>
@@ -123,6 +135,18 @@ const total = 6;
     const progress = form.querySelector<HTMLElement>('[data-progress]')!;
     const progressText = form.querySelector<HTMLElement>('[data-progress-text]')!;
     const bar = form.querySelector<HTMLProgressElement>('[data-progress-bar]')!;
+
+    // "Other" text fields: shown, enabled and required only while "Other" is picked.
+    // Hidden ones are disabled, so they are never validated or submitted.
+    const others = [...form.querySelectorAll<HTMLElement>('[data-other-for]')];
+    const syncOther = (wrap: HTMLElement) => {
+      const picked = form.querySelector<HTMLInputElement>(`input[type=radio][name="${wrap.dataset.otherFor}"]:checked`)?.value === 'Other';
+      const input = wrap.querySelector<HTMLInputElement>('input')!;
+      wrap.hidden = !picked;
+      input.disabled = !picked;
+      input.required = picked;
+    };
+    others.forEach(syncOther);
     const error = form.querySelector<HTMLElement>('[data-step-error]')!;
     let current = 0;
 
@@ -167,11 +191,17 @@ const total = 6;
     form.addEventListener('change', (ev) => {
       error.hidden = true;
       const input = ev.target as HTMLInputElement;
+      const otherWrap = input.type === 'radio' ? others.find((w) => w.dataset.otherFor === input.name) : undefined;
+      if (otherWrap) {
+        syncOther(otherWrap);
+        // Picked "Other" with a tap or click: go straight to its text field.
+        if (!otherWrap.hidden && pointerChoice) { pointerChoice = false; otherWrap.querySelector('input')!.focus(); return; }
+      }
       if (!pointerChoice || input.type !== 'radio' || advancing) return;
       pointerChoice = false;
       const stepEl = input.closest('.step') as HTMLFieldSetElement;
       const i = steps.indexOf(stepEl);
-      const singleChoice = stepEl.querySelectorAll('input:not([type=radio]), select, textarea').length === 0;
+      const singleChoice = stepEl.querySelectorAll('input:not([type=radio]):not(:disabled), select, textarea').length === 0;
       if (i !== current || !singleChoice || i >= total - 1) return;
       advancing = true;
       setTimeout(() => { advancing = false; if (current === i) show(i + 1); }, 180);
@@ -191,8 +221,13 @@ const total = 6;
         if (!stepValid(i)) { ev.preventDefault(); show(i); return; }
       }
       const subject = form.elements.namedItem('subject') as HTMLInputElement;
-      const type = val('project-type').replace('ADU or ohana unit', 'ADU');
-      const parts = [type, val('island'), val('budget')].filter(Boolean);
+      const orOther = (name: string, other: string) => {
+        const v = val(name);
+        const typed = v === 'Other' ? val(other).trim().slice(0, 40).trim() : '';
+        return typed || v;
+      };
+      const type = orOther('project-type', 'project-type-other').replace('ADU or ohana unit', 'ADU');
+      const parts = [type, orOther('island', 'island-other'), val('budget')].filter(Boolean);
       if (parts.length) subject.value = `${subject.dataset.subjectPrefix}: ${parts.join(', ')}`;
 
       const answers = { form: 'estimate', type: val('project-type'), timeline: val('timeline'), island: val('island') };

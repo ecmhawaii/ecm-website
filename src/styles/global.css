@@ -514,12 +514,10 @@ html { scroll-padding-bottom: 96px; }
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   html:not(.motion-off) [data-reveal],
   html:not(.motion-off) [data-stagger] > *,
-  html:not(.motion-off) [data-hero-fade],
-  html:not(.motion-off) [data-hero-title],
   html:not(.motion-off) [data-split-words] { opacity: 0; }
-  html:not(.motion-ready):not(.motion-off) :is([data-reveal], [data-stagger] > *, [data-hero-fade], [data-hero-title], [data-split-words]) { animation: ecm-show 0s 2.6s forwards; }
+  html:not(.motion-ready):not(.motion-off) :is([data-reveal], [data-stagger] > *, [data-split-words]) { animation: ecm-show 0s 2.6s forwards; }
   /* Reveal on focus: a keyboard user never lands on an invisible control. */
-  :is([data-reveal], [data-stagger] > *, [data-hero-fade], [data-hero-title], [data-split-words]):focus-within { opacity: 1 !important; transform: none !important; }
+  :is([data-reveal], [data-stagger] > *, [data-split-words]):focus-within { opacity: 1 !important; transform: none !important; }
 }
 @keyframes ecm-show { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
@@ -600,4 +598,43 @@ html { scroll-padding-bottom: 96px; }
 @media (max-width: 959px) {
   .hero-overlay { background: linear-gradient(180deg, rgba(17, 17, 17, 0.66) 0%, rgba(17, 17, 17, 0.72) 45%, rgba(17, 17, 17, 0.9) 100%); }
   .hero .eyebrow { color: var(--on-dark); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
+}
+
+/* ---------------------------------------------------------------------
+   Hero load (Ellard, 2026-11-25): one piece, no loader screen.
+   - .hero-blur: tiny blurred copy of the hero photo, painted from first paint under the real
+     photo (which stays the LCP element and is never hidden or faded).
+   - [data-hero-in]: the text block fades up together, CSS only: 420ms, 40ms stagger, done
+     within about 0.6s of first paint. JS off or reduced motion: no animation, visible at once.
+   --------------------------------------------------------------------- */
+.hero-blur { z-index: 0; position: absolute; left: 0; top: -7%; width: 100%; height: 114%; object-fit: cover; object-position: 50% 40%; filter: blur(18px); transform: scale(1.08); }
+.hero-media { z-index: 0; }
+.hero-img { z-index: 1; }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-hero-in] { animation: hero-in 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  [data-hero-in='1'] { animation-delay: 40ms; }
+  [data-hero-in='2'] { animation-delay: 80ms; }
+  [data-hero-in='3'] { animation-delay: 120ms; }
+  [data-hero-in='4'] { animation-delay: 160ms; }
+}
+@keyframes hero-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* Header wordmark: two fixed lines on phones, one line on desktop. The fixed line height and
+   no-wrap lines keep its size identical in the fallback font and in Merriweather. */
+.brand-name { max-width: none; }
+.brand-line { display: block; white-space: nowrap; }
+@media (max-width: 399px) { .brand-name { font-size: 0.9rem; } }
+@media (min-width: 960px) { .brand-line { display: inline; } }
+
+/* Phones: the hero fills the screen under the header and the photo runs behind the sticky
+   Call / Estimate bar. Bottom padding keeps the credentials strip above that bar. Nothing
+   below the hero is on screen at load, so nothing there can shift when web fonts arrive. */
+@media (max-width: 959px) {
+  .hero { min-height: calc(100svh - 73px); padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+}
+/* Phones: the hero eyebrow fits one line in the fallback font but can wrap to two in Archivo.
+   Reserve two lines so the swap never moves it or the headline below (no layout shift). */
+@media (max-width: 959px) {
+  .hero .eyebrow { min-height: calc(2 * 1.6 * 0.78rem); align-items: flex-start; line-height: 1.6; }
+  .hero .eyebrow::before { margin-top: calc(0.8 * 0.78rem); }
 }

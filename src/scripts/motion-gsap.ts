@@ -15,23 +15,8 @@ export function init() {
   gsap.registerPlugin(ScrollTrigger, SplitText);
   const ease = 'power3.out';
 
-  // ---- Hero / page head intro (no preloader) ----
-  // The hero photo is never hidden or faded: it only scales from 1.08 to 1, so it stays the LCP.
-  const heroImg = document.querySelector<HTMLElement>('[data-hero-img], .page-head-media img');
-  if (heroImg) gsap.fromTo(heroImg, { scale: 1.08 }, { scale: 1, duration: 1.4, ease: 'power2.out' });
-
-  const title = document.querySelector<HTMLElement>('[data-hero-title]');
-  const fades = gsap.utils.toArray<HTMLElement>('[data-hero-fade]');
-  const intro = gsap.timeline({ defaults: { ease } });
-  if (title) {
-    const split = SplitText.create(title, { type: 'lines', mask: 'lines', aria: 'auto' });
-    gsap.set(title, { opacity: 1 });
-    // Under 700ms in total for the headline: 0.45s plus at most 0.2s of stagger.
-    intro.from(split.lines, { yPercent: 105, duration: 0.45, stagger: Math.min(0.05, 0.2 / Math.max(1, split.lines.length - 1)) });
-  }
-  if (fades.length) {
-    intro.fromTo(fades, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 }, title ? '-=0.25' : 0);
-  }
+  // Hero and photo page heads: no gsap intro. Their text fades up in CSS (data-hero-in) and
+  // the photo is never scaled, hidden or faded (it is the LCP element).
 
   // ---- Big hook statement: words rise as it scrolls in ----
   for (const el of gsap.utils.toArray<HTMLElement>('[data-split-words]')) {
