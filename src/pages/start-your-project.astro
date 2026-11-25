@@ -139,6 +139,7 @@ const total = 6;
 </Base>
 
 <script>
+  import { count } from '../scripts/funnel';
   // Progressive enhancement. Without JS every step shows as one plain form that submits normally.
   const form = document.querySelector<HTMLFormElement>('[data-estimate]');
   if (form) {
@@ -177,6 +178,7 @@ const total = 6;
       bar.value = i + 1;
       error.hidden = true;
       if (focus) steps[i].querySelector<HTMLElement>('.step-legend')?.focus();
+      count('estimate', 'view', i + 1); // first view of each step, once per page load
     };
 
     const stepValid = (i: number) => {
@@ -246,6 +248,7 @@ const total = 6;
       const parts = [type, orOther('island', 'island-other'), val('budget')].filter(Boolean);
       if (parts.length) subject.value = `${subject.dataset.subjectPrefix}: ${parts.join(', ')}`;
 
+      count('estimate', 'submit', total);
       const answers = { form: 'estimate', type: val('project-type'), timeline: val('timeline'), island: val('island') };
       try { sessionStorage.setItem('ecm-thank-you', JSON.stringify(answers)); } catch {}
       const q = new URLSearchParams({ type: answers.type, timeline: answers.timeline });
