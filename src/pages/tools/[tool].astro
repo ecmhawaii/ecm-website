@@ -18,7 +18,7 @@ const titleFor = (href: string) => finalGuides.find((g) => `/guides/${g.slug}` =
 // Links per project type. A checklist link only when that checklist is built.
 const links = Object.fromEntries(Object.entries(r.matchByType).map(([type, m]) => {
   const cl = checklists.find((c) => c.slug === m.checklist);
-  return [type, { guideHref: m.href, guideLabel: titleFor(m.href), checklistHref: cl && shown(cl) ? `/checklists/${cl.slug}` : '', checklistLabel: cl ? cl.title.replace(/^Checklist: /, '') : '' }];
+  return [type, { guideHref: m.href, guideLabel: titleFor(m.href), checklistHref: cl && shown(cl) ? `/checklists/${cl.slug}` : '', checklistLabel: cl ? cl.title : '' }];
 }));
 const params = Object.fromEntries(r.questions.filter((q) => q.param).map((q) => [q.name, q.param]));
 ---

@@ -96,7 +96,7 @@ const total = 6;
             <label for="phone">{s.contact.phone} <span aria-hidden="true">*</span></label>
             <input id="phone" name="phone" type="tel" autocomplete="tel" required />
           </div>
-          {/* SMS consent (confirm:false): separate, unchecked, optional. Required by Twilio A2P 10DLC. */}
+          {/* SMS consent (draft item sms-consent in src/content/legal.ts): separate, unchecked, optional. Required by Twilio A2P 10DLC. */}
           <Draft item={smsConsent} class="field">
             <label class="consent-check"><input type="checkbox" name={smsConsent.name} value={smsConsent.value} /><span>{smsConsent.label}</span></label>
             <p class="consent-links">{smsConsent.linksLead} {shown(privacyPage) ? <a href={privacyPage.path}>{smsConsent.privacy}</a> : smsConsent.privacy} {smsConsent.and} {shown(termsPage) ? <a href={termsPage.path}>{smsConsent.terms}</a> : smsConsent.terms}{smsConsent.after}</p>
