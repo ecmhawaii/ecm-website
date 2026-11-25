@@ -1,0 +1,10 @@
+---
+// "By submitting you agree to our Terms and Privacy Policy." under every form (confirm:false).
+// Each link renders only while its page is built.
+import Draft from './Draft.astro';
+import { formAgreement as t, privacyPage, termsPage } from '../content/legal';
+import { shown } from '../lib/draft';
+---
+<Draft item={t} class="form-agree">
+  <p>{t.before} {shown(termsPage) ? <a href={termsPage.path}>{t.terms}</a> : t.terms} {t.and} {shown(privacyPage) ? <a href={privacyPage.path}>{t.privacy}</a> : t.privacy}{t.after}</p>
+</Draft>

@@ -5,6 +5,10 @@ import ChoiceGroup from '../components/ChoiceGroup.astro';
 import RelatedGuide from '../components/RelatedGuide.astro';
 import Reviews from '../components/Reviews.astro';
 import Phone from '../components/Phone.astro';
+import Draft from '../components/Draft.astro';
+import FormAgreement from '../components/FormAgreement.astro';
+import { smsConsent, privacyPage, termsPage } from '../content/legal';
+import { shown } from '../lib/draft';
 import { estimate as e, ui, business, slots } from '../content/site';
 const s = e.steps;
 const total = 6;
@@ -92,6 +96,11 @@ const total = 6;
             <label for="phone">{s.contact.phone} <span aria-hidden="true">*</span></label>
             <input id="phone" name="phone" type="tel" autocomplete="tel" required />
           </div>
+          {/* SMS consent (confirm:false): separate, unchecked, optional. Required by Twilio A2P 10DLC. */}
+          <Draft item={smsConsent} class="field">
+            <label class="consent-check"><input type="checkbox" name={smsConsent.name} value={smsConsent.value} /><span>{smsConsent.label}</span></label>
+            <p class="consent-links">{smsConsent.linksLead} {shown(privacyPage) ? <a href={privacyPage.path}>{smsConsent.privacy}</a> : smsConsent.privacy} {smsConsent.and} {shown(termsPage) ? <a href={termsPage.path}>{smsConsent.terms}</a> : smsConsent.terms}{smsConsent.after}</p>
+          </Draft>
           <div class="field">
             <label for="email">{s.contact.email} <span aria-hidden="true">*</span></label>
             <input id="email" name="email" type="email" autocomplete="email" required />
@@ -129,6 +138,7 @@ const total = 6;
           <button type="submit" class="btn btn-lg" data-submit>{ui.submit}</button>
         </div>
       </form>
+      <FormAgreement />
       <RelatedGuide page="estimate" />
       <p class="form-alt">{e.questionLead} <a href="/contact">{e.questionLink}</a></p>
       <p class="form-alt form-alt-tight">{ui.phoneLabel}: <Phone />{business.email && <Fragment> · {ui.emailLabel}: <a href={business.emailHref}>{business.email}</a></Fragment>}</p>

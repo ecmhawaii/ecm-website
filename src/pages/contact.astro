@@ -6,6 +6,7 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Phone from '../components/Phone.astro';
+import FormAgreement from '../components/FormAgreement.astro';
 import { contact as c, ui } from '../content/site';
 const f = c.fields;
 ---
@@ -62,6 +63,7 @@ const f = c.fields;
           </div>
           <button class="btn btn-lg" type="submit">{ui.submit}</button>
         </form>
+        <FormAgreement />
       </div>
     </div>
   </section>

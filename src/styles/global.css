@@ -740,3 +740,14 @@ html { scroll-padding-bottom: 96px; }
 @media (min-width: 960px) {
   .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 64px; }
 }
+
+/* Privacy and terms; consent lines under the forms */
+.legal section + section { margin-top: 28px; }
+.legal-updated { color: var(--ink-2); font-size: 0.95rem; }
+.draft-callout { border-color: #c99a00; }
+.draft-callout p { margin: 0; }
+.form-agree { margin-top: 16px; font-size: 0.95rem; color: var(--ink-2); }
+.form-agree p { margin: 0; }
+.consent-check { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; font-weight: 400; color: var(--ink); }
+.consent-check input { width: 22px; height: 22px; margin: 2px 0 0; }
+.consent-links { margin: 6px 0 0 32px; font-size: 0.95rem; color: var(--ink-2); }

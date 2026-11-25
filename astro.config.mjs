@@ -2,8 +2,12 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { SITE } from './site.config.mjs';
 import { draftPaths } from './src/content/site.ts';
+import { legalPages } from './src/content/legal.ts';
 
-const excluded = ['/thank-you', ...draftPaths];
+// Unconfirmed pages (confirm:false) stay out of the sitemap; production does not build them at all.
+const excluded = ['/thank-you', ...draftPaths, ...legalPages.filter((p) => !p.confirm).map((p) => p.path)];
+// Printable checklists are noindex and never in the sitemap.
+const excludedPrefixes = ['/checklists/'];
 
 export default defineConfig({
   output: 'static',
@@ -22,7 +26,7 @@ export default defineConfig({
       // Thank you page and any guide still marked DRAFT stay out of the sitemap.
       filter: (page) => {
         const path = new URL(page).pathname.replace(/\/$/, '') || '/';
-        return !excluded.includes(path);
+        return !excluded.includes(path) && !excludedPrefixes.some((p) => path.startsWith(p));
       },
     }),
   ],

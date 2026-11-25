@@ -10,6 +10,9 @@ import { business, nav, servicePages, ui } from '../content/site';
 import { publishedGuides } from '../lib/guides';
 import { logo, hero } from '../content/images';
 import Phone from '../components/Phone.astro';
+import Draft from '../components/Draft.astro';
+import { legalPages } from '../content/legal';
+import { shown } from '../lib/draft';
 
 export interface Crumb { name: string; path: string }
 
@@ -234,6 +237,8 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
           <p>{business.name}</p>
           <p>{business.license} · {business.licenseClass}</p>
           <p>{business.veteranOwned}</p>
+          {/* Privacy and terms (src/content/legal.ts): drafts until confirmed, links only while built. */}
+          {legalPages.filter(shown).map((page) => <p><Draft inline item={page}><a href={page.path}>{page.navLabel}</a></Draft></p>)}
         </div>
       </div>
     </footer>
