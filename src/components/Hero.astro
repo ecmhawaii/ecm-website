@@ -10,6 +10,7 @@
 import { Image, getImage } from 'astro:assets';
 import { hero } from '../content/images';
 import { business, ui } from '../content/site';
+import Phone from './Phone.astro';
 import CredentialsStrip from './CredentialsStrip.astro';
 interface Props { eyebrow: string; h1: string; line: string }
 const { eyebrow, h1, line } = Astro.props;
@@ -39,7 +40,7 @@ const blur = await getImage({ src: hero.src, width: 32, format: 'webp', quality:
     <p class="hero-line" data-hero-in="2">{line}</p>
     <div class="btn-row hero-btns" data-hero-in="3">
       <a class="btn btn-lg btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
-      <a class="btn btn-lg btn-ghost" href={business.phoneHref}>{ui.callButton}</a>
+      <Phone class="btn btn-lg btn-ghost" label={ui.callButton} button />
     </div>
   </div>
   <CredentialsStrip variant="hero" />

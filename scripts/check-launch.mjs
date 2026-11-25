@@ -65,8 +65,21 @@ if (!launchRobots.includes(`Sitemap: ${SITE}/sitemap-index.xml`)) blockers.push(
 const ext = pages.filter((p) => /images\.unsplash\.com/.test(p.html));
 if (ext.length) notes.push(`Pages hotlinking images.unsplash.com: ${ext.length}`);
 
-// Hidden slots (information only, not blockers).
 const siteTs = readFileSync('src/content/site.ts', 'utf8');
+
+// 6. Public phone (2026-11-25): the ECM Twilio number must be set in site.ts (const PHONE),
+// and no built page may still show the placeholder.
+const phoneLine = siteTs.match(/^const PHONE(?::\s*string)?\s*=\s*(.+?);\s*$/m);
+const placeholder = (siteTs.match(/^export const PHONE_PLACEHOLDER\s*=\s*'([^']*)'/m) || [])[1];
+const phoneRaw = phoneLine ? phoneLine[1].trim() : '';
+const phoneValue = phoneRaw === 'PHONE_PLACEHOLDER' ? placeholder : phoneRaw.replace(/^['"`]|['"`]$/g, '');
+const phoneDigits = phoneValue.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+const placeholderPages = pages.filter((p) => p.html.includes('data-phone-placeholder'));
+if (!phoneLine || !phoneValue || phoneValue === placeholder || phoneDigits.length !== 10 || placeholderPages.length) {
+  blockers.push('Set the ECM Twilio number before launch.' + (placeholderPages.length ? ` (phone placeholder on ${placeholderPages.length} pages; PHONE in src/content/site.ts)` : ' (PHONE in src/content/site.ts)'));
+}
+
+// Hidden slots (information only, not blockers).
 const slotsBlock = siteTs.slice(siteTs.indexOf('export const slots'), siteTs.indexOf('export const nav'));
 const offSlots = [...slotsBlock.matchAll(/^ {2}(\w+): \{\s*\n\s*enabled: false/gm)].map((m) => m[1]);
 if (offSlots.length) notes.push(`Hidden slots switched off (fine at launch if Jesse has not supplied them): ${offSlots.join(', ')}`);

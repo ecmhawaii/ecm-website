@@ -31,7 +31,7 @@ ECM's own job photos, copied from the live builder site by the PM with Ellard's 
 
 | File | Job (per live site) | Status |
 | --- | --- | --- |
-| projects/acs-hope-lodge-exterior.jpg | American Cancer Society Hope Lodge, Honolulu | ECM job. Small (709px wide). Card size, plus the /commercial-tenant-improvements photo header since 2026-11-25 (Ellard), served at its native 709px and never upscaled at build |
+| projects/acs-hope-lodge-exterior.jpg | American Cancer Society Hope Lodge, Honolulu | ECM job. Small (709px wide): card size only. It was the /commercial-tenant-improvements header for one build on 2026-11-25 and looked soft at 1440, so the header went back to acs-hope-lodge-sign.jpg until a full size building photo arrives (Ellard) |
 | projects/acs-hope-lodge-sign.jpg | American Cancer Society Hope Lodge | ECM job |
 | projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | Hope Lodge interior restoration and ceiling work | ECM job (grouping per live site order) |
 | projects/acs-hope-lodge-pergola-2.jpg | Hope Lodge aluminum pergola system | ECM job (grouping per live site order). The install photo acs-hope-lodge-pergola-1.jpg was removed from the site and deleted from the repo 2026-11-25 (Ellard) |
@@ -54,15 +54,15 @@ All through Astro's Image component (resized, WebP). Slot names are in `src/cont
 
 | File | Slot | Used on |
 | --- | --- | --- |
-| projects/acs-hope-lodge-exterior.jpg | acsExterior | /commercial-tenant-improvements photo header (since 2026-11-25, native 709px, no server crop, CSS position pos-sign); /portfolio gallery |
-| projects/acs-hope-lodge-sign.jpg | acsSign | Home Commercial service (services list), Commercial service card, home featured project card, /portfolio. Since 2026-11-25 no longer the commercial page header or in the home slider |
+| projects/acs-hope-lodge-exterior.jpg | acsExterior | /portfolio, Hope Lodge gallery only (native 709px, no server crop) |
+| projects/acs-hope-lodge-sign.jpg | acsSign | /commercial-tenant-improvements photo header, home Commercial service (services list), Commercial service card, home featured project card, /portfolio. Not in the home slider since 2026-11-25 |
 | projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | acsCeiling1, acsCeiling2 | /portfolio gallery |
 | projects/acs-hope-lodge-pergola-2.jpg | pergolaView | /portfolio, Hope Lodge gallery only. Since 2026-11-25 no longer the home photo band |
 | projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | before: /portfolio compare slider; after: /remodeling photo hero. Since 2026-11-25 no longer in the home slider |
 | projects/bamboo-floor-after-aligned.jpg | bambooAfterAligned | /portfolio compare slider ("after") only |
 | projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | drivewayBefore, drivewayDuring | before: registered, not placed (the slider uses the aligned copy); during: /portfolio compare slider and the home slider |
 | projects/driveway-salt-lake-before-aligned.jpg | drivewayBeforeAligned | /portfolio compare slider ("before") only |
-| projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | walk1, walk2, walk3 | /portfolio gallery; walk2 in the home slider ("From the job site"). walk3 left out of the slider 2026-11-25: two crew faces are readable |
+| projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | walk1, walk2 | walk2: Concrete walkway portfolio card cover (since 2026-11-25), its gallery and the home slider ("From the job site"); walk1: its gallery. concrete-walkway-3.jpg is NOT USED anywhere (not registered in images.ts) because two crew faces are clearly readable (Ellard, 2026-11-25) |
 | projects/longs-drip-edge-before.jpg, -after.jpg | longsBefore, longsAfter | /portfolio gallery. Since 2026-11-25 no longer in the home slider |
 | projects/longs-drip-edge-1.jpg, -3.jpg | longs1, longsSign | /portfolio gallery |
 | projects/longs-drip-edge-2.jpg | longsStore | Longs Drugs portfolio card cover and home featured card. Since 2026-11-25 no longer on the Commercial service, the commercial page or the slider |

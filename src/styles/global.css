@@ -107,7 +107,6 @@ ul, ol { padding-left: 1.2em; }
   .nav-desktop ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 8px; }
   .nav-desktop a:not(.btn) { display: inline-flex; align-items: center; min-height: var(--tap); padding: 0 12px; color: var(--ink); text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.9rem; }
   .nav-desktop a:not(.btn):hover, .nav-desktop a[aria-current='page'] { color: var(--brand); text-decoration: underline; text-decoration-thickness: 2px; }
-  .nav-desktop .nav-phone { text-transform: none; letter-spacing: 0; }
   .brand-logo { width: 56px; }
   .brand-name { font-size: 1.1rem; max-width: none; }
 }
@@ -321,6 +320,12 @@ html { scroll-padding-bottom: 96px; }
 .page-head-media { position: absolute; inset: 0; overflow: hidden; }
 .page-head-media .photo { position: absolute; inset: -7% 0; height: 114%; border-radius: 0; }
 .page-head-inner { position: relative; width: 100%; }
+.page-head-side-grid { display: grid; gap: 28px; }
+.page-head-side-media .photo { border-radius: var(--radius); }
+@media (min-width: 960px) {
+  .page-head-side { padding: 28px 0 64px; }
+  .page-head-side-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: center; gap: 56px; }
+}
 .page-head-photo h1 { font-size: clamp(2rem, 6.5vw, 3.6rem); }
 .page-head .sample-tag { top: auto; bottom: 10px; left: auto; right: 10px; }
 
@@ -669,7 +674,6 @@ html { scroll-padding-bottom: 96px; }
 
 /* Header phone: never wraps; hidden where the full row does not fit (hero Call button and the
    mobile bar cover calling). Width set by measurement, see the PR. */
-.nav-desktop .nav-phone { white-space: nowrap; }
 
 /* Services dropdown (desktop) */
 .nav-dd { position: relative; }
@@ -694,11 +698,13 @@ html { scroll-padding-bottom: 96px; }
 .nav-desktop .nav-dd-menu a:hover, .nav-desktop .nav-dd-menu a:focus-visible { background: var(--brand-tint); color: var(--brand-dark); text-decoration: none; }
 .nav-desktop .nav-dd-menu a[aria-current='page'] { color: var(--brand); text-decoration: underline; text-decoration-thickness: 2px; }
 .nav-dd-all { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 4px; }
-/* 960 to 1199px: the full row does not fit, so the header phone is hidden (never the nav
-   items) and the wordmark keeps its two-line form. */
+/* 960 to 1199px: the wordmark keeps its two-line form so the row fits. (The header phone was
+   hidden here first; since 2026-11-25 there is no header phone at all, see Base.astro.) */
 @media (min-width: 960px) and (max-width: 1199px) {
-  .nav-phone-item { display: none; }
   .brand-line { display: block; }
+  /* Contact (2026-11-25) made the row longer: tighter spacing here keeps every nav item on one row. */
+  .nav-desktop > ul { gap: 2px; }
+  .nav-desktop > ul > li > a:not(.btn), .nav-dd-toggle { padding: 0 9px; }
 }
 
 /* /services: recent projects at the bottom of each open panel. Cards wrap on phones. */
@@ -708,3 +714,24 @@ html { scroll-padding-bottom: 96px; }
 .related-grid .card-body { padding: 12px 14px 14px; }
 /* A p, not a heading: the panels have no heading above them (summary), so an h3 would skip levels. */
 .related-grid .card-title { font-family: var(--font-heading); font-weight: 700; color: var(--ink); line-height: 1.22; font-size: 1rem; margin: 0; }
+
+/* Phone placeholder (2026-11-25): until the Twilio number exists, phone spots are text, not links.
+   Button spots keep their full colors (readable) with a dashed border and no hover change. */
+.btn.is-disabled { cursor: default; border-style: dashed; }
+.btn-ghost.is-disabled:hover { background: transparent; color: var(--on-dark); border-color: var(--on-dark); }
+.btn-light.is-disabled:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.sticky-cta .is-disabled { font-size: 0.9rem; line-height: 1.2; text-align: center; padding-top: 4px; padding-bottom: 4px; }
+.sticky-cta .btn-light.is-disabled, .sticky-cta .btn-light.is-disabled:hover { background: transparent; color: var(--on-dark); border-color: var(--on-dark); }
+.nav-mobile li > [data-phone-placeholder] { display: flex; align-items: center; min-height: 48px; font-weight: 700; color: var(--ink-2); border-bottom: 1px solid var(--paper-3); }
+
+/* Contact page */
+.contact-grid { display: grid; gap: 40px; }
+.contact-side { display: grid; gap: 32px; align-content: start; }
+.contact-option > :last-child { margin-bottom: 0; }
+.contact-h { font-size: 1.5rem; }
+.contact-phone { font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+.contact-message .form { margin-top: 8px; }
+.form-alt-tight { margin-top: 8px; }
+@media (min-width: 960px) {
+  .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 64px; }
+}

@@ -17,6 +17,7 @@ const creds = [...credentials, ...(slots.insurance.enabled && slots.insurance.te
           <h2 class="card-title">{about.credentialsHeading}</h2>
           <ul>{creds.map((c) => <li>{c}</li>)}</ul>
         </div>
+        <p class="about-contact">{about.contactLead} <a href="/contact">{about.contactLink}</a></p>
       </div>
       <div class="split-media"><PhotoSlot image={about.image} ratio="tall" sizes="(min-width: 960px) 45vw, 100vw" widths={[480, 800, 1100]} eager /></div>
     </div>

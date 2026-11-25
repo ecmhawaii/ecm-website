@@ -22,7 +22,6 @@ import bambooAfter from '../assets/images/projects/bamboo-floor-after.jpg';
 import bambooAfterAligned from '../assets/images/projects/bamboo-floor-after-aligned.jpg';
 import walk1 from '../assets/images/projects/concrete-walkway-1.jpg';
 import walk2 from '../assets/images/projects/concrete-walkway-2.jpg';
-import walk3 from '../assets/images/projects/concrete-walkway-3.jpg';
 import drivewayBefore from '../assets/images/projects/driveway-salt-lake-before.jpg';
 // Re-framed to line up with the during photo, for the compare slider only (Ellard, 2026-11-25).
 import drivewayBeforeAligned from '../assets/images/projects/driveway-salt-lake-before-aligned.jpg';
@@ -107,7 +106,8 @@ const job = (src: ImageMetadata, alt: string, position?: ImageSlot['position'], 
 
 export const photos: Record<string, ImageSlot> = {
   // ECM job photos (SOURCES.md: "ECM job photos").
-  // Commercial page header (2026-11-25). Only 709px wide: never upscaled or cropped on the server.
+  // Only 709px wide: never upscaled or cropped on the server. Was the commercial page header for
+  // one build (2026-11-25); back to acsSign until a full size building photo arrives.
   acsExterior:    job(acsExterior, 'American Cancer Society Clarence T.C. Ching Hope Lodge, Honolulu', 'sign', true),
   acsSign:        job(acsSign, 'American Cancer Society Hope Lodge sign on the building', 'upper'),
   acsCeiling1:    job(acsCeiling1, 'Open ceiling section during interior restoration and ceiling work at Hope Lodge', 'top'),
@@ -118,7 +118,6 @@ export const photos: Record<string, ImageSlot> = {
   bambooAfterAligned: job(bambooAfterAligned, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
   walk1:          job(walk1, 'Garden courtyard with a concrete walkway', 'bottom'),
   walk2:          job(walk2, 'Forms and steel mesh set for a new concrete walkway in a garden courtyard, before the pour', 'lower'),
-  walk3:          job(walk3, 'Crew finishing the concrete walkway pour', 'lower'),
   drivewayBefore: job(drivewayBefore, 'Salt Lake residence before the concrete driveway, gravel lot', 'lower'),
   drivewayBeforeAligned: job(drivewayBeforeAligned, 'Salt Lake residence before the concrete driveway, gravel lot', 'center'),
   drivewayDuring: job(drivewayDuring, 'Crew placing and finishing a new concrete driveway and walkway at a Salt Lake home', 'center'),
@@ -186,7 +185,7 @@ export const photos: Record<string, ImageSlot> = {
 
 // Home page photo slider, in order (all ECM job photos).
 // "From the job site" (2026-11-25): work in progress only, in Ellard's order.
-// walk3 (concrete-walkway-3) dropped: two crew faces are clearly readable in the crop.
+// concrete-walkway-3 is not used anywhere: two crew faces are clearly readable (SOURCES.md).
 export const sliderKeys = [
   'waianae-addition-framing-3', 'drivewayDuring', 'waianae-addition-framing-1', 'waianae-addition-framing-2', 'walk2',
   'waianae-addition-house-wrap', 'waianae-addition-roof', 'waianae-remodel-demo',

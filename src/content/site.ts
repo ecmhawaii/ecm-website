@@ -7,21 +7,37 @@
 //   switched-off slot below, never in live copy.
 // - Business name, phone and license come from `business` so they match on every page.
 
+// PUBLIC PHONE: the one value behind every phone spot on the site and the JSON-LD telephone.
+// Website leads go to Ellard and Bleys (ECM Standing Decision 2026-11-25), through an ECM owned
+// Twilio number that does not exist yet. While PHONE is the placeholder, every phone spot shows
+// the placeholder text and is not a link, and the JSON-LD has no telephone. When the number
+// exists, set PHONE to it in the (808) 000-0000 format: every spot becomes a tel: link again.
+// check:launch fails while PHONE is empty or the placeholder.
+export const PHONE_PLACEHOLDER = 'Twilio number coming soon';
+const PHONE: string = PHONE_PLACEHOLDER;
+// PUBLIC EMAIL: empty = no email address anywhere on the site or in the JSON-LD.
+const EMAIL: string = '';
+
+const phoneDigits = PHONE.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+const phoneLive = PHONE !== PHONE_PLACEHOLDER && phoneDigits.length === 10;
+
 export const business = {
   name: 'Elite Construction Management',
   city: 'Kapolei, Hawaii',
   locality: 'Kapolei',
   region: 'HI',
   country: 'US',
-  phoneDisplay: '(808) 987-5782',
-  phoneHref: 'tel:+18089875782',
-  phoneE164: '+1-808-987-5782',
+  /** True once PHONE is a real 10 digit number. */
+  phoneLive,
+  phoneDisplay: PHONE,
+  phoneHref: phoneLive ? `tel:+1${phoneDigits}` : '',
+  phoneE164: phoneLive ? `+1-${phoneDigits.slice(0, 3)}-${phoneDigits.slice(3, 6)}-${phoneDigits.slice(6)}` : '',
   // License ID as listed by Hawaii DCCA public license search (checked 2026-11-22). BC is the class prefix, not the ID; BC-37929 returns no result there.
   license: 'Hawaii contractor license CT-37929',
   licenseShort: 'License CT-37929',
   licenseClass: 'Class B General Building',
-  email: 'info@ecmhawaii.com',
-  emailHref: 'mailto:info@ecmhawaii.com',
+  email: EMAIL,
+  emailHref: EMAIL ? `mailto:${EMAIL}` : '',
   // Confirmed by Jesse (via Ellard, 2026-11-21).
   veteranOwned: 'Veteran owned',
   // Islands Jesse has confirmed ECM serves (2026-11-21). Drives areaServed in structured data.
@@ -86,7 +102,7 @@ export const slots = {
   // page, the estimate page and the estimate band.
   replyTime: {
     enabled: true,
-    text: "We'll call you back the same business day.",
+    text: "We'll call you back within one business day.",
   },
 };
 
@@ -96,6 +112,7 @@ export const nav = [
   { label: 'Projects', href: '/portfolio' },
   { label: 'Guides', href: '/guides' },
   { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export const servicePages = [
@@ -185,7 +202,7 @@ export const ctaBand = {
 export const home = {
   title: 'General Contractor in Honolulu and Oahu | Elite Construction Management',
   description:
-    'Kapolei general contractor for custom homes, ADUs, remodels and commercial tenant improvements. Call (808) 987-5782 or request an estimate online.',
+    'Kapolei general contractor for custom homes, ADUs, remodels and commercial tenant improvements. Request an estimate online.',
   eyebrow: 'Licensed Hawaii general contractor',
   h1: 'General contractor on Oahu for homes and businesses',
   heroLine: 'Custom homes, ADUs and additions, remodels and commercial tenant improvements on Oahu, Maui and the Big Island.',
@@ -381,7 +398,10 @@ export const serviceDetail: Record<string, ServicePage> = {
       'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor CT-37929 in Kapolei.',
     h1: 'Commercial tenant improvement contractor',
     intro: ['Build outs and renovations for retail, office and other commercial spaces.'],
-    image: 'acsExterior',
+    // Back to the sign close-up until a full size building photo arrives (Ellard, 2026-11-25).
+    // The sign fills the frame, so the header shows it beside the heading, not under it.
+    image: 'acsSign',
+    imageSide: true,
     sections: [
       {
         id: 'what-it-involves',
@@ -551,11 +571,10 @@ export const projects = {
       type: 'Concrete',
       place: '',
       summary: 'Concrete walkway in a garden courtyard.',
-      cover: 'walk3',
+      cover: 'walk2',
       gallery: [
         { image: 'walk1', caption: 'Concrete walkway in a garden courtyard' },
         { image: 'walk2', caption: 'Concrete walkway in a garden courtyard' },
-        { image: 'walk3', caption: 'Concrete walkway in a garden courtyard' },
       ],
     },
   ] as Project[],
@@ -569,6 +588,8 @@ export const about = {
   text: 'Elite Construction Management is a Hawaii general contractor based in Kapolei, led by owner Jesse Alverio. Our crews are backed by licensed subcontractors for plumbing, electrical and other trades.',
   credentialsHeading: 'Credentials',
   image: 'hawaii-island-new-home-exterior-4',
+  contactLead: 'Have a question?',
+  contactLink: 'Contact us',
 };
 
 // Multi-step estimate form. Netlify form name stays "estimate".
@@ -578,6 +599,9 @@ export const estimate = {
     'Tell us about your project and Elite Construction Management will follow up to schedule a site visit.',
   h1: 'Request an Estimate',
   intro: 'Tell us a little about your project. We will get back to you to set up a site visit.',
+  // Line under the form (2026-11-25).
+  questionLead: 'Just have a question?',
+  questionLink: 'Send us a message.',
   formName: 'estimate',
   formVersion: 'v2-multistep',
   defaultSubject: 'New lead: estimate request',
@@ -667,12 +691,37 @@ export const subcontractors = {
   no: 'No',
 };
 
+// Contact page (2026-11-25). Netlify form name "contact".
+export const contact = {
+  title: 'Contact | Elite Construction Management',
+  description:
+    'Call, request an estimate or send a message to Elite Construction Management, a licensed general contractor in Kapolei, Hawaii.',
+  h1: 'Contact us',
+  intro: 'Three ways to reach Elite Construction Management.',
+  callHeading: 'Call',
+  estimateHeading: 'Request an estimate',
+  estimateLine: 'Tell us about your project and we will follow up to set up a site visit.',
+  messageHeading: 'Send a message',
+  messageLine: 'For questions that are not an estimate request. We reply by email within one business day.',
+  formName: 'contact',
+  // Email subject for Netlify's alert (hidden "subject" field). JS adds the visitor's subject.
+  defaultSubject: 'Website message',
+  subjectPrefix: 'Website message',
+  fields: {
+    name: 'Name',
+    email: 'Email',
+    subject: 'Subject',
+    message: 'Message',
+  },
+};
+
 export const thankYou = {
   title: 'Thank You | Elite Construction Management',
   description: 'We received your request and will contact you to schedule a site visit.',
   h1: 'Thanks.',
   text: 'We received your request and will contact you to schedule a site visit.',
   subcontractorText: 'We received your details and will reach out when a project fits.',
+  contactText: 'Thanks, we got your message. We reply by email within one business day.',
   urgentLead: 'For anything urgent, call',
   nextHeading: 'What happens next',
   nextSteps: ['We review your project.', 'We call you.', 'We schedule a site visit.'],
@@ -771,8 +820,8 @@ const Q = {
   plans: { q: "Can you build from my architect's plans?", a: 'Yes. And if you do not have plans yet, we connect you with an architect or designer to draw them.' },
   // ^ 'we connect you with an architect or designer' is audit claim C29: needs Jesse's yes (Answer Sheet #30).
   trades: { q: 'Who does the plumbing and electrical?', a: 'Licensed subcontractors. Our crews are backed by licensed subcontractors for plumbing, electrical and other trades.' },
-  estimate: { q: 'How do I get an estimate?', a: 'Fill out the estimate form or call (808) 987-5782. We will follow up to set up a site visit, walk the property with you and talk through scope, budget and timing.' },
-  callback: { q: 'How fast will you call me back?', a: "We'll call you back the same business day." },
+  estimate: { q: 'How do I get an estimate?', a: 'Fill out the estimate form, or send us a message on the contact page. We will follow up to set up a site visit, walk the property with you and talk through scope, budget and timing.' },
+  callback: { q: 'How fast will you call me back?', a: "We'll call you back within one business day." },
   smallJobs: { q: 'Do you take smaller jobs?', a: 'Yes. We take jobs under $50k as well as larger projects.' },
   veteran: { q: 'Are you veteran owned?', a: 'Yes. Elite Construction Management is veteran owned. Owner Jesse Alverio is a veteran.' },
   permitsSubs: { q: 'Do you manage permits, subs and inspections?', a: 'Yes. We manage permits, subs and inspections through to move in.' },

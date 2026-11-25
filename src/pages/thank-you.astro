@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Phone from '../components/Phone.astro';
 import PageHead from '../components/PageHead.astro';
 import { business, thankYou as t, slots, planningGuideByType, ui } from '../content/site';
 import { publishedGuides } from '../lib/guides';
@@ -10,7 +11,7 @@ const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.
   <PageHead h1={t.h1} />
   <section class="section">
     <div class="container prose" data-thanks data-guides={JSON.stringify(guideList)} data-guide-map={JSON.stringify(planningGuideByType)}>
-      <p class="lead" data-thanks-text data-sub-text={t.subcontractorText}>{t.text}</p>
+      <p class="lead" data-thanks-text data-sub-text={t.subcontractorText} data-contact-text={t.contactText}>{t.text}</p>
       {/* REPLY TIME SLOT: confirmed by Jesse 2026-11-21 (slots.replyTime in site.ts). Hidden for subcontractors. */}
       {slots.replyTime.enabled && slots.replyTime.text && <p class="reply-pill reply-pill-dark" data-slot="reply-time" data-reply>{slots.replyTime.text}</p>}
 
@@ -24,7 +25,7 @@ const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.
         <p>{t.planningLead} <a href="/guides" data-guide-link>{ui.footerGuides}</a></p>
       </div>
 
-      <p>{t.urgentLead} <a href={business.phoneHref}>{business.phoneDisplay}</a>.</p>
+      <p>{t.urgentLead} <Phone />.</p>
     </div>
   </section>
 </Base>
@@ -38,9 +39,9 @@ const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.
     const params = new URLSearchParams(location.search);
     for (const k of ['type', 'timeline', 'form']) { const v = params.get(k); if (v) data[k] = v; }
 
-    if (data.form === 'subcontractor') {
+    if (data.form === 'subcontractor' || data.form === 'contact') {
       const text = root.querySelector<HTMLElement>('[data-thanks-text]')!;
-      text.textContent = text.dataset.subText || text.textContent;
+      text.textContent = (data.form === 'contact' ? text.dataset.contactText : text.dataset.subText) || text.textContent;
       root.querySelector<HTMLElement>('[data-next-box]')!.hidden = true;
       const reply = root.querySelector<HTMLElement>('[data-reply]');
       if (reply) reply.hidden = true;

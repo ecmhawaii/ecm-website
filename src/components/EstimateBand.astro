@@ -1,6 +1,7 @@
 ---
 // Solid steel blue estimate band. Stands out from every other section on purpose.
 import { ctaBand, business, ui, slots } from '../content/site';
+import Phone from './Phone.astro';
 ---
 <section class="estimate-band" aria-labelledby="est-band-h">
   <div class="container est-grid">
@@ -13,8 +14,8 @@ import { ctaBand, business, ui, slots } from '../content/site';
     <div class="est-actions" data-reveal>
       <a class="btn btn-xl btn-white btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
       <p class="est-contact">
-        <span>{ui.phoneLabel}: <a href={business.phoneHref}>{business.phoneDisplay}</a></span>
-        <span>{ui.emailLabel}: <a href={business.emailHref}>{business.email}</a></span>
+        <span>{ui.phoneLabel}: <Phone /></span>
+        {business.email && <span>{ui.emailLabel}: <a href={business.emailHref}>{business.email}</a></span>}
       </p>
     </div>
   </div>

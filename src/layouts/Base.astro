@@ -9,6 +9,7 @@ import { SITE, SITE_NOINDEX } from '../../site.config.mjs';
 import { business, nav, servicePages, ui } from '../content/site';
 import { publishedGuides } from '../lib/guides';
 import { logo, hero } from '../content/images';
+import Phone from '../components/Phone.astro';
 
 export interface Crumb { name: string; path: string }
 
@@ -42,7 +43,6 @@ const business_ld: Record<string, unknown> = {
   '@id': `${SITE}/#business`,
   name: business.name,
   url: `${SITE}/`,
-  telephone: business.phoneE164,
   logo: ldLogoUrl,
   image: ogUrl,
   address: {
@@ -52,6 +52,9 @@ const business_ld: Record<string, unknown> = {
     addressCountry: business.country,
   },
 };
+// telephone only once the real number is set (never the placeholder); no email while it is empty.
+if (business.phoneLive) business_ld.telephone = business.phoneE164;
+if (business.email) business_ld.email = business.email;
 if (business.hours.openingHours.length) business_ld.openingHours = business.hours.openingHours;
 if (business.areaServed.length) {
   business_ld.areaServed = business.areaServed.map((name) => ({ '@type': 'Place', name }));
@@ -140,7 +143,9 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
                 <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
               )
             )}
-            <li class="nav-phone-item"><a class="nav-phone" href={business.phoneHref}>{business.phoneDisplay}</a></li>
+            {/* No header phone since Contact joined the row (2026-11-25): it no longer fits at any width
+                (the container caps at 1168px; even a real number pushed the estimate button to two lines).
+                The phone stays in the hero, service page heads, mobile menu, sticky bar, footer and /contact. */}
             <li><a class="btn" href="/start-your-project">{ui.estimateButton}</a></li>
           </ul>
         </nav>
@@ -158,7 +163,7 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
                 </Fragment>
               ))}
               <li><a href="/start-your-project">{ui.estimateButton}</a></li>
-              <li><a href={business.phoneHref}>{ui.callButton}</a></li>
+              <li><Phone class="nav-mobile-phone" label={ui.callButton} /></li>
             </ul>
           </nav>
         </details>
@@ -194,9 +199,9 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
         <div class="footer-grid">
           <div>
             <p class="footer-head">{ui.footerContactLabel}</p>
-            <p><a href={business.phoneHref}>{business.phoneDisplay}</a></p>
+            <p><Phone /></p>
             {business.hours.text && <p class="footer-hours">{business.hours.text}</p>}
-            <p><a href={business.emailHref}>{business.email}</a></p>
+            {business.email && <p><a href={business.emailHref}>{business.email}</a></p>}
             <p>{business.city}</p>
             <p class="footer-head footer-head-gap">{ui.footerIslandsLabel}</p>
             <p>{business.islandsLine}</p>
@@ -234,7 +239,7 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
     </footer>
 
     <div class="sticky-cta" aria-label={ui.estimateButton} role="region">
-      <a class="btn btn-light" href={business.phoneHref}>{ui.callShort}</a>
+      <Phone class="btn btn-light" label={ui.callShort} button />
       <a class="btn" href="/start-your-project">{ui.estimateShort}</a>
     </div>
     <script>

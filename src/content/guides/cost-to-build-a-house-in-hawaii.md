@@ -85,7 +85,7 @@ The Hawaii Department of Commerce and Consumer Affairs (DCCA) suggests setting a
 
 ## How ECM can help
 
-Elite Construction Management (ECM) is a licensed Hawaii general contractor, license CT-37929, Class B General Building, and is veteran owned. ECM is based in Kapolei and serves Oahu, Maui and the Big Island. ECM builds new homes, ADUs and additions, remodels, and commercial tenant improvements. ECM runs the job from first walkthrough to final inspection, and plumbing and electrical are done by licensed subcontractors. Call (808) 987-5782. ECM calls back the same business day.
+Elite Construction Management (ECM) is a licensed Hawaii general contractor, license CT-37929, Class B General Building, and is veteran owned. ECM is based in Kapolei and serves Oahu, Maui and the Big Island. ECM builds new homes, ADUs and additions, remodels, and commercial tenant improvements. ECM runs the job from first walkthrough to final inspection, and plumbing and electrical are done by licensed subcontractors. Use the [estimate form](/start-your-project) or the [contact page](/contact). ECM calls back within one business day.
 
 ## FAQ
 

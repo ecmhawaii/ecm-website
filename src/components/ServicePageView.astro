@@ -11,6 +11,7 @@ import Faq from './Faq.astro';
 import EstimateBand from './EstimateBand.astro';
 import EstimateButton from './EstimateButton.astro';
 import RelatedGuide from './RelatedGuide.astro';
+import Phone from './Phone.astro';
 import { serviceDetail, services, business, ui } from '../content/site';
 import { faqSchema } from '../lib/schema';
 
@@ -22,10 +23,10 @@ const crumbs = [
 ];
 ---
 <Base title={s.title} description={s.description} crumbs={crumbs} schema={faqSchema(s.key)}>
-  <PageHead h1={s.h1} eyebrow={services.h1} photo={s.image}>
+  <PageHead h1={s.h1} eyebrow={services.h1} photo={s.image} photoSide={'imageSide' in s && s.imageSide}>
     <div class="btn-row btn-row-left" data-hero-in="3">
       <a class="btn btn-lg btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
-      <a class="btn btn-lg btn-ghost" href={business.phoneHref}>{ui.callButton}</a>
+      <Phone class="btn btn-lg btn-ghost" label={ui.callButton} button />
     </div>
   </PageHead>
   <CredentialsStrip />

@@ -1,23 +1,35 @@
 ---
 // Dark band at the top of inner pages with the page's single H1.
 // With `photo`, it becomes a photo hero band (dark overlay, parallax on desktop).
+// With `photo` and `photoSide`, the photo sits beside the text on desktop and under it on
+// phones, so the heading never covers it (used where the photo's subject fills the frame,
+// for example the Hope Lodge sign on the commercial page, 2026-11-25).
 import PhotoSlot from './PhotoSlot.astro';
-interface Props { h1: string; lead?: string; badge?: string; eyebrow?: string; photo?: string }
-const { h1, lead, badge, eyebrow, photo } = Astro.props;
+interface Props { h1: string; lead?: string; badge?: string; eyebrow?: string; photo?: string; photoSide?: boolean }
+const { h1, lead, badge, eyebrow, photo, photoSide = false } = Astro.props;
+const cover = photo && !photoSide;
+const side = photo && photoSide;
 ---
-<section class:list={['page-head', photo && 'page-head-photo']}>
-  {photo && (
+<section class:list={['page-head', cover && 'page-head-photo', side && 'page-head-side']}>
+  {cover && (
     <div class="page-head-media" data-parallax>
       <PhotoSlot image={photo} ratio="none" crop={4 / 3} quality={42} sizes="100vw" widths={[480, 760, 1216]} eager class="page-head-photo-fig" />
     </div>
   )}
-  {photo && <div class="hero-overlay"></div>}
-  <div class="container page-head-inner">
-    {badge && <p class="draft-badge">{badge}</p>}
-    {/* Same CSS fade-up as the home hero, on photo heads only. Text-only heads paint at once (they are the LCP). */}
-    {eyebrow && <p class="eyebrow eyebrow-light" data-hero-in={photo ? '0' : undefined}>{eyebrow}</p>}
-    <h1 data-hero-in={photo ? '1' : undefined}>{h1}</h1>
-    {lead && <p class="lead" data-hero-in={photo ? '2' : undefined}>{lead}</p>}
-    <slot />
+  {cover && <div class="hero-overlay"></div>}
+  <div class:list={['container', 'page-head-inner', side && 'page-head-side-grid']}>
+    <div class="page-head-text">
+      {badge && <p class="draft-badge">{badge}</p>}
+      {/* Same CSS fade-up as the home hero, on photo heads only. Text-only heads paint at once (they are the LCP). */}
+      {eyebrow && <p class="eyebrow eyebrow-light" data-hero-in={photo ? '0' : undefined}>{eyebrow}</p>}
+      <h1 data-hero-in={photo ? '1' : undefined}>{h1}</h1>
+      {lead && <p class="lead" data-hero-in={photo ? '2' : undefined}>{lead}</p>}
+      <slot />
+    </div>
+    {side && (
+      <div class="page-head-side-media">
+        <PhotoSlot image={photo} ratio="photo" quality={62} sizes="(min-width: 1200px) 520px, (min-width: 960px) 44vw, 100vw" widths={[480, 760, 1040]} eager />
+      </div>
+    )}
   </div>
 </section>
