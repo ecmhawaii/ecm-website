@@ -11,6 +11,7 @@ import Faq from './Faq.astro';
 import EstimateBand from './EstimateBand.astro';
 import EstimateButton from './EstimateButton.astro';
 import RelatedGuide from './RelatedGuide.astro';
+import ChecklistOffer from './ChecklistOffer.astro';
 import Phone from './Phone.astro';
 import { serviceDetail, services, business, ui } from '../content/site';
 import { faqSchema } from '../lib/schema';
@@ -53,6 +54,8 @@ const crumbs = [
     </section>
   ))}
 
+  {/* Checklist offer (only pages with a checklist, see src/content/checklists.ts). */}
+  <ChecklistOffer path={s.path} />
   <HowItWorks />
   <GuideContentSlot page={s.key} />
   <div class="container"><Financing /></div>

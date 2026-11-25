@@ -1,11 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import Phone from '../components/Phone.astro';
+import Draft from '../components/Draft.astro';
+import { checklists, checklistThanks } from '../content/checklists';
+import { shown } from '../lib/draft';
 import PageHead from '../components/PageHead.astro';
 import { business, thankYou as t, slots, planningGuideByType, ui } from '../content/site';
 import { publishedGuides } from '../lib/guides';
 // Only final guides are suggested; a draft mapping falls back to the default guide.
 const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.href }));
+// Checklist requests: /thank-you?form=checklist&c=<slug> links the checklist (only checklists built here).
+const checklistMap = Object.fromEntries(checklists.filter(shown).map((c) => [c.slug, `/checklists/${c.slug}`]));
+const showChecklistThanks = shown(checklistThanks) && Object.keys(checklistMap).length > 0;
 ---
 <Base title={t.title} description={t.description} noindex crumbs={[{ name: t.title.split(' |')[0], path: '/thank-you' }]}>
   <PageHead h1={t.h1} />
@@ -19,6 +25,17 @@ const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.
         <h2 class="card-title">{t.nextHeading}</h2>
         <ol class="next-steps">{t.nextSteps.map((s) => <li>{s}</li>)}</ol>
       </div>
+
+      {showChecklistThanks && (
+        <div hidden data-checklist-box data-checklists={JSON.stringify(checklistMap)} data-checklist-text={checklistThanks.text}>
+          <Draft item={checklistThanks} class="callout">
+            <p class="btn-row btn-row-left">
+              <a class="btn btn-lg btn-arrow" href="/checklists" data-checklist-link>{checklistThanks.openLabel}</a>
+              <a class="btn btn-lg btn-outline" href="/start-your-project">{checklistThanks.estimateButton}</a>
+            </p>
+          </Draft>
+        </div>
+      )}
 
       <div class="callout" hidden data-planning-box>
         <h2 class="card-title">{t.planningHeading}</h2>
@@ -37,9 +54,19 @@ const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.
     let data: Record<string, string> = {};
     try { data = JSON.parse(sessionStorage.getItem('ecm-thank-you') || '{}'); } catch {}
     const params = new URLSearchParams(location.search);
-    for (const k of ['type', 'timeline', 'form']) { const v = params.get(k); if (v) data[k] = v; }
+    for (const k of ['type', 'timeline', 'form', 'c']) { const v = params.get(k); if (v) data[k] = v; }
 
-    if (data.form === 'subcontractor' || data.form === 'contact') {
+    const box = root.querySelector<HTMLElement>('[data-checklist-box]');
+    const checklistHref = data.form === 'checklist' && box ? (JSON.parse(box.dataset.checklists || '{}') as Record<string, string>)[data.c] : undefined;
+    if (checklistHref && box) {
+      // Checklist request: link the checklist (slug checked against the list built into the page).
+      root.querySelector<HTMLElement>('[data-thanks-text]')!.textContent = box.dataset.checklistText || '';
+      box.querySelector<HTMLAnchorElement>('[data-checklist-link]')!.href = checklistHref;
+      box.hidden = false;
+      root.querySelector<HTMLElement>('[data-next-box]')!.hidden = true;
+      const reply = root.querySelector<HTMLElement>('[data-reply]');
+      if (reply) reply.hidden = true;
+    } else if (data.form === 'subcontractor' || data.form === 'contact') {
       const text = root.querySelector<HTMLElement>('[data-thanks-text]')!;
       text.textContent = (data.form === 'contact' ? text.dataset.contactText : text.dataset.subText) || text.textContent;
       root.querySelector<HTMLElement>('[data-next-box]')!.hidden = true;

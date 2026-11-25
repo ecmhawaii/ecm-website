@@ -751,3 +751,27 @@ html { scroll-padding-bottom: 96px; }
 .consent-check { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; font-weight: 400; color: var(--ink); }
 .consent-check input { width: 22px; height: 22px; margin: 2px 0 0; }
 .consent-links { margin: 6px 0 0 32px; font-size: 0.95rem; color: var(--ink-2); }
+
+/* Checklist offer box and printable checklist pages */
+.section-tight { padding: 32px 0; }
+.checklist-offer { padding: 24px; max-width: 760px; }
+.checklist-offer-h { font-size: 1.5rem; }
+.checklist-form { gap: 18px; }
+.checklist-form-grid { display: grid; gap: 18px; }
+@media (min-width: 640px) { .checklist-form-grid { grid-template-columns: 1fr 1fr; } }
+.checklist-source { color: var(--ink-2); }
+.checklist-group + .checklist-group { margin-top: 28px; }
+.checklist-items { list-style: none; padding: 0; margin: 0; }
+.checklist-items li { position: relative; padding: 10px 0 10px 40px; border-bottom: 1px solid var(--paper-3); }
+.checklist-items li::before { content: ''; position: absolute; left: 0; top: 12px; width: 22px; height: 22px; border: 2px solid var(--ink); border-radius: 4px; background: var(--paper); }
+.checklist-note { margin-top: 24px; color: var(--ink-2); font-size: 0.95rem; }
+@media print {
+  .site-header, .site-footer, .sticky-cta, .crumb-bar, .estimate-band, .no-print, .skip-link { display: none !important; }
+  body { background: #ffffff; color: #000000; padding: 0; }
+  .page-head { background: #ffffff; color: #000000; padding: 0 0 12px; }
+  .page-head h1, .page-head .lead { color: #000000; }
+  .section { padding: 0; }
+  .checklist-items li { break-inside: avoid; }
+  a { color: #000000; }
+  .checklist-source a::after { content: ' (ecmhawaii.com' attr(href) ')'; }
+}

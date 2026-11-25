@@ -7,6 +7,7 @@ import PageHead from '../../components/PageHead.astro';
 import Faq from '../../components/Faq.astro';
 import EstimateBand from '../../components/EstimateBand.astro';
 import EstimateButton from '../../components/EstimateButton.astro';
+import ChecklistOffer from '../../components/ChecklistOffer.astro';
 import { guides as draftGuides, guidesHub, guidePath, guidesPublished, ui } from '../../content/site';
 import { finalGuides } from '../../lib/guides';
 import { faqSchema, faqSchemaFromItems, articleSchema } from '../../lib/schema';
@@ -49,6 +50,7 @@ const schema = final
         <div class="prose guide-prose" id="guide-body-start" set:html={final.bodyHtml} />
       </div>
     </article>
+    <ChecklistOffer path={path} />
     <Faq page={`guide:${slug}`} eyebrow="" heading={final.faqHeading} items={final.faq} />
     <section class="section guide-sources" aria-labelledby="sources">
       <div class="container prose guide-prose" set:html={final.sourcesHtml} />
