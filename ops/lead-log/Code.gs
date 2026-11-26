@@ -1,3 +1,4 @@
+/** @OnlyCurrentDoc */
 /**
  * ECM lead log (Google Apps Script, bound to the lead log Google Sheet). Code only: no URLs,
  * keys or lead data live in the repo. Setup: ops/lead-log/README.md.
@@ -79,9 +80,11 @@ function setupSheet() {
   leads.getRange(1, 1, 1, LEAD_HEADERS.length).setFontWeight('bold');
   var c = cols_(leads);
   var maxRows = Math.max(leads.getMaxRows() - 1, 1);
-  leads.getRange(2, c['Status'], maxRows, 1).setDataValidation(
-    SpreadsheetApp.newDataValidation().requireValueInList(STATUSES, true).setAllowInvalid(false).build());
-  leads.getRange(2, c['Log touch'], maxRows, 1).insertCheckboxes();
+  leads.getRange(2, c['Status'], maxRows, 1).setDataValidation(statusRule_());
+  // No pre-filled Log touch checkboxes: an unticked box holds FALSE, which Sheets counts as
+  // content, so getLastRow() would point at the bottom of the sheet (the row 1001 bug, 2026-11-26).
+  // doPost adds one checkbox per new row. Blank boxes left by the old setup are removed here.
+  removeBlankCheckboxes_(leads, c);
   ['Received (HST)', 'Claimed at', 'First contact at', 'Last touch', 'Next touch'].forEach(function (h) {
     leads.getRange(2, c[h], maxRows, 1).setNumberFormat('yyyy-mm-dd hh:mm');
   });
@@ -137,12 +140,17 @@ function doPost(e) {
     if (findRow_(sh, id)) return text_('duplicate');
     lead = leadFromPayload_(payload, form, id);
     var c = cols_(sh);
-    var row = new Array(LEAD_HEADERS.length);
-    for (var h in c) row[c[h] - 1] = '';
+    var width = sh.getLastColumn();
+    var row = [];
+    for (var i = 0; i < width; i++) row.push('');
     Object.keys(lead.cells).forEach(function (h) { if (c[h]) row[c[h] - 1] = lead.cells[h]; });
-    sh.appendRow(row);
-    var r = sh.getLastRow();
+    // Written right under the last row that has a Netlify ID (never appendRow: formats,
+    // dropdowns or checkboxes further down must not push leads to the bottom of the sheet).
+    var r = lastLeadRow_(sh, c) + 1;
+    if (r > sh.getMaxRows()) sh.insertRowsAfter(sh.getMaxRows(), 1);
+    sh.getRange(r, 1, 1, width).setValues([row]);
     sh.getRange(r, c['Log touch']).insertCheckboxes();
+    sh.getRange(r, c['Status']).setDataValidation(statusRule_());
   } finally {
     lock.releaseLock();
   }
@@ -452,7 +460,7 @@ function nudgeUnclaimed() {
   if (hour < settings.start || hour >= settings.end) return;
   var sh = sheet_(SHEETS.leads);
   var c = cols_(sh);
-  var values = sh.getDataRange().getValues();
+  var values = leadValues_(sh, c);
   var docProps = PropertiesService.getDocumentProperties();
   var cutoff = Date.now() - settings.after * 60000;
   for (var i = 1; i < values.length; i++) {
@@ -478,7 +486,7 @@ function dailyDigest() {
   if (settings.days.indexOf(dayOfWeek_(now)) === -1) return;
   var sh = sheet_(SHEETS.leads);
   var c = cols_(sh);
-  var values = sh.getDataRange().getValues();
+  var values = leadValues_(sh, c);
   var today = Utilities.formatDate(now, TZ, 'yyyy-MM-dd');
   var overnightTo = hstDate_(today, settings.start);
   var overnightFrom = hstDate_(previousResponseDay_(today, settings.days), settings.end);
@@ -516,7 +524,7 @@ function dailyDigest() {
 function weeklySummary() {
   var sh = sheet_(SHEETS.leads);
   var c = cols_(sh);
-  var values = sh.getDataRange().getValues().slice(1).filter(function (v) { return v[c['Netlify ID'] - 1]; });
+  var values = leadValues_(sh, c).slice(1).filter(function (v) { return v[c['Netlify ID'] - 1]; });
   var body = ['Weekly lead summary, ' + Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd'), ''];
   [7, 30].forEach(function (days) {
     var from = Date.now() - days * 86400000;
@@ -591,10 +599,49 @@ function cols_(sh) {
 
 function findRow_(sh, id) {
   var c = cols_(sh);
-  var last = sh.getLastRow();
+  var last = lastLeadRow_(sh, c);
   if (last < 2) return 0;
   var hit = sh.getRange(2, c['Netlify ID'], last - 1, 1).createTextFinder(id).matchEntireCell(true).findNext();
   return hit ? hit.getRow() : 0;
+}
+
+/**
+ * Last Leads row with a value in the Netlify ID column (1 = header only). Checkboxes, dropdowns
+ * and formats lower down are ignored. Use this, never getLastRow(), for the Leads tab.
+ */
+function lastLeadRow_(sh, c) {
+  c = c || cols_(sh);
+  var last = sh.getLastRow();
+  if (last < 2) return 1;
+  var ids = sh.getRange(2, c['Netlify ID'], last - 1, 1).getValues();
+  for (var i = ids.length - 1; i >= 0; i--) if (String(ids[i][0]).trim() !== '') return i + 2;
+  return 1;
+}
+
+/** Header plus every lead row (up to the last Netlify ID), as values. */
+function leadValues_(sh, c) {
+  c = c || cols_(sh);
+  return sh.getRange(1, 1, lastLeadRow_(sh, c), sh.getLastColumn()).getValues();
+}
+
+/** Removes Log touch checkboxes from rows that have no Netlify ID (blank rows). */
+function removeBlankCheckboxes_(sh, c) {
+  var last = sh.getLastRow();
+  if (last < 2) return;
+  var ids = sh.getRange(2, c['Netlify ID'], last - 1, 1).getValues();
+  var start = -1;
+  for (var i = 0; i <= ids.length; i++) {
+    var blank = i < ids.length && String(ids[i][0]).trim() === '';
+    if (blank && start === -1) start = i;
+    if (!blank && start !== -1) {
+      sh.getRange(start + 2, c['Log touch'], i - start, 1).removeCheckboxes();
+      start = -1;
+    }
+  }
+}
+
+function statusRule_() {
+  return SpreadsheetApp.newDataValidation().requireValueInList(STATUSES, true).setAllowInvalid(false).build();
 }
 
 function settings_() {

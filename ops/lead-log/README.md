@@ -40,8 +40,8 @@ Files: `Code.gs` (the script), `appsscript.json` (time zone Pacific/Honolulu, V8
 
 4. **Create the tabs.**
    1. In the editor, pick `setupSheet` in the function menu and click Run.
-   2. Approve the permissions when Google asks.
-   3. This creates the Leads, Cadence and Settings tabs with headers, the Status dropdown and the Log touch checkboxes.
+   2. Approve the permissions when Google asks. The spreadsheet permission should read "spreadsheets that this application has been installed in", not all of your spreadsheets (see "Access to this sheet only" below).
+   3. This creates the Leads, Cadence and Settings tabs with headers, the Status dropdown and the date formats. Each new lead row gets its own Log touch checkbox when it arrives; empty rows have none.
 5. **Deploy as a web app.**
    1. Deploy > New deployment > type Web app.
    2. Set Execute as to **Me** (the owner) and Who has access to **Anyone**.
@@ -60,7 +60,7 @@ Files: `Code.gs` (the script), `appsscript.json` (time zone Pacific/Honolulu, V8
 
    Then check that:
    - The response is `ok`, and a second identical POST answers `duplicate`.
-   - A Leads row appears.
+   - A Leads row appears on row 2 (the first row under the headers).
    - Both people get a Claim email, and the first tap on Claim wins.
    - The other person gets "<name> claimed it".
 
@@ -120,6 +120,39 @@ Changing a row's Status starts that status's cadence. The weekly summary counts 
 | Max claim emails per hour | 10 | Flood cap, counted in leads per rolling hour |
 
 No secrets go on this tab. Running `setupSheet` again adds any missing setting with its default and leaves the others alone. That's the way to add the two new rows to a sheet made before 2026-11-26. It also adds any missing Leads column (such as Form version) at the end of an older Leads tab; the script finds columns by header name, so the position does not matter.
+
+## Access to this sheet only
+
+The first line of `Code.gs` is `/** @OnlyCurrentDoc */`. It limits the script to the spreadsheet it is installed in, the lead log, and no other file in the owner's Google Drive. The script only ever opens that sheet (`SpreadsheetApp.getActive`), so nothing else needs access.
+
+When you approve the script, the spreadsheet permission should read "spreadsheets that this application has been installed in". If it asks for access to all your spreadsheets, the first line is missing: paste the full `Code.gs` again.
+
+## Updating the deployed code
+
+When `Code.gs` changes in the repo:
+
+1. Open the lead log sheet, then Extensions > Apps Script.
+2. Select everything in `Code.gs`, paste the new `Code.gs` from this folder over it, and click Save.
+3. Deploy > Manage deployments. Click the pencil icon on the existing web app deployment, set Version to **New version**, and click Deploy.
+
+   Don't use Deploy > New deployment for an update: that creates a new web app URL, and the Netlify webhooks and old Claim links would still point to the old one. Editing the existing deployment keeps the same URL.
+4. If the update added Settings rows or Leads columns, run `setupSheet` once more. It only adds what is missing and leaves your data alone.
+
+**Update of 2026-11-26 (row 1001 fix).** The first setup pre-filled empty Log touch checkboxes down the whole Leads tab. An unticked checkbox holds FALSE, which Sheets counts as content, so new leads were written near row 1001 instead of under the headers. After pasting the new code and redeploying:
+- Run `setupSheet` once. It removes the blank checkboxes from rows that have no Netlify ID and keeps the ones on real leads.
+- Move or delete the test lead that landed near row 1001. If you keep it, cut the whole row and paste it on row 2.
+
+New leads are now written right under the last row that has a Netlify ID.
+
+## If lead log emails go to spam
+
+The claim, nudge, digest and summary emails are sent by Google from the script owner's ecmhawaii.com address. Email for ecmhawaii.com is forwarded by Hostinger, and that forwarding can make Gmail distrust those messages. If they land in spam, each person adds a Gmail filter once:
+
+1. In Gmail, open Settings > See all settings > Filters and blocked addresses > Create a new filter.
+2. In From, enter `ellard@ecmhawaii.com` (the address the lead log emails come from).
+3. Click Create filter, tick **Never send it to Spam**, and click Create filter again.
+
+This changes nothing in the email settings for ecmhawaii.com. It only tells each person's Gmail to trust these messages.
 
 ## Privacy rules for this script
 
