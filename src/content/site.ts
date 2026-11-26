@@ -632,7 +632,8 @@ export const estimate = {
     type: {
       legend: 'What kind of project is it?',
       name: 'project-type',
-      otherLabel: 'What kind of project?',
+      // "Other" field labels also name these fields in Netlify's alert email (2026-11-26).
+      otherLabel: 'Project type (other)',
       otherName: 'project-type-other',
       options: [
         'Custom home',
@@ -648,7 +649,7 @@ export const estimate = {
     location: {
       legend: 'Where is the project?',
       islandLabel: 'Island',
-      islandOtherLabel: 'Which island or area?',
+      islandOtherLabel: 'Island or area (other)',
       islandOtherName: 'island-other',
       islandName: 'island',
       islands: ['Oahu', 'Maui', 'Big Island', 'Kauai', 'Other'],
@@ -684,7 +685,7 @@ export const estimate = {
       heardAbout: {
         label: 'How did you hear about us? (optional)',
         name: 'heard-about',
-        otherLabel: 'Where did you hear about us?',
+        otherLabel: 'Heard about us (other)',
         otherName: 'heard-about-other',
         options: ['Google search', 'Google Maps', 'Instagram', 'Facebook', 'Friend or family', 'Architect or designer', 'Saw an ECM job sign', 'Other'],
       },
