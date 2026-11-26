@@ -11,8 +11,11 @@
  *    with an HMAC per lead per person. First claim wins.
  *  - onEdit: ticking "Log touch" counts a touch and sets the next one from the Cadence tab.
  *    Changing Status starts that status's cadence.
- *  - Triggers (setupTriggers): nudge every 5 minutes, daily digest at 07:00, weekly summary
- *    Monday 07:00 (Hawaii time).
+ *  - Triggers (setupTriggers): nudge every 5 minutes and daily digest at 07:00, both only on
+ *    the Settings tab's "Response days" (default Mon to Sat); weekly summary Monday 07:00
+ *    (Hawaii time).
+ *  - Flood cap: past "Max claim emails per hour" (Settings, default 10 leads an hour), rows are
+ *    still added but claim emails stop, and one alert goes to both people (at most once an hour).
  *
  * Script Properties (Project Settings > Script Properties). Never in code:
  *   WEBHOOK_KEY          long random string; the Netlify webhook URL ends with ?k=<it>
@@ -37,6 +40,17 @@ var LEAD_HEADERS = [
 var STATUSES = ['New', 'Contacted', 'Site visit booked', 'Proposal sent', 'Won', 'Lost', 'Nurture'];
 var ACTIVE = ['New', 'Contacted', 'Site visit booked', 'Proposal sent', 'Nurture'];
 var LEAD_FORMS = ['estimate', 'contact', 'checklist-request'];
+var DAY_NAMES = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']; // Utilities.formatDate 'u': 1 Monday .. 7 Sunday
+var SETTINGS_ROWS = [
+  ['Nudge after (minutes)', 15],
+  ['Nudge window start (hour, HST)', 7],
+  ['Nudge window end (hour, HST)', 19],
+  ['Response days', 'Mon to Sat'],
+  ['Max claim emails per hour', 10],
+  ['Secrets', 'Kept in Script Properties, never on this sheet.'],
+  ['Time zone', TZ],
+];
+var FLOOD_ALERT = 'Unusual number of leads in the last hour, check the lead log';
 var CADENCE_HEADERS = ['Status', 'Day offsets', 'Then every (days)', 'Repeat times (0 = no limit)', 'After that, set status', 'Counts from', 'Notes'];
 var DEFAULT_CADENCE = [
   ['New', '0, 1, 3, 5, 7', 30, 3, 'Nurture', 'Received', 'Day 3: useful email with a guide or checklist link. Day 7: close the loop. Then monthly for 3 months, then Nurture.'],
@@ -77,16 +91,12 @@ function setupSheet() {
 
   var set = ss.getSheetByName(SHEETS.settings) || ss.insertSheet(SHEETS.settings);
   if (set.getLastRow() === 0) {
-    set.getRange(1, 1, 6, 2).setValues([
-      ['Setting', 'Value'],
-      ['Nudge after (minutes)', 15],
-      ['Nudge window start (hour, HST)', 7],
-      ['Nudge window end (hour, HST)', 19],
-      ['Secrets', 'Kept in Script Properties, never on this sheet.'],
-      ['Time zone', TZ],
-    ]);
+    set.appendRow(['Setting', 'Value']);
     set.getRange(1, 1, 1, 2).setFontWeight('bold');
   }
+  // Adds any missing setting with its default (safe to run again on an existing sheet).
+  var have = set.getDataRange().getValues().map(function (r) { return String(r[0]); });
+  SETTINGS_ROWS.forEach(function (row) { if (have.indexOf(row[0]) === -1) set.appendRow(row); });
 }
 
 /** Run once from the editor: installs the three time based triggers (Hawaii time). */
@@ -243,7 +253,13 @@ function claimLead(id, p, sig) {
   return { ok: true, msg: 'You claimed it. It is yours now.' };
 }
 
+/** Emails both people their Claim link. Returns false when the flood cap held the emails back. */
 function sendClaimEmails_(id, first, type, leadType, island, subjectLead) {
+  var gate = claimEmailGate_();
+  if (!gate.ok) {
+    if (gate.alert) mailTeam_(FLOOD_ALERT, FLOOD_ALERT + '.\n\nNew rows are still being added, but claim emails are paused until the count drops.\n\n' + SpreadsheetApp.getActive().getUrl());
+    return false;
+  }
   var sheetUrl = SpreadsheetApp.getActive().getUrl();
   ['1', '2'].forEach(function (p) {
     var who = person_(p);
@@ -257,6 +273,36 @@ function sendClaimEmails_(id, first, type, leadType, island, subjectLead) {
       htmlBody: '<p>' + esc_(subjectLead) + ': ' + esc_(summary) + '</p><p><a href="' + esc_(link) + '">Claim it</a></p><p><a href="' + esc_(sheetUrl) + '">Lead log</a></p>',
     });
   });
+  return true;
+}
+
+/**
+ * Flood cap. Counts leads whose claim emails went out in the last hour (one lead = one count,
+ * however many people it emails). At the cap: no claim emails; {alert: true} at most once an hour.
+ */
+function claimEmailGate_() {
+  var max = settings_().maxPerHour;
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    var dp = PropertiesService.getDocumentProperties();
+    var now = Date.now();
+    var sent = [];
+    try { sent = JSON.parse(dp.getProperty('claimSends') || '[]'); } catch (err) { sent = []; }
+    sent = sent.filter(function (t) { return now - t < 3600000; });
+    if (sent.length >= max) {
+      dp.setProperty('claimSends', JSON.stringify(sent));
+      var last = Number(dp.getProperty('floodAlertAt') || 0);
+      if (now - last < 3600000) return { ok: false, alert: false };
+      dp.setProperty('floodAlertAt', String(now));
+      return { ok: false, alert: true };
+    }
+    sent.push(now);
+    dp.setProperty('claimSends', JSON.stringify(sent));
+    return { ok: true };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function claimUrl_(id, p) {
@@ -390,10 +436,12 @@ function saveStage_(id, stage) {
 
 /* --------------------------------------------------------------- triggers */
 
-/** Every 5 minutes: leads still New and unclaimed after 15 minutes, 7:00 to 19:00 HST, get one nudge. */
+/** Every 5 minutes: on response days, 7:00 to 19:00 HST, leads still New and unclaimed after 15 minutes get one nudge. */
 function nudgeUnclaimed() {
   var settings = settings_();
-  var hour = Number(Utilities.formatDate(new Date(), TZ, 'H'));
+  var now = new Date();
+  if (settings.days.indexOf(dayOfWeek_(now)) === -1) return;
+  var hour = Number(Utilities.formatDate(now, TZ, 'H'));
   if (hour < settings.start || hour >= settings.end) return;
   var sh = sheet_(SHEETS.leads);
   var c = cols_(sh);
@@ -406,26 +454,34 @@ function nudgeUnclaimed() {
     var received = v[c['Received (HST)'] - 1];
     if (!id || v[c['Status'] - 1] !== 'New' || v[c['Owner'] - 1] || !(received instanceof Date) || received.getTime() > cutoff) continue;
     if (docProps.getProperty('nudged_' + id)) continue;
-    docProps.setProperty('nudged_' + id, '1');
-    sendClaimEmails_(id, firstName_(v[c['Name'] - 1]), v[c['Project type'] - 1], v[c['Lead type'] - 1], v[c['Island'] - 1], 'Still unclaimed');
+    // Marked only when the emails went out (the flood cap can hold them back; the next run retries).
+    if (sendClaimEmails_(id, firstName_(v[c['Name'] - 1]), v[c['Project type'] - 1], v[c['Lead type'] - 1], v[c['Island'] - 1], 'Still unclaimed')) {
+      docProps.setProperty('nudged_' + id, '1');
+    }
   }
 }
 
-/** 07:00 daily: overnight leads, touches due today by owner, overdue leads. */
+/**
+ * 07:00 on response days: leads since the last response day's window closed (19:00), touches
+ * due today by owner, overdue leads. With Mon to Sat, Monday covers Saturday 19:00 to Monday 07:00.
+ */
 function dailyDigest() {
+  var settings = settings_();
+  var now = new Date();
+  if (settings.days.indexOf(dayOfWeek_(now)) === -1) return;
   var sh = sheet_(SHEETS.leads);
   var c = cols_(sh);
   var values = sh.getDataRange().getValues();
-  var today = Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd');
-  var startToday = hstDate_(today, 0);
-  var overnightFrom = new Date(startToday.getTime() - 5 * 3600000); // 19:00 yesterday HST
+  var today = Utilities.formatDate(now, TZ, 'yyyy-MM-dd');
+  var overnightTo = hstDate_(today, settings.start);
+  var overnightFrom = hstDate_(previousResponseDay_(today, settings.days), settings.end);
   var overnight = [], due = {}, overdue = [];
   for (var i = 1; i < values.length; i++) {
     var v = values[i];
     if (!v[c['Netlify ID'] - 1]) continue;
     var line = leadLine_(v, c);
     var received = v[c['Received (HST)'] - 1];
-    if (received instanceof Date && received >= overnightFrom && received < new Date(startToday.getTime() + 7 * 3600000)) overnight.push(line);
+    if (received instanceof Date && received >= overnightFrom && received < overnightTo) overnight.push(line);
     var status = v[c['Status'] - 1];
     var next = v[c['Next touch'] - 1];
     if (ACTIVE.indexOf(status) === -1 || !(next instanceof Date)) continue;
@@ -437,7 +493,7 @@ function dailyDigest() {
     }
   }
   var body = ['Lead log, ' + today, ''];
-  body.push('Overnight leads (' + overnight.length + ')');
+  body.push('Leads since ' + Utilities.formatDate(overnightFrom, TZ, 'EEE h:mm a') + ' (' + overnight.length + ')');
   body = body.concat(overnight.length ? overnight.map(bullet_) : ['  none']);
   body.push('', 'Touches due today');
   var owners = Object.keys(due);
@@ -536,11 +592,49 @@ function findRow_(sh, id) {
 
 function settings_() {
   var values = sheet_(SHEETS.settings).getDataRange().getValues();
-  var get = function (label, dflt) {
-    for (var i = 1; i < values.length; i++) if (values[i][0] === label) return Number(values[i][1]) || dflt;
-    return dflt;
+  var raw = function (label) {
+    for (var i = 1; i < values.length; i++) if (values[i][0] === label) return values[i][1];
+    return '';
   };
-  return { after: get('Nudge after (minutes)', 15), start: get('Nudge window start (hour, HST)', 7), end: get('Nudge window end (hour, HST)', 19) };
+  var num = function (label, dflt) { return Number(raw(label)) || dflt; };
+  return {
+    after: num('Nudge after (minutes)', 15),
+    start: num('Nudge window start (hour, HST)', 7),
+    end: num('Nudge window end (hour, HST)', 19),
+    days: parseDays_(raw('Response days')),
+    maxPerHour: num('Max claim emails per hour', 10),
+  };
+}
+
+/** "Mon to Sat", "Mon, Wed, Fri" or "Mon to Fri, Sun" -> [1..7] (1 Monday). Blank or unreadable: Mon to Sat. */
+function parseDays_(text) {
+  var dayNum = function (word) { return DAY_NAMES.indexOf(String(word).trim().slice(0, 3).toLowerCase()) + 1; };
+  var picked = {};
+  String(text || '').split(/\s*,\s*|\s+and\s+/i).forEach(function (part) {
+    var range = part.match(/^\s*([a-z]+)\s+to\s+([a-z]+)\s*$/i);
+    if (range) {
+      var a = dayNum(range[1]), b = dayNum(range[2]);
+      if (!a || !b) return;
+      for (var d = a; ; d = (d % 7) + 1) { picked[d] = true; if (d === b) break; }
+    } else if (dayNum(part)) {
+      picked[dayNum(part)] = true;
+    }
+  });
+  var days = Object.keys(picked).map(Number).sort();
+  return days.length ? days : [1, 2, 3, 4, 5, 6];
+}
+
+/** 1 Monday .. 7 Sunday, Hawaii time. */
+function dayOfWeek_(date) { return Number(Utilities.formatDate(date, TZ, 'u')); }
+
+/** The last response day before `day` (yyyy-MM-dd, Hawaii), as yyyy-MM-dd. */
+function previousResponseDay_(day, days) {
+  var noon = hstDate_(day, 12).getTime();
+  for (var k = 1; k <= 7; k++) {
+    var d = new Date(noon - k * 86400000);
+    if (days.indexOf(dayOfWeek_(d)) !== -1) return Utilities.formatDate(d, TZ, 'yyyy-MM-dd');
+  }
+  return Utilities.formatDate(new Date(noon - 86400000), TZ, 'yyyy-MM-dd');
 }
 
 /** Midnight HST of a yyyy-MM-dd day plus `hours`. HST is UTC-10 all year. */

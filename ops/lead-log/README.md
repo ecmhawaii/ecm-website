@@ -4,16 +4,17 @@ Code only. Nothing here is deployed by the website build. No URLs, keys or lead 
 
 What it does:
 
-- **New leads.** Netlify posts each estimate, contact and checklist request to the script. The subcontractor form is ignored. The script adds one row to the Leads tab and emails both teammates a Claim link.
+- **New leads.** Netlify posts each estimate, contact and checklist request to the script. The subcontractor form is ignored. The script adds one row to the Leads tab and emails both teammates a Claim link, on any day and at any hour.
 - **Claiming.** The Claim link opens a page with the lead's first name, project type and a Claim button.
   - Opening the link claims nothing, so email scanners that prefetch links can't claim a lead.
   - The first tap on Claim wins. The other person gets an email: "<name> claimed it".
   - Opening the link after that shows who already claimed it.
 - **Touches.** Tick **Log touch** on a row after each call, text or email. The script counts the touch, stamps the time and sets **Next touch** from the Cadence tab.
-- **Reminders.**
-  - Every 5 minutes: one nudge for any lead still New and unclaimed after 15 minutes (7:00 to 19:00 Hawaii time).
-  - Every day at 07:00: a digest of overnight leads, touches due today and overdue leads.
+- **Reminders.** Nudges and digests only go out on the **response days** set on the Settings tab (default Mon to Sat).
+  - Every 5 minutes on response days, 7:00 to 19:00 Hawaii time: one nudge for any lead still New and unclaimed after 15 minutes. A lead that came in on Sunday gets its nudge Monday from 7:00.
+  - 07:00 on response days: a digest of leads since the last response day's window closed (19:00), touches due today and overdue leads. With Mon to Sat, Monday's digest covers Saturday 19:00 to Monday 07:00.
   - Every Monday at 07:00: a weekly summary, including the website's step counts.
+- **Flood cap.** If more leads arrive in an hour than "Max claim emails per hour" (default 10), the extra rows are still added but their claim emails stop. Both people get one alert, at most once an hour: "Unusual number of leads in the last hour, check the lead log". Each lead counts once, however many people it emails. Leads held back this way get the normal nudge later, once the hour's count drops, and the nudges count toward the cap too.
 
 Files: `Code.gs` (the script), `appsscript.json` (time zone Pacific/Honolulu, V8, web app settings).
 
@@ -46,8 +47,8 @@ Files: `Code.gs` (the script), `appsscript.json` (time zone Pacific/Honolulu, V8
    2. Set Execute as to **Me** (the owner) and Who has access to **Anyone**.
    3. Click Deploy and copy the web app URL (it ends in `/exec`).
 6. **Add the triggers.** Run `setupTriggers` once. This adds:
-   - `nudgeUnclaimed`: every 5 minutes
-   - `dailyDigest`: daily, 07:00 Hawaii time
+   - `nudgeUnclaimed`: every 5 minutes (it does nothing outside response days and 7:00 to 19:00)
+   - `dailyDigest`: daily, 07:00 Hawaii time (it does nothing outside response days)
    - `weeklySummary`: Mondays, 07:00 Hawaii time
 
    Google runs hourly triggers some time within that hour, so a 07:00 trigger can arrive up to about 08:00.
@@ -108,9 +109,17 @@ People fill:
 
 Changing a row's Status starts that status's cadence. The weekly summary counts site visits, proposals and wins from each lead's current status.
 
-**Settings.**
-- The nudge delay (15 minutes) and the nudge window (7 to 19 Hawaii time).
-- No secrets.
+**Settings.** Edit the Value column; the script reads it on every run.
+
+| Setting | Default | Meaning |
+| --- | --- | --- |
+| Nudge after (minutes) | 15 | How long a lead can sit New and unclaimed before the nudge |
+| Nudge window start (hour, HST) | 7 | Nudges start, and the digest's window ends, at this hour |
+| Nudge window end (hour, HST) | 19 | Nudges stop, and the next digest's window starts, at this hour |
+| Response days | Mon to Sat | Days nudges and digests run. Write a range ("Mon to Sat"), a list ("Mon, Wed, Fri") or both ("Mon to Fri, Sun"). Blank or unreadable means Mon to Sat |
+| Max claim emails per hour | 10 | Flood cap, counted in leads per rolling hour |
+
+No secrets go on this tab. Running `setupSheet` again adds any missing setting with its default and leaves the others alone. That's the way to add the two new rows to a sheet made before 2026-11-26.
 
 ## Privacy rules for this script
 
