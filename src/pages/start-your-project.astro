@@ -7,7 +7,7 @@ import Reviews from '../components/Reviews.astro';
 import Phone from '../components/Phone.astro';
 import Draft from '../components/Draft.astro';
 import FormAgreement from '../components/FormAgreement.astro';
-import { smsConsent, privacyPage, termsPage } from '../content/legal';
+import { smsConsent, privacyPage, termsPage, formAgreement } from '../content/legal';
 import { shown } from '../lib/draft';
 import { estimate as e, ui, business, slots, siteVisitCopy } from '../content/site';
 const s = e.steps;
@@ -32,7 +32,8 @@ const total = 6;
         <input type="hidden" name="form-name" value={e.formName} />
         <input type="hidden" name="subject" value={e.defaultSubject} data-subject-prefix={e.subjectPrefix} />
         <input type="hidden" name="source-page" value="unknown" />
-        <input type="hidden" name="form-version" value={e.formVersion} />
+        {/* Form version + the SMS consent wording version shown (kept in the lead log's "Form version" column). */}
+        <input type="hidden" name="form-version" value={`${e.formVersion}${shown(smsConsent) ? `+${smsConsent.version}` : ''}`} />
         <input type="hidden" name="lead-type" value={e.leadType} />
         <p class="hidden-field">
           <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
@@ -128,6 +129,8 @@ const total = 6;
             <label for="heard-about-other">{s.contact.heardAbout.otherLabel}</label>
             <input id="heard-about-other" name={s.contact.heardAbout.otherName} type="text" maxlength="120" autocomplete="off" />
           </div>
+          {/* Agreement line, directly above the Send button (the step nav follows this step). */}
+          <FormAgreement button={ui.submit} extra={formAgreement.estimateExtra} />
         </fieldset>
 
         <p class="step-error" role="alert" hidden data-step-error>{e.chooseOne}</p>
@@ -138,7 +141,6 @@ const total = 6;
           <button type="submit" class="btn btn-lg" data-submit>{ui.submit}</button>
         </div>
       </form>
-      <FormAgreement />
       <RelatedGuide page="estimate" />
       <p class="form-alt">{e.questionLead} <a href="/contact">{e.questionLink}</a></p>
       <p class="form-alt form-alt-tight">{ui.phoneLabel}: <Phone />{business.email && <Fragment> · {ui.emailLabel}: <a href={business.emailHref}>{business.email}</a></Fragment>}</p>

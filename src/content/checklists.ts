@@ -41,6 +41,9 @@ export const checklistUi = {
   // Offer box form (Netlify form "checklist-request").
   formName: 'checklist-request',
   leadType: 'checklist',
+  // Goes into the hidden form-version field (lead log "Form version"); change it when the
+  // email-ok wording changes.
+  formVersion: 'checklist-v1',
   subjectPrefix: 'New checklist request',
   firstName: 'First name',
   email: 'Email',

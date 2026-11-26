@@ -732,6 +732,7 @@ export const contact = {
   messageLine: 'For questions that are not an estimate request. We reply by email within one business day.',
   formName: 'contact',
   leadType: 'contact',
+  formVersion: 'contact-v1',
   // Email subject for Netlify's alert (hidden "subject" field). JS adds the visitor's subject.
   defaultSubject: 'Website message',
   subjectPrefix: 'Website message',

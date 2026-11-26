@@ -33,6 +33,7 @@ const id = (s: string) => `cl-${s}`;
           <input type="hidden" name="form-name" value={u.formName} />
           <input type="hidden" name="subject" value={`${u.subjectPrefix}: ${cl.slug}`} />
           <input type="hidden" name="lead-type" value={u.leadType} />
+          <input type="hidden" name="form-version" value={u.formVersion} />
           <input type="hidden" name="checklist" value={cl.slug} />
           <input type="hidden" name="source-page" value={cl.sourcePath} />
           <p class="hidden-field">
@@ -60,9 +61,9 @@ const id = (s: string) => `cl-${s}`;
             </div>
           </div>
           <label class="consent-check"><input type="checkbox" name="email-ok" value="Yes" /><span>{u.emailOk}</span></label>
+          <FormAgreement button={u.submit} />
           <button class="btn btn-lg" type="submit">{u.submit}</button>
         </form>
-        <FormAgreement />
       </Draft>
     </div>
   </section>
