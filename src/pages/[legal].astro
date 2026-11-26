@@ -28,6 +28,7 @@ const isDraft = draftBadge(page);
           <h2>{sec.heading}</h2>
           {sec.paragraphs?.map((p) => <p set:html={inlineLinks(p)} />)}
           {sec.list && <ul>{sec.list.map((li) => <li set:html={inlineLinks(li)} />)}</ul>}
+          {sec.after?.map((p) => <p set:html={inlineLinks(p)} />)}
         </section>
       ))}
     </div>
