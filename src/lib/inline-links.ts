@@ -1,4 +1,4 @@
-// Plain text with [label](/path) links to pages on this site -> safe HTML.
+// Plain text with [label](/path) links to pages on this site, and **bold**, -> safe HTML.
 // Only same-site paths starting with "/" become links; everything else is escaped text.
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 export function inlineLinks(text: string): string {
@@ -9,5 +9,6 @@ export function inlineLinks(text: string): string {
     out += `<a href="${esc(m[2])}">${esc(m[1])}</a>`;
     last = m.index! + m[0].length;
   }
-  return out + esc(text.slice(last));
+  out += esc(text.slice(last));
+  return out.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 }

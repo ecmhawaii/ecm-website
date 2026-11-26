@@ -22,6 +22,7 @@ const isDraft = draftBadge(page);
           <p><span class="draft-tag">{legalUi.draftHeader}</span> {legalUi.draftNote}</p>
         </div>
       )}
+      {page.effectiveDate && <p class="legal-updated"><time datetime={page.effectiveDateISO || undefined}>{legalUi.effectiveLabel}: {page.effectiveDate}</time></p>}
       <p class="legal-updated"><time datetime={page.updatedISO}>{legalUi.updatedLabel}: {page.updated}</time></p>
       {page.sections.map((sec) => (
         <section>

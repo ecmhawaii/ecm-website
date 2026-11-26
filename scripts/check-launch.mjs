@@ -95,13 +95,28 @@ for (const file of srcFiles('src')) {
     const m = line.match(/\bconfirm:\s*false\b/);
     if (!m) return;
     const id = (line.match(/\bid:\s*'([^']+)'/) || [])[1] || '(no id on this line)';
-    unconfirmed.push({ id, where: `${file}:${i + 1}` });
+    unconfirmed.push({ id, where: `${file}:${i + 1}`, revised: /\bwas:\s*'/.test(line) });
   });
 }
 for (const u of unconfirmed) {
   if (LAUNCH_BLOCKING.includes(u.id)) blockers.push(`Not confirmed: ${u.id} (${u.where}). Privacy and terms must be confirmed before launch.`);
+  else if (u.revised) warnings.push(`Not confirmed (production keeps the old wording): ${u.id} (${u.where})`);
   else warnings.push(`Not confirmed (left out of production): ${u.id} (${u.where})`);
 }
+// 8. A confirmed privacy or terms page needs its effective date (src/content/legal.ts).
+const legalLines = readFileSync('src/content/legal.ts', 'utf8').split('\n');
+for (const id of LAUNCH_BLOCKING) {
+  const start = legalLines.findIndex((l) => l.includes(`id: '${id}'`));
+  if (start === -1) { blockers.push(`${id} not found in src/content/legal.ts`); continue; }
+  const confirmed = /\bconfirm:\s*true\b/.test(legalLines[start]);
+  let effective = '';
+  for (let i = start + 1; i < legalLines.length && !/^export const/.test(legalLines[i]); i++) {
+    const m = legalLines[i].match(/^\s*effectiveDate:\s*'([^']*)'/);
+    if (m) { effective = m[1]; break; }
+  }
+  if (confirmed && !effective.trim()) blockers.push(`${id} is confirmed but has no effective date (effectiveDate in src/content/legal.ts:${start + 1}).`);
+}
+
 const draftInBuild = pages.filter((p) => p.html.includes('data-draft='));
 if (draftInBuild.length) {
   const how = process.env.CONTEXT === 'production' ? '' : ' (this dist was not built with CONTEXT=production; run npm run check:launch)';
