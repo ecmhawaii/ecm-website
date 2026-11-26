@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:launch": "node scripts/build-production.mjs && node scripts/check-launch.mjs",
-    "indexnow": "node scripts/indexnow-submit.mjs"
+    "indexnow": "node scripts/indexnow-submit.mjs",
+    "test:lead-hook": "node --experimental-strip-types --no-warnings tests/lead-hook.test.mts"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.6",
