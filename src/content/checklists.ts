@@ -14,6 +14,8 @@
 //   of production.
 // - The guides' citation markers ([6]) are left off; each checklist links to its source page.
 // - `n` is the checklist number sent by the step counter (docs/funnel-counter.md).
+// - Group headings carry no step numbers (2026-11-26): the hiring guide's Steps 3 and 4 are
+//   legal content and left out, so its numbers would show gaps.
 
 export type ChecklistItem = { id: string; confirm: boolean; text: string };
 export type ChecklistGroup = { heading: string; items: ChecklistItem[] };
@@ -66,7 +68,8 @@ export const checklists: Checklist[] = [
     offerText: 'Get the steps from this guide as a checklist you can print or save as a PDF.',
     groups: [
       {
-        heading: 'Step 1: Check the license and complaint history',
+        // Guide heading "Step 1: Check the license and complaint history". Step numbers are dropped so the checklist never shows gaps.
+        heading: 'Check the license and complaint history',
         items: [
           // Source (Step 1, cited [6]): "Search the license. DCCA's Professional and Vocational License Search shows license status, classifications and proof of insurance."
           { id: 'hiring-license', confirm: true, text: "Search the license. DCCA's Professional and Vocational License Search shows license status, classifications and proof of insurance." },
@@ -79,7 +82,8 @@ export const checklists: Checklist[] = [
         ],
       },
       {
-        heading: 'Step 2: Get bids you can compare',
+        // Guide heading "Step 2: Get bids you can compare". Step numbers are dropped so the checklist never shows gaps.
+        heading: 'Get bids you can compare',
         items: [
           // Source (Step 2, cited [3]): "Set a budget in advance and keep a reserve for changes or unexpected costs."
           { id: 'hiring-budget', confirm: true, text: 'Set a budget in advance and keep a reserve for changes or unexpected costs.' },
@@ -90,7 +94,8 @@ export const checklists: Checklist[] = [
         ],
       },
       {
-        heading: 'Step 5: Pay as the work is done',
+        // Guide heading "Step 5: Pay as the work is done". Step numbers are dropped so the checklist never shows gaps.
+        heading: 'Pay as the work is done',
         items: [
           // Source (Step 5, cited [12]): "DCCA's advice is to never pay all of the money up front, to tie payments to completed work and to hold back 5 to 10 percent until all work is done."
           { id: 'hiring-pay', confirm: true, text: "DCCA's advice is to never pay all of the money up front, to tie payments to completed work and to hold back 5 to 10 percent until all work is done." },
@@ -100,7 +105,8 @@ export const checklists: Checklist[] = [
         ],
       },
       {
-        heading: 'Step 6: Settle permits before work starts',
+        // Guide heading "Step 6: Settle permits before work starts". Step numbers are dropped so the checklist never shows gaps.
+        heading: 'Settle permits before work starts',
         items: [
           // Source (Step 6, cited [3]): "Ask who will handle the building, electrical and plumbing permits."
           { id: 'hiring-permits', confirm: true, text: 'Ask who will handle the building, electrical and plumbing permits.' },
