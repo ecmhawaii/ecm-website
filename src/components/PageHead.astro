@@ -5,8 +5,10 @@
 // phones, so the heading never covers it (used where the photo's subject fills the frame,
 // for example the Hope Lodge sign on the commercial page, 2026-11-25).
 import PhotoSlot from './PhotoSlot.astro';
-interface Props { h1: string; lead?: string; badge?: string; eyebrow?: string; photo?: string; photoSide?: boolean }
-const { h1, lead, badge, eyebrow, photo, photoSide = false } = Astro.props;
+import DraftTag from './DraftTag.astro';
+import type { Confirmable } from '../lib/draft';
+interface Props { h1: string; lead?: string; badge?: string; eyebrow?: string; photo?: string; photoSide?: boolean; leadItem?: Confirmable }
+const { h1, lead, badge, eyebrow, photo, photoSide = false, leadItem } = Astro.props;
 const cover = photo && !photoSide;
 const side = photo && photoSide;
 ---
@@ -23,7 +25,7 @@ const side = photo && photoSide;
       {/* Same CSS fade-up as the home hero, on photo heads only. Text-only heads paint at once (they are the LCP). */}
       {eyebrow && <p class="eyebrow eyebrow-light" data-hero-in={photo ? '0' : undefined}>{eyebrow}</p>}
       <h1 data-hero-in={photo ? '1' : undefined}>{h1}</h1>
-      {lead && <p class="lead" data-hero-in={photo ? '2' : undefined}>{lead}</p>}
+      {lead && <p class="lead" data-hero-in={photo ? '2' : undefined}>{leadItem && <DraftTag item={leadItem} />}{lead}</p>}
       <slot />
     </div>
     {side && (

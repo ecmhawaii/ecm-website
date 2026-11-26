@@ -7,7 +7,8 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Phone from '../components/Phone.astro';
 import FormAgreement from '../components/FormAgreement.astro';
-import { contact as c, ui } from '../content/site';
+import { contact as c, ui, siteVisitCopy } from '../content/site';
+import DraftTag from '../components/DraftTag.astro';
 const f = c.fields;
 ---
 <Base title={c.title} description={c.description} crumbs={[{ name: c.h1, path: '/contact' }]}>
@@ -21,7 +22,7 @@ const f = c.fields;
         </div>
         <div class="contact-option">
           <h2 id="contact-estimate-h" class="contact-h">{c.estimateHeading}</h2>
-          <p>{c.estimateLine}</p>
+          <p><DraftTag item={siteVisitCopy.contactEstimate} />{c.estimateLine}</p>
           <a class="btn btn-lg btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
         </div>
       </div>

@@ -1,11 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Phone from '../components/Phone.astro';
+import DraftTag from '../components/DraftTag.astro';
 import Draft from '../components/Draft.astro';
 import { checklists, checklistThanks } from '../content/checklists';
 import { shown } from '../lib/draft';
 import PageHead from '../components/PageHead.astro';
-import { business, thankYou as t, slots, planningGuideByType, ui } from '../content/site';
+import { business, thankYou as t, slots, planningGuideByType, ui, siteVisitCopy } from '../content/site';
 import { publishedGuides } from '../lib/guides';
 // Only final guides are suggested; a draft mapping falls back to the default guide.
 const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.href }));
@@ -17,13 +18,13 @@ const showChecklistThanks = shown(checklistThanks) && Object.keys(checklistMap).
   <PageHead h1={t.h1} />
   <section class="section">
     <div class="container prose" data-thanks data-guides={JSON.stringify(guideList)} data-guide-map={JSON.stringify(planningGuideByType)}>
-      <p class="lead" data-thanks-text data-sub-text={t.subcontractorText} data-contact-text={t.contactText}>{t.text}</p>
+      <p class="lead" data-thanks-text data-sub-text={t.subcontractorText} data-contact-text={t.contactText}><DraftTag item={siteVisitCopy.thanksText} />{t.text}</p>
       {/* REPLY TIME SLOT: confirmed by Jesse 2026-11-21 (slots.replyTime in site.ts). Hidden for subcontractors. */}
       {slots.replyTime.enabled && slots.replyTime.text && <p class="reply-pill reply-pill-dark" data-slot="reply-time" data-reply>{slots.replyTime.text}</p>}
 
       <div class="callout next-box" data-next-box>
         <h2 class="card-title">{t.nextHeading}</h2>
-        <ol class="next-steps">{t.nextSteps.map((s) => <li>{s}</li>)}</ol>
+        <ol class="next-steps">{t.nextSteps.map((s, i) => <li>{i === t.nextSteps.length - 1 && <DraftTag item={siteVisitCopy.thanksStep} />}{s}</li>)}</ol>
       </div>
 
       {showChecklistThanks && (

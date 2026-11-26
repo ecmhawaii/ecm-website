@@ -9,12 +9,12 @@ import Draft from '../components/Draft.astro';
 import FormAgreement from '../components/FormAgreement.astro';
 import { smsConsent, privacyPage, termsPage } from '../content/legal';
 import { shown } from '../lib/draft';
-import { estimate as e, ui, business, slots } from '../content/site';
+import { estimate as e, ui, business, slots, siteVisitCopy } from '../content/site';
 const s = e.steps;
 const total = 6;
 ---
 <Base title={e.title} description={e.description} crumbs={[{ name: e.h1, path: '/start-your-project' }]}>
-  <PageHead h1={e.h1} lead={e.intro}>
+  <PageHead h1={e.h1} lead={e.intro} leadItem={siteVisitCopy.estimateIntro}>
     {slots.replyTime.enabled && slots.replyTime.text && <p class="reply-pill" data-slot="reply-time">{slots.replyTime.text}</p>}
   </PageHead>
   <section class="section">

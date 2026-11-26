@@ -1,3 +1,4 @@
+import { copy } from '../lib/draft';
 // ALL visible website text and every on/off switch lives in this file.
 // Images live in src/content/images.ts.
 //
@@ -20,6 +21,19 @@ const EMAIL: string = '';
 
 const phoneDigits = PHONE.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
 const phoneLive = PHONE !== PHONE_PLACEHOLDER && phoneDigits.length === 10;
+
+// Site visit wording (2026-11-26): a site visit is one possible next step, not a promise to every
+// lead. Each line keeps the old wording in `was`; production uses it until the new text is
+// confirmed (see `copy` in src/lib/draft.ts).
+export const siteVisitCopy = {
+  estimateIntro: { id: 'copy-estimate-intro', confirm: false, was: 'Tell us a little about your project. We will get back to you to set up a site visit.', text: 'Tell us a little about your project. We will get back to you about next steps, which may include a site visit.' },
+  estimateMeta: { id: 'copy-estimate-meta', confirm: false, was: 'Tell us about your project and Elite Construction Management will follow up to schedule a site visit.', text: 'Tell us about your project and Elite Construction Management will follow up about next steps.' },
+  ctaBand: { id: 'copy-cta-band', confirm: false, was: 'Tell us what you have in mind and we will follow up to set up a site visit.', text: 'Tell us what you have in mind and we will follow up about next steps, which may include a site visit.' },
+  contactEstimate: { id: 'copy-contact-estimate', confirm: false, was: 'Tell us about your project and we will follow up to set up a site visit.', text: 'Tell us about your project and we will follow up about next steps, which may include a site visit.' },
+  thanksText: { id: 'copy-thanks-text', confirm: false, was: 'We received your request and will contact you to schedule a site visit.', text: 'We received your request and will contact you about next steps, which may include a site visit.' },
+  thanksStep: { id: 'copy-thanks-step', confirm: false, was: 'We schedule a site visit.', text: 'If it is a fit, we schedule a site visit.' },
+  faqEstimate: { id: 'copy-faq-estimate', confirm: false, was: 'Fill out the estimate form, or send us a message on the contact page. We will follow up to set up a site visit, walk the property with you and talk through scope, budget and timing.', text: 'Fill out the estimate form, or send us a message on the contact page. We will follow up about next steps. That may include a site visit to walk the property with you and talk through scope, budget and timing.' },
+};
 
 export const business = {
   name: 'Elite Construction Management',
@@ -198,7 +212,7 @@ export const howItWorks = {
 export const ctaBand = {
   eyebrow: 'Request an estimate',
   heading: 'Planning a project?',
-  text: 'Tell us what you have in mind and we will follow up to set up a site visit.',
+  text: copy(siteVisitCopy.ctaBand),
 };
 
 export const home = {
@@ -598,9 +612,9 @@ export const about = {
 export const estimate = {
   title: 'Request an Estimate | Elite Construction Management',
   description:
-    'Tell us about your project and Elite Construction Management will follow up to schedule a site visit.',
+    copy(siteVisitCopy.estimateMeta),
   h1: 'Request an Estimate',
-  intro: 'Tell us a little about your project. We will get back to you to set up a site visit.',
+  intro: copy(siteVisitCopy.estimateIntro),
   // Line under the form (2026-11-25).
   questionLead: 'Just have a question?',
   questionLink: 'Send us a message.',
@@ -713,7 +727,7 @@ export const contact = {
   intro: 'Three ways to reach Elite Construction Management.',
   callHeading: 'Call',
   estimateHeading: 'Request an estimate',
-  estimateLine: 'Tell us about your project and we will follow up to set up a site visit.',
+  estimateLine: copy(siteVisitCopy.contactEstimate),
   messageHeading: 'Send a message',
   messageLine: 'For questions that are not an estimate request. We reply by email within one business day.',
   formName: 'contact',
@@ -731,14 +745,14 @@ export const contact = {
 
 export const thankYou = {
   title: 'Thank You | Elite Construction Management',
-  description: 'We received your request and will contact you to schedule a site visit.',
+  description: copy(siteVisitCopy.thanksText),
   h1: 'Thanks.',
-  text: 'We received your request and will contact you to schedule a site visit.',
+  text: copy(siteVisitCopy.thanksText),
   subcontractorText: 'We received your details and will reach out when a project fits.',
   contactText: 'Thanks, we got your message. We reply by email within one business day.',
   urgentLead: 'For anything urgent, call',
   nextHeading: 'What happens next',
-  nextSteps: ['We review your project.', 'We call you.', 'We schedule a site visit.'],
+  nextSteps: ['We review your project.', 'We call you.', copy(siteVisitCopy.thanksStep)],
   planningHeading: 'Still planning?',
   planningLead: 'This guide may help while you plan:',
 };
@@ -834,7 +848,7 @@ const Q = {
   plans: { q: "Can you build from my architect's plans?", a: 'Yes. And if you do not have plans yet, we connect you with an architect or designer to draw them.' },
   // ^ 'we connect you with an architect or designer' is audit claim C29: needs Jesse's yes (Answer Sheet #30).
   trades: { q: 'Who does the plumbing and electrical?', a: 'Licensed subcontractors. Our crews are backed by licensed subcontractors for plumbing, electrical and other trades.' },
-  estimate: { q: 'How do I get an estimate?', a: 'Fill out the estimate form, or send us a message on the contact page. We will follow up to set up a site visit, walk the property with you and talk through scope, budget and timing.' },
+  estimate: { q: 'How do I get an estimate?', a: copy(siteVisitCopy.faqEstimate) },
   callback: { q: 'How fast will you call me back?', a: "We'll call you back within one business day." },
   smallJobs: { q: 'Do you take smaller jobs?', a: 'Yes. We take jobs under $50k as well as larger projects.' },
   veteran: { q: 'Are you veteran owned?', a: 'Yes. Elite Construction Management is veteran owned. Owner Jesse Alverio is a veteran.' },

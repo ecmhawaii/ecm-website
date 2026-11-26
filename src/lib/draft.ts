@@ -18,3 +18,11 @@ export type Confirmable = { id: string; confirm: boolean };
 export const shown = (item: Confirmable) => item.confirm || !IS_PRODUCTION;
 /** True when the item is shown but not confirmed yet (it gets a Draft badge). */
 export const draftBadge = (item: Confirmable) => !item.confirm && !IS_PRODUCTION;
+
+/**
+ * A reworded sentence: { id, confirm, was, text } on one line. Previews and local builds use
+ * the new `text`; production keeps the previous wording (`was`) until the new text is confirmed,
+ * so nothing goes blank. check:launch lists it like any other confirm:false item.
+ */
+export type Revised = Confirmable & { was: string; text: string };
+export const copy = (item: Revised) => (item.confirm || !IS_PRODUCTION ? item.text : item.was);
