@@ -4,8 +4,8 @@
  * keys or lead data live in the repo. Setup: ops/lead-log/README.md.
  *
  * What it does
- *  - doPost: receives Netlify's outgoing webhook for the estimate, contact and checklist-request
- *    forms (?k=WEBHOOK_KEY), ignores the subcontractor form, dedupes by Netlify ID, appends a row
+ *  - doPost: receives the estimate, contact and checklist-request submissions from the site's
+ *    relay (netlify/functions/lead-hook.mts, which checks Netlify's signature) with ?k=WEBHOOK_KEY; ignores the subcontractor form, dedupes by Netlify ID, appends a row
  *    to Leads and emails each teammate their own Claim link.
  *  - doGet: the Claim page (first name, project type, Claim button). The button POSTs through
  *    google.script.run, so email scanners that prefetch links can never claim. Links are signed
@@ -19,7 +19,7 @@
  *    still added but claim emails stop, and one alert goes to both people (at most once an hour).
  *
  * Script Properties (Project Settings > Script Properties). Never in code:
- *   WEBHOOK_KEY          long random string; the Netlify webhook URL ends with ?k=<it>
+ *   WEBHOOK_KEY          long random string; LEAD_LOG_URL in Netlify's env vars ends with ?k=<it>
  *   CLAIM_SECRET         long random string used to sign Claim links
  *   TEAM_1_NAME, TEAM_1_EMAIL, TEAM_2_NAME, TEAM_2_EMAIL   the two people leads go to
  *   SITE_URL             the live site origin, for the step counter report

@@ -123,6 +123,9 @@ if (draftInBuild.length) {
   blockers.push(`Draft badges in the build on ${draftInBuild.length} pages: ${draftInBuild.map((p) => p.path).join(', ')}${how}`);
 }
 
+// 9. Lead relay (ops/lead-log/README.md): the form webhooks point at the deploy preview until launch.
+notes.push(`Lead relay: at launch, change the 3 Netlify form webhooks (estimate, contact, checklist-request) from the deploy preview to ${SITE}/api/lead-hook (or the www address if www is the primary domain; the URL must not redirect). Keep the JWS secret token.`);
+
 // Hidden slots (information only, not blockers).
 const slotsBlock = siteTs.slice(siteTs.indexOf('export const slots'), siteTs.indexOf('export const nav'));
 const offSlots = [...slotsBlock.matchAll(/^ {2}(\w+): \{\s*\n\s*enabled: false/gm)].map((m) => m[1]);

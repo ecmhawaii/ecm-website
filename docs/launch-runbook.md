@@ -134,6 +134,7 @@ Facts today:
    - Both forms (`estimate`, `subcontractor`) should email `info@ecmhawaii.com`.
    - Netlify only emails a recipient outside the Netlify team after that address confirms. Check that the confirmation was clicked.
    - **Verify:** the notification is listed and not marked pending.
+   - **Lead relay webhooks (at launch).** The three outgoing webhooks (`estimate`, `contact`, `checklist-request`) point at the deploy preview before launch: `https://deploy-preview-2--ecmhawaii.netlify.app/api/lead-hook`. At launch, change all three to `https://ecmhawaii.com/api/lead-hook`, or `https://www.ecmhawaii.com/api/lead-hook` if www is the primary domain (the URL must not redirect). Keep the JWS secret token. See `ops/lead-log/README.md`.
 7. **Check Search Console access.** (Ellard)
    - Confirm you are an **Owner** of the ecmhawaii.com property; submitting a sitemap needs it.
    - Note whether it is a Domain property (verified by the DNS TXT record) or a URL prefix property for `https://www.ecmhawaii.com/`.

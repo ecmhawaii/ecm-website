@@ -1,10 +1,10 @@
 # ECM lead log (Google Sheet + Apps Script)
 
-Code only. Nothing here is deployed by the website build. No URLs, keys or lead data belong in this repo: secrets live in the script's **Script Properties**, and leads live only in the Google Sheet.
+Code only. Nothing here is deployed by the website build. No URLs, keys or lead data belong in this repo: the script's secrets live in its **Script Properties**, the relay's secrets live in **Netlify environment variables**, and leads live only in the Google Sheet.
 
 What it does:
 
-- **New leads.** Netlify posts each estimate, contact and checklist request to the script. The subcontractor form is ignored. The script adds one row to the Leads tab and emails both teammates a Claim link, on any day and at any hour.
+- **New leads.** Netlify posts each estimate, contact and checklist request to the site's relay (`/api/lead-hook`), which forwards it to the script (see "Netlify setup: the lead relay"). The subcontractor form is ignored. The script adds one row to the Leads tab and emails both teammates a Claim link, on any day and at any hour.
 - **Claiming.** The Claim link opens a page with the lead's first name, project type and a Claim button.
   - Opening the link claims nothing, so email scanners that prefetch links can't claim a lead.
   - The first tap on Claim wins. The other person gets an email: "<name> claimed it".
@@ -30,7 +30,7 @@ Files: `Code.gs` (the script), `appsscript.json` (time zone Pacific/Honolulu, V8
 
    | Key | Value |
    | --- | --- |
-   | `WEBHOOK_KEY` | A long random string (40 or more letters and numbers) |
+   | `WEBHOOK_KEY` | A long random string (40 or more letters and numbers). It goes at the end of `LEAD_LOG_URL` in Netlify as `?k=` |
    | `CLAIM_SECRET` | A different long random string |
    | `TEAM_1_NAME`, `TEAM_1_EMAIL` | First person's name and email |
    | `TEAM_2_NAME`, `TEAM_2_EMAIL` | Second person's name and email |
@@ -52,7 +52,7 @@ Files: `Code.gs` (the script), `appsscript.json` (time zone Pacific/Honolulu, V8
    - `weeklySummary`: Mondays, 07:00 Hawaii time
 
    Google runs hourly triggers some time within that hour, so a 07:00 trigger can arrive up to about 08:00.
-7. **Test with a fake lead.** Replace the two `<...>` parts with your values (keep the URL only on your machine) and run:
+7. **Test the script directly with a fake lead.** This skips the relay and talks to the script itself. Replace the two `<...>` parts with your values (keep the URL only on your machine) and run:
 
    ```bash
    curl -L -X POST "<web app URL>?k=<WEBHOOK_KEY>" -H "Content-Type: application/json" -d '{"id":"test000000000001","form_name":"estimate","created_at":"2026-11-25T20:00:00Z","data":{"name":"Test Lead","phone":"0000000000","email":"test@example.org","project-type":"Kitchen remodel","island":"Oahu","timeline":"Just planning","lead-type":"estimate","source-page":"/test","form-version":"test"}}'
@@ -66,21 +66,61 @@ Files: `Code.gs` (the script), `appsscript.json` (time zone Pacific/Honolulu, V8
 
    Delete the test row afterwards.
 
-## Netlify outgoing webhooks to add
+## Netlify setup: the lead relay
 
-In Netlify, go to Site configuration > Notifications > Emails and webhooks > Form submission notifications. Add one **Outgoing webhook** per form, with the event "New form submission":
+Netlify can't post straight to the script. An Apps Script web app answers every POST with a 302 redirect, Netlify counts that as a failure, retries, and turns the webhook off after 6 failures (seen on 2026-11-26: one lead, 6 runs, webhook disabled). So Netlify posts to a small function on our own site, `netlify/functions/lead-hook.mts` at `/api/lead-hook`.
 
-| Form | URL to notify |
+The relay:
+1. Checks Netlify's signature on the request.
+2. Forwards the submission to the script, following the redirect.
+3. Answers Netlify with a plain 200 when the script says `ok`, `duplicate` or `ignored`. Otherwise it answers 502 and Netlify retries. Retries are safe: the script dedupes by Netlify ID.
+
+### 1. Netlify environment variables (Ellard sets them)
+
+In Netlify, go to Site configuration > Environment variables. Add both variables, marked **secret**, with the same value for **all deploy contexts**. Never put either value in the repo, the sheet, a chat or an email.
+
+| Variable | Value |
 | --- | --- |
-| `estimate` | `<web app URL>?k=<WEBHOOK_KEY>` |
-| `contact` | `<web app URL>?k=<WEBHOOK_KEY>` |
-| `checklist-request` | `<web app URL>?k=<WEBHOOK_KEY>` |
+| `LEAD_LOG_URL` | The web app URL (ends in `/exec`) + `?k=` + the `WEBHOOK_KEY` from Script Properties |
+| `LEAD_HOOK_JWS_SECRET` | A new long random string (40 or more letters and numbers) |
 
-Do not add one for `subcontractor` (the script ignores it anyway). Netlify sends each submission as JSON with its `id`, `form_name`, `created_at` and `data`. The script keeps the fields listed below and drops the IP address, user agent and referrer that Netlify includes.
+Trigger a new deploy afterwards (for example push a commit, or Deploys > Trigger deploy), so the function picks the variables up. The relay answers 503 until both variables are set.
 
-Not verified from the build session:
-- **302 redirect:** Apps Script answers POSTs with a 302 redirect to Google's content server. The script still runs before the redirect. If Netlify's notification log shows failures but rows do appear, that is the reason.
-- **Signatures:** the script cannot read request headers, so it checks `?k=` instead of Netlify's JWS signature.
+### 2. One outgoing webhook per form
+
+In Netlify, go to Site configuration > Notifications > Emails and webhooks > Form submission notifications. For each of `estimate`, `contact` and `checklist-request`, add one **Outgoing webhook** with:
+
+- Event: New form submission, for that form
+- URL to notify: `https://<site>/api/lead-hook`
+- JWS secret token: the same value as `LEAD_HOOK_JWS_SECRET`
+
+Do not add one for `subcontractor` (the script ignores it anyway). Delete the old webhooks that pointed straight at the script, including the one Netlify turned off.
+
+**Which `<site>`:**
+- **Before launch:** the deploy preview, so the URL is `https://deploy-preview-2--ecmhawaii.netlify.app/api/lead-hook`.
+- **At launch:** change all three URLs to `https://ecmhawaii.com/api/lead-hook`. If www is chosen as the primary domain, use `https://www.ecmhawaii.com/api/lead-hook` instead. The URL must be the primary domain itself, because a redirect makes Netlify count the delivery as failed. This step is in the launch runbook and in `npm run check:launch` notes.
+
+### What Netlify sends, and what the relay checks
+
+Each submission arrives as JSON with its `id`, `form_name`, `created_at` and `data`. The script keeps the fields listed under Tabs and drops the IP address, user agent and referrer that Netlify includes.
+
+The relay accepts a request only when its `X-Webhook-Signature` header passes these checks:
+- It is a JWS signed HS256 with `LEAD_HOOK_JWS_SECRET`.
+- Its `iss` claim is `netlify`.
+- Its `sha256` claim matches the SHA-256 of the exact body.
+
+Anything else gets 401, and nothing is forwarded. The relay logs only status codes and timing.
+
+Not verified from the build session: docs.netlify.com could not be opened, so this signature format comes from the PM brief and has not been checked against Netlify's docs. If Netlify's notification log shows 401 from `/api/lead-hook` for every delivery, the format differs. Turn the webhooks off and ask for the relay to be checked. Submissions stay in Netlify Forms either way, so no lead is lost.
+
+### Rotating the WEBHOOK_KEY
+
+No code change and no new deployment version:
+1. In Apps Script, set a new `WEBHOOK_KEY` in Script Properties.
+2. In Netlify, update `LEAD_LOG_URL` so it ends in `?k=` + the new key.
+3. Trigger a new deploy so the relay picks up the new value.
+
+Between steps 1 and 3 the script answers `forbidden`, the relay answers 502, and Netlify retries, so make the two changes close together. To rotate `LEAD_HOOK_JWS_SECRET`, change it in Netlify and in all three webhooks at the same time, then deploy.
 
 ## Tabs
 
@@ -133,9 +173,9 @@ When `Code.gs` changes in the repo:
 
 1. Open the lead log sheet, then Extensions > Apps Script.
 2. Select everything in `Code.gs`, paste the new `Code.gs` from this folder over it, and click Save.
-3. Deploy > Manage deployments. Click the pencil icon on the existing web app deployment, set Version to **New version**, and click Deploy.
+3. Deploy > Manage deployments. Click the pencil icon on the existing **active** web app deployment, set Version to **New version**, and click Deploy.
 
-   Don't use Deploy > New deployment for an update: that creates a new web app URL, and the Netlify webhooks and old Claim links would still point to the old one. Editing the existing deployment keeps the same URL.
+   Never use Deploy > New deployment for an update. It creates a new web app URL, and the old one can end up archived and stop working, while `LEAD_LOG_URL` in Netlify and old Claim links still point to it. Editing the active deployment keeps the same URL, so nothing in Netlify changes.
 4. If the update added Settings rows or Leads columns, run `setupSheet` once more. It only adds what is missing and leaves your data alone.
 
 **Update of 2026-11-26 (row 1001 fix).** The first setup pre-filled empty Log touch checkboxes down the whole Leads tab. An unticked checkbox holds FALSE, which Sheets counts as content, so new leads were written near row 1001 instead of under the headers. After pasting the new code and redeploying:
