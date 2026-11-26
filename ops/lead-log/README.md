@@ -55,7 +55,7 @@ Files: `Code.gs` (the script), `appsscript.json` (time zone Pacific/Honolulu, V8
 7. **Test with a fake lead.** Replace the two `<...>` parts with your values (keep the URL only on your machine) and run:
 
    ```bash
-   curl -L -X POST "<web app URL>?k=<WEBHOOK_KEY>" -H "Content-Type: application/json" -d '{"id":"test000000000001","form_name":"estimate","created_at":"2026-11-25T20:00:00Z","data":{"name":"Test Lead","phone":"0000000000","email":"test@example.org","project-type":"Kitchen remodel","island":"Oahu","timeline":"Just planning","lead-type":"estimate","source-page":"/test"}}'
+   curl -L -X POST "<web app URL>?k=<WEBHOOK_KEY>" -H "Content-Type: application/json" -d '{"id":"test000000000001","form_name":"estimate","created_at":"2026-11-25T20:00:00Z","data":{"name":"Test Lead","phone":"0000000000","email":"test@example.org","project-type":"Kitchen remodel","island":"Oahu","timeline":"Just planning","lead-type":"estimate","source-page":"/test","form-version":"test"}}'
    ```
 
    Then check that:
@@ -87,7 +87,7 @@ Not verified from the build session:
 **Leads.** One row per lead. The script fills these columns:
 - Received (HST), Netlify ID, Form, Lead type
 - Name, Phone, Email, Island, Project type, Details
-- Heard about, Source page, Text OK, Email OK
+- Heard about, Source page, Form version (which form and consent wording was shown, for example `v2-multistep+sms-2026-11-26`), Text OK, Email OK
 - Owner, Claimed at, Minutes to claim
 - Status (starts at New), Touches, Last touch, Next touch
 
@@ -119,7 +119,7 @@ Changing a row's Status starts that status's cadence. The weekly summary counts 
 | Response days | Mon to Sat | Days nudges and digests run. Write a range ("Mon to Sat"), a list ("Mon, Wed, Fri") or both ("Mon to Fri, Sun"). Blank or unreadable means Mon to Sat |
 | Max claim emails per hour | 10 | Flood cap, counted in leads per rolling hour |
 
-No secrets go on this tab. Running `setupSheet` again adds any missing setting with its default and leaves the others alone. That's the way to add the two new rows to a sheet made before 2026-11-26.
+No secrets go on this tab. Running `setupSheet` again adds any missing setting with its default and leaves the others alone. That's the way to add the two new rows to a sheet made before 2026-11-26. It also adds any missing Leads column (such as Form version) at the end of an older Leads tab; the script finds columns by header name, so the position does not matter.
 
 ## Privacy rules for this script
 

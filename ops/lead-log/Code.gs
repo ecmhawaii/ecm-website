@@ -33,7 +33,7 @@ var TZ = 'Pacific/Honolulu';
 var SHEETS = { leads: 'Leads', cadence: 'Cadence', settings: 'Settings' };
 var LEAD_HEADERS = [
   'Received (HST)', 'Netlify ID', 'Form', 'Lead type', 'Name', 'Phone', 'Email', 'Island',
-  'Project type', 'Details', 'Heard about', 'Source page', 'Text OK', 'Email OK', 'Owner',
+  'Project type', 'Details', 'Heard about', 'Source page', 'Form version', 'Text OK', 'Email OK', 'Owner',
   'Claimed at', 'First contact at', 'Minutes to claim', 'Status', 'Touches', 'Last touch',
   'Next touch', 'Log touch', 'Outcome reason', 'Notes',
 ];
@@ -70,6 +70,11 @@ function setupSheet() {
   ss.setSpreadsheetTimeZone(TZ);
   var leads = ss.getSheetByName(SHEETS.leads) || ss.insertSheet(SHEETS.leads);
   if (leads.getLastRow() === 0) leads.appendRow(LEAD_HEADERS);
+  // A sheet made before a column was added gets it at the end (columns are found by header name).
+  var head = leads.getRange(1, 1, 1, leads.getLastColumn()).getValues()[0].map(String);
+  LEAD_HEADERS.forEach(function (h) {
+    if (head.indexOf(h) === -1) { leads.getRange(1, head.length + 1).setValue(h); head.push(h); }
+  });
   leads.setFrozenRows(1);
   leads.getRange(1, 1, 1, LEAD_HEADERS.length).setFontWeight('bold');
   var c = cols_(leads);
@@ -179,6 +184,8 @@ function leadFromPayload_(payload, form, id) {
     'Details': details.join('\n'),
     'Heard about': orOther('heard-about', 'heard-about-other'),
     'Source page': v('source-page'),
+    // Which form and consent wording was shown, e.g. "v2-multistep+sms-2026-11-26".
+    'Form version': v('form-version'),
     'Text OK': form === 'estimate' ? (v('sms-ok') === 'Yes' ? 'Yes' : 'No') : '',
     'Email OK': form === 'checklist-request' ? (v('email-ok') === 'Yes' ? 'Yes' : 'No') : '',
     'Status': 'New',
