@@ -131,7 +131,9 @@ Facts today:
 5. **Lower the TTL (optional, recommended).** (Ellard) At least a day before launch, set the TTL of only the web records (A or ALIAS `@`, CNAME `www`) to the lowest value Hostinger allows, for example 300 seconds. This makes both the cutover and any rollback fast.
    - **Verify:** the screenshot taken after shows the new TTL on those rows only.
 6. **Check form notifications.** (Ellard) In Netlify, open Forms, then Submission notifications.
-   - Both forms (`estimate`, `subcontractor`) should email `info@ecmhawaii.com`.
+   - Website leads go to Ellard and Bleys, not Jesse (ECM Standing Decision 2026-11-25). The `estimate`, `contact` and `checklist-request` forms should email `ellard@ecmhawaii.com` and `bleys@ecmhawaii.com`.
+   - Only the `subcontractor` form emails `info@ecmhawaii.com`.
+   - The `estimate`, `contact` and `checklist-request` forms also post to `/api/lead-hook` (the relay), which writes each lead into the lead log (see the lead relay item below and `ops/lead-log/README.md`).
    - Netlify only emails a recipient outside the Netlify team after that address confirms. Check that the confirmation was clicked.
    - **Verify:** the notification is listed and not marked pending.
    - **Lead relay webhooks (at launch).** The three outgoing webhooks (`estimate`, `contact`, `checklist-request`) point at the deploy preview before launch: `https://deploy-preview-2--ecmhawaii.netlify.app/api/lead-hook`. At launch, change all three to `https://ecmhawaii.com/api/lead-hook`, or `https://www.ecmhawaii.com/api/lead-hook` if www is the primary domain (the URL must not redirect). Keep the JWS secret token. See `ops/lead-log/README.md`.
@@ -356,13 +358,14 @@ Keep the redirects for at least a year (Google's site move guidance).
 
    - **Verify:** 14 lines starting with `200`, then `0`. For option B, use `https://ecmhawaii.com` in both commands.
 2. **One form test.** (Ellard; the only form submission in this runbook)
-   1. Text Jesse and Diego first that a test lead is coming, so nobody calls it.
+   1. Tell Bleys first that a test lead is coming, so nobody calls it. Website leads go to Ellard and Bleys.
    2. On the live site, submit the estimate form once. Use your own details and "TEST launch check, please ignore" in the notes.
    3. **Verify:**
       - The submission shows in Netlify under Forms, `estimate`.
-      - The notification reaches `info@ecmhawaii.com` within a few minutes (check spam).
+      - The notification reaches `ellard@ecmhawaii.com` and `bleys@ecmhawaii.com` within a few minutes (check spam).
       - Reply-To is the address you entered.
-   4. Delete the test submission in Netlify.
+      - A row for the test lead appears in the lead log, and both of you get a Claim email.
+   4. Delete the test submission in Netlify and the test row in the lead log.
 3. **Email check.** (Ellard)
    1. From an outside address (a personal Gmail), email `info@ecmhawaii.com`.
    2. Reply from `info@ecmhawaii.com`.
@@ -398,7 +401,7 @@ Keep the redirects for at least a year (Google's site move guidance).
 7. **Netlify address redirect.** (Claude session pull request; Ellard merges) Add the `netlify.app` line from section 6.
    - **Verify:** `curl -sI https://<site-name>.netlify.app/` shows 301 to the primary.
 8. **Text Jesse.** (Ellard) Short: "Website is live at [address]. Form test and email OK. Nothing for you to do."
-9. **Watch for 7 days.** (Ellard) Leads in Netlify Forms and the inbox, email working, and Search Console with no new errors. Delays or problems go to Jesse by text.
+9. **Watch for 7 days.** (Ellard) Leads in Netlify Forms, the lead emails to Ellard and Bleys, and the lead log; email working; and Search Console with no new errors. Delays or problems go to Jesse by text.
 10. **Optional.** (Jesse or Ellard) Update the website link on ECM's Google Business Profile and anywhere else that lists the old address.
 
 ## 8. Rollback
