@@ -211,11 +211,18 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
 .stars { color: var(--ink); letter-spacing: 2px; }
 
 /* Sticky mobile call / estimate bar */
-.sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px var(--gutter) calc(8px + env(safe-area-inset-bottom)); background: var(--ink); box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.2); }
-.sticky-cta .btn { min-height: 48px; }
+/* Phones: slim bar (2026-11-27). 44px buttons, one line labels, 60px tall plus the safe area. */
+.sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px var(--gutter) calc(8px + env(safe-area-inset-bottom)); background: var(--ink); box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.2); transition: transform 0.2s ease, visibility 0.2s; }
+.sticky-cta .btn { min-height: 44px; padding: 6px 10px; font-size: 0.95rem; line-height: 1.2; white-space: nowrap; }
+/* Hidden while the page's own Call and Estimate buttons are on screen (scripts/sticky-cta.ts).
+   Only when scripting is enabled, so without JavaScript the bar always shows. */
+@media (scripting: enabled) {
+  body:has([data-cta-watch]):not(.cta-show) .sticky-cta { transform: translateY(100%); visibility: hidden; box-shadow: none; }
+}
+@media (prefers-reduced-motion: reduce) { .sticky-cta { transition: none; } }
 .on-estimate .sticky-cta { grid-template-columns: 1fr; }
 .on-estimate .sticky-cta .btn:last-child { display: none; }
-body { padding-bottom: 72px; }
+body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
 html { scroll-padding-bottom: 96px; }
 @media (min-width: 960px) { .sticky-cta { display: none; } body { padding-bottom: 0; } html { scroll-padding-bottom: 0; } }
 
@@ -641,6 +648,10 @@ html { scroll-padding-bottom: 96px; }
    below the hero is on screen at load, so nothing there can shift when web fonts arrive. */
 @media (max-width: 959px) {
   .hero { min-height: calc(100svh - var(--header-h)); padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+  /* With JavaScript the bar is hidden on the first screen, so the hero needs no room for it. */
+}
+@media (max-width: 959px) and (scripting: enabled) {
+  body:has([data-cta-watch]) .hero { padding-bottom: env(safe-area-inset-bottom); }
 }
 /* Phones: the hero eyebrow fits one line in the fallback font but can wrap to two in Archivo.
    Reserve two lines so the swap never moves it or the headline below (no layout shift). */

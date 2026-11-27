@@ -25,7 +25,7 @@ const crumbs = [
 ---
 <Base title={s.title} description={s.description} crumbs={crumbs} schema={faqSchema(s.key)}>
   <PageHead h1={s.h1} eyebrow={services.h1} photo={s.image} photoSide={'imageSide' in s && s.imageSide}>
-    <div class="btn-row btn-row-left" data-hero-in="3">
+    <div class="btn-row btn-row-left" data-hero-in="3" data-cta-watch>
       <a class="btn btn-lg btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
       <Phone class="btn btn-lg btn-ghost" label={ui.callButton} button />
     </div>
