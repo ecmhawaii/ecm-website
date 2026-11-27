@@ -309,9 +309,14 @@ html { scroll-padding-bottom: 96px; }
 
 /* Credentials strip (middle dot separators) */
 .cred-strip { color: var(--on-dark); }
-.cred-strip ul { list-style: none; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 4px 0; padding-top: 12px; padding-bottom: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.74rem; }
-.cred-strip li { display: inline-flex; align-items: center; }
-.cred-strip li + li::before { content: '\00B7'; margin: 0 10px; font-size: 1.3em; line-height: 0; color: var(--on-dark-2); }
+/* Items flow and wrap. Each dot sits in the gap before its item; the list is shifted left by one
+   gap inside .cred-clip (overflow hidden), so the dot of an item that starts a line is clipped.
+   No dot can start or end a line (2026-11-26). Credentials never break inside (nowrap). */
+.cred-strip { --cred-gap: 22px; }
+.cred-clip { overflow: hidden; }
+.cred-strip ul { list-style: none; margin: 0 0 0 calc(-1 * var(--cred-gap)); display: flex; flex-wrap: wrap; row-gap: 6px; padding: 12px 0; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.74rem; }
+.cred-strip li { position: relative; margin-left: var(--cred-gap); white-space: nowrap; }
+.cred-strip li::before { content: '\00B7'; position: absolute; left: calc(-0.5 * var(--cred-gap)); top: 50%; transform: translate(-50%, -50%); font-size: 1.3em; line-height: 1; color: var(--on-dark-2); }
 .cred-hero { position: relative; border-top: 1px solid rgba(255, 255, 255, 0.18); background: rgba(17, 17, 17, 0.55); }
 .cred-bar { background: var(--ink-2); }
 @media (min-width: 960px) { .cred-strip ul { font-size: 0.8rem; } }
@@ -463,6 +468,8 @@ html { scroll-padding-bottom: 96px; }
 @media (min-width: 1100px) { .footer-grid { grid-template-columns: 1.2fr 1fr 1.2fr 1fr; } .footer-logo { width: 140px; } }
 .site-footer ul { list-style: none; margin: 0; padding: 0; }
 .footer-legal { margin-top: 40px; padding-top: 24px; border-top: 1px solid #2c2c2c; display: flex; flex-wrap: wrap; gap: 4px 24px; font-size: 0.9rem; }
+/* Privacy and Terms: their own line under the license and ownership lines, at every width. */
+.footer-legal .footer-legal-links { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 0 24px; margin: 8px 0 0; }
 
 /* Portfolio */
 .project-index { padding-top: 24px; padding-bottom: 8px; }
@@ -542,11 +549,10 @@ html { scroll-padding-bottom: 96px; }
 /* Short text links still get a full 44px tap target. */
 .breadcrumbs a, .toc a { min-width: var(--tap); }
 
-/* Phones: credentials in two tidy rows (license · class / veteran owned · islands). */
+/* Phones: smaller credentials and tighter gaps. */
 @media (max-width: 959px) {
-  .cred-strip ul { display: grid; grid-template-columns: auto auto; justify-content: start; gap: 6px 0; font-size: 0.7rem; letter-spacing: 0.05em; }
-  .cred-strip li + li::before { content: none; }
-  .cred-strip li:nth-child(odd):not(:last-child)::after { content: '\00B7'; margin: 0 8px; font-size: 1.3em; line-height: 0; color: var(--on-dark-2); }
+  .cred-strip { --cred-gap: 16px; }
+  .cred-strip ul { font-size: 0.7rem; letter-spacing: 0.05em; }
 }
 
 /* Below-the-fold sections skip rendering until near the viewport, so their photos are not
@@ -592,18 +598,9 @@ html { scroll-padding-bottom: 96px; }
 .related-guide { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 18px 0 0; padding: 12px 16px; border-left: 4px solid var(--brand); background: var(--brand-tint); border-radius: 0 var(--radius) var(--radius) 0; }
 .related-label { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
 
-/* Phones: never break a credential (e.g. the license number) across lines. */
-@media (max-width: 959px) {
-  .cred-strip li { white-space: nowrap; }
-}
 @media (max-width: 429px) {
+  .cred-strip { --cred-gap: 12px; }
   .cred-strip ul { font-size: 0.64rem; letter-spacing: 0.03em; }
-  .cred-strip li:nth-child(odd):not(:last-child)::after { margin: 0 6px; }
-}
-/* Very narrow phones: one credential per line, no separators. */
-@media (max-width: 359px) {
-  .cred-strip ul { grid-template-columns: auto; gap: 2px 0; }
-  .cred-strip li:nth-child(odd):not(:last-child)::after { content: none; }
 }
 
 /* Phones: the hero eyebrow sits on the bright sky of the hero photo. Darker top of the

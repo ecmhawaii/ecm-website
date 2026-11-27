@@ -4,8 +4,10 @@ import PageHead from '../components/PageHead.astro';
 import PhotoSlot from '../components/PhotoSlot.astro';
 import EstimateBand from '../components/EstimateBand.astro';
 import ClientsStrip from '../components/ClientsStrip.astro';
-import { about, credentials, slots, nav } from '../content/site';
-const creds = [...credentials, ...(slots.insurance.enabled && slots.insurance.text ? [slots.insurance.text] : [])];
+import Draft from '../components/Draft.astro';
+import { about, nav } from '../content/site';
+import { credentialItems } from '../lib/credentials';
+const creds = credentialItems();
 ---
 <Base title={about.title} description={about.description} crumbs={[{ name: nav.find((n) => n.href === '/about')!.label, path: '/about' }]}>
   <PageHead h1={about.h1} />
@@ -15,7 +17,7 @@ const creds = [...credentials, ...(slots.insurance.enabled && slots.insurance.te
         <p class="lead lead-lg">{about.text}</p>
         <div class="callout">
           <h2 class="card-title">{about.credentialsHeading}</h2>
-          <ul>{creds.map((c) => <li>{c}</li>)}</ul>
+          <ul>{creds.map((c) => <li>{c.draft ? <Draft inline item={c.draft}>{c.text}</Draft> : c.text}</li>)}</ul>
         </div>
         <p class="about-contact">{about.contactLead} <a href="/contact">{about.contactLink}</a></p>
       </div>

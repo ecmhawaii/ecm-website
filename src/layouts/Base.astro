@@ -6,7 +6,7 @@ import '@fontsource/archivo/700.css';
 import '../styles/global.css';
 import { Image, getImage } from 'astro:assets';
 import { SITE, SITE_NOINDEX } from '../../site.config.mjs';
-import { business, nav, servicePages, ui } from '../content/site';
+import { business, nav, servicePages, ui, hawaiianOwned } from '../content/site';
 import { publishedGuides } from '../lib/guides';
 import { logo, hero } from '../content/images';
 import Phone from '../components/Phone.astro';
@@ -59,7 +59,7 @@ const business_ld: Record<string, unknown> = {
 // telephone only once the real number is set (never the placeholder); no email while it is empty.
 if (business.phoneLive) business_ld.telephone = business.phoneE164;
 if (business.email) business_ld.email = business.email;
-if (business.hours.openingHours.length) business_ld.openingHours = business.hours.openingHours;
+if (shown(business.hours) && business.hours.openingHours.length) business_ld.openingHours = business.hours.openingHours;
 if (business.areaServed.length) {
   business_ld.areaServed = business.areaServed.map((name) => ({ '@type': 'Place', name }));
 }
@@ -204,7 +204,7 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
           <div>
             <p class="footer-head">{ui.footerContactLabel}</p>
             <p><Phone /></p>
-            {business.hours.text && <p class="footer-hours">{business.hours.text}</p>}
+            {shown(business.hours) && business.hours.text && <p class="footer-hours"><Draft inline item={business.hours}>{business.hours.text}</Draft></p>}
             {business.email && <p><a href={business.emailHref}>{business.email}</a></p>}
             <p>{business.city}</p>
             <p class="footer-head footer-head-gap">{ui.footerIslandsLabel}</p>
@@ -239,8 +239,14 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
           <p>{business.name}</p>
           <p>{business.license} · {business.licenseClass}</p>
           <p>{business.veteranOwned}</p>
-          {/* Privacy and terms (src/content/legal.ts): drafts until confirmed, links only while built. */}
-          {legalPages.filter(shown).map((page) => <p><Draft inline item={page}><a href={page.path}>{page.navLabel}</a></Draft></p>)}
+          {shown(hawaiianOwned) && <p><Draft inline item={hawaiianOwned}>{hawaiianOwned.text}</Draft></p>}
+          {/* Privacy and terms (src/content/legal.ts): drafts until confirmed, links only while built.
+              Their own line under the license and ownership lines, at every width. */}
+          {legalPages.some(shown) && (
+            <p class="footer-legal-links">
+              {legalPages.filter(shown).map((page) => <Draft inline item={page}><a href={page.path}>{page.navLabel}</a></Draft>)}
+            </p>
+          )}
         </div>
       </div>
     </footer>
