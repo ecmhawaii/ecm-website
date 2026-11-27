@@ -3,7 +3,8 @@
 // - Waits for the hero / page-head photo (the LCP element), the page load event and the web
 //   fonts, so gsap does not compete with the LCP image and SplitText splits lines in the
 //   final font.
-// - If that takes too long (slow connection), skip motion and show everything as is.
+// - If that takes too long (slow connection), skip motion. Nothing was ever hidden by CSS, so
+//   the page simply stays as it painted.
 const root = document.documentElement;
 const LATE_MS = 2000;
 const MIN_START_MS = 600;

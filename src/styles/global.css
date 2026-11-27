@@ -530,23 +530,19 @@ html { scroll-padding-bottom: 96px; }
 .nav-mobile[open] summary { background: var(--ink); color: var(--on-dark); }
 
 /* ---------------------------------------------------------------------
-   Motion. Elements wait to animate (opacity 0) ONLY when the browser runs scripts AND the
-   visitor has not asked for reduced motion (CSS media queries, no blocking script).
+   Motion (2026-11-27). CSS never hides text: every heading, paragraph and card paints at once.
+   scripts/motion-gsap.ts hides an element only when it has loaded, the visitor has not asked
+   for reduced motion, and that element is still below the screen. It then animates the
+   element in as it scrolls up. Anything already on screen (or scrolled past) when the module
+   starts stays as it is: no flash, no second animation.
    - Opacity and transform only, never visibility or display: elements waiting to animate
      stay in the Tab order, and anything that receives keyboard focus shows at once.
-   - JS off or reduced motion: nothing is hidden, nothing moves.
-   - html.motion-off (set by the module when it is late or cannot run): nothing hidden.
-   - Safety net: if the motion module never starts, a CSS animation shows everything at 2.6s.
+   - JS off, reduced motion, or a module that never loads: nothing is hidden, nothing moves.
    --------------------------------------------------------------------- */
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  html:not(.motion-off) [data-reveal],
-  html:not(.motion-off) [data-stagger] > *,
-  html:not(.motion-off) [data-split-words] { opacity: 0; }
-  html:not(.motion-ready):not(.motion-off) :is([data-reveal], [data-stagger] > *, [data-split-words]) { animation: ecm-show 0s 2.6s forwards; }
+@media (prefers-reduced-motion: no-preference) {
   /* Reveal on focus: a keyboard user never lands on an invisible control. */
   :is([data-reveal], [data-stagger] > *, [data-split-words]):focus-within { opacity: 1 !important; transform: none !important; }
 }
-@keyframes ecm-show { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
   .lift:hover, .card:has(a:hover) { transform: none !important; }
