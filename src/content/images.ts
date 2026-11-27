@@ -80,6 +80,20 @@ import waianaeRemodelExteriorBefore2 from '../assets/images/projects/waianae-rem
 import waianaeSecondUnitKitchenette1 from '../assets/images/projects/waianae-second-unit-kitchenette-1.jpg';
 import waianaeSecondUnitKitchenette2 from '../assets/images/projects/waianae-second-unit-kitchenette-2.jpg';
 import waianaeShowerAfter from '../assets/images/projects/waianae-shower-after.jpg';
+// Edited copies (2026-11-27, honest edits only: crop, mild tone; SOURCES.md has the exact operations).
+import hawaiiIslandNewHomeExterior2Edit from '../assets/images/projects/hawaii-island-new-home-exterior-2-edit.jpg';
+import hawaiiIslandNewHomeExterior1Edit from '../assets/images/projects/hawaii-island-new-home-exterior-1-edit.jpg';
+import hawaiiIslandNewHomeExterior4Edit from '../assets/images/projects/hawaii-island-new-home-exterior-4-edit.jpg';
+import waianaeAdditionSidingDoneEdit from '../assets/images/projects/waianae-addition-siding-done-edit.jpg';
+import longs2Edit from '../assets/images/projects/longs-drip-edge-2-edit.jpg';
+import acsPergola2Edit from '../assets/images/projects/acs-hope-lodge-pergola-2-edit.jpg';
+import waianaeAdditionFraming3Edit from '../assets/images/projects/waianae-addition-framing-3-edit.jpg';
+import drivewayDuringEdit from '../assets/images/projects/driveway-salt-lake-during-edit.jpg';
+import waianaeAdditionFraming1Edit from '../assets/images/projects/waianae-addition-framing-1-edit.jpg';
+import waianaeAdditionFraming2Edit from '../assets/images/projects/waianae-addition-framing-2-edit.jpg';
+import waianaeAdditionHouseWrapEdit from '../assets/images/projects/waianae-addition-house-wrap-edit.jpg';
+import waianaeAdditionRoofEdit from '../assets/images/projects/waianae-addition-roof-edit.jpg';
+import bambooAfterEdit from '../assets/images/projects/bamboo-floor-after-edit.jpg';
 
 
 export type ImageSlot = {
@@ -99,7 +113,8 @@ export type ImageSlot = {
 export const logo = { src: ecmLogo, alt: 'Elite Construction Management logo' };
 // Hero (2026-11-23): Ellard picked exterior-1, but it is only 1067px wide and looked soft when
 // stretched to 1440 and 1920px wide (1.35x to 1.8x upscale). exterior-2 (2400px) stays sharp.
-const HERO_SRC = hawaiiIslandNewHomeExterior2;
+// 2026-11-27: the edited copy (tone only, same 2400x1800 framing).
+const HERO_SRC = hawaiiIslandNewHomeExterior2Edit;
 export const hero = { src: HERO_SRC, alt: 'New single family home built by Elite Construction Management on the Big Island', placeholder: false };
 
 const job = (src: ImageMetadata, alt: string, position?: ImageSlot['position'], keepAspect?: boolean): ImageSlot => ({ src, alt, placeholder: false, position, keepAspect });
@@ -113,8 +128,14 @@ export const photos: Record<string, ImageSlot> = {
   acsCeiling1:    job(acsCeiling1, 'Open ceiling section during interior restoration and ceiling work at Hope Lodge', 'top'),
   acsCeiling2:    job(acsCeiling2, 'Finished ceiling panel after interior restoration and ceiling work at Hope Lodge', 'top'),
   pergolaView:    job(acsPergola2, 'Aluminum pergola frame at Hope Lodge with a view over Honolulu', 'upper'),
+  // Hope Lodge cover and /commercial-tenant-improvements header (2026-11-27).
+  pergolaEdit:    job(acsPergola2Edit, 'Aluminum pergola frame at the American Cancer Society Hope Lodge, looking toward Diamond Head'),
+  // Commercial service image on the home page and service cards (2026-11-27).
+  longsEdit:      job(longs2Edit, 'Longs Drugs store front with the new metal drip edge'),
   bambooBefore:   job(bambooBefore, 'Kaneohe residence before the bamboo floor remodel, bare concrete floor', 'lower'),
   bambooAfter:    job(bambooAfter, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
+  // /remodeling header (2026-11-27).
+  bambooAfterEdit: job(bambooAfterEdit, 'Bamboo floor after the remodel at a Kaneohe residence'),
   bambooAfterAligned: job(bambooAfterAligned, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
   walk1:          job(walk1, 'Garden courtyard with a concrete walkway', 'bottom'),
   walk2:          job(walk2, 'Forms and steel mesh set for a new concrete walkway in a garden courtyard, before the pour', 'lower'),
@@ -160,7 +181,8 @@ export const photos: Record<string, ImageSlot> = {
   // Service slots now filled with ECM job photos (2026-11-23).
   kitchen:  job(mililaniKitchen1, 'Remodeled kitchen in a Mililani home with white cabinets and stainless steel appliances'),
   bathroom: job(waianaeBathroomAfter1, 'Remodeled bathroom in a Waianae home with a tub, tiled walls and a vanity'),
-  adu:      job(waianaeAdditionSidingDone, 'New addition with a second unit at a Waianae home, during construction', 'bottom'),
+  // 2026-11-27: edited copy (car, person and bare gravel cropped out).
+  adu:      job(waianaeAdditionSidingDoneEdit, 'New addition with a second unit at a Waianae home, during construction'),
   home:     job(hawaiiIslandNewHomeGreatRoom1, 'Great room and kitchen in a new home on the Big Island'),
 
   // ECM job photos, set 2: Big Island new homes and a second Waianae remodel (keys are the file names).
@@ -183,10 +205,21 @@ export const photos: Record<string, ImageSlot> = {
   'waianae-remodel-2-shower': job(waianaeRemodel2Shower, 'Remodeled bathroom with a dark tiled shower in a Waianae home'),
 };
 
-// Home page photo slider, in order (all ECM job photos).
-// "From the job site" (2026-11-25): work in progress only, in Ellard's order.
 // concrete-walkway-3 is not used anywhere: two crew faces are clearly readable (SOURCES.md).
+// Edited copies for the home page (2026-11-27). The originals stay under their own keys for the portfolio.
+photos['hawaii-island-new-home-exterior-1-edit'] = job(hawaiiIslandNewHomeExterior1Edit, 'Front of a new single family home on the Big Island with a garage and covered porch');
+photos['hawaii-island-new-home-exterior-4-edit'] = job(hawaiiIslandNewHomeExterior4Edit, 'Front of a new home on the Big Island with a covered porch and French doors');
+photos['waianae-addition-framing-3-edit'] = job(waianaeAdditionFraming3Edit, photos['waianae-addition-framing-3'].alt);
+photos['drivewayDuring-edit'] = job(drivewayDuringEdit, photos.drivewayDuring.alt);
+photos['waianae-addition-framing-1-edit'] = job(waianaeAdditionFraming1Edit, photos['waianae-addition-framing-1'].alt);
+photos['waianae-addition-framing-2-edit'] = job(waianaeAdditionFraming2Edit, photos['waianae-addition-framing-2'].alt);
+photos['waianae-addition-house-wrap-edit'] = job(waianaeAdditionHouseWrapEdit, photos['waianae-addition-house-wrap'].alt);
+photos['waianae-addition-roof-edit'] = job(waianaeAdditionRoofEdit, photos['waianae-addition-roof'].alt);
+
+// "From the job site" (2026-11-25 order, 2026-11-27 edited copies). walk2 and the demolition
+// photo are unedited: the wheelbarrows sit inside the walkway forms and the utility pole stands
+// mid frame, so a crop cannot remove them.
 export const sliderKeys = [
-  'waianae-addition-framing-3', 'drivewayDuring', 'waianae-addition-framing-1', 'waianae-addition-framing-2', 'walk2',
-  'waianae-addition-house-wrap', 'waianae-addition-roof', 'waianae-remodel-demo',
+  'waianae-addition-framing-3-edit', 'drivewayDuring-edit', 'waianae-addition-framing-1-edit', 'waianae-addition-framing-2-edit', 'walk2',
+  'waianae-addition-house-wrap-edit', 'waianae-addition-roof-edit', 'waianae-remodel-demo',
 ];

@@ -4,9 +4,17 @@
 // (and closed panels are not rendered, so their photos are not fetched at all).
 import PhotoSlot from './PhotoSlot.astro';
 import { projects, services } from '../content/site';
-interface Props { ids: string[]; headingId: string }
+// An entry can override the cover ({ id, cover }) so one photo never shows twice on /services.
+interface Props { ids: Array<string | { id: string; cover: string }>; headingId: string }
 const { ids, headingId } = Astro.props;
-const items = ids.map((id) => projects.cards.find((c) => c.id === id)).filter((c): c is NonNullable<typeof c> => !!c).slice(0, 4);
+const items = ids
+  .map((entry) => {
+    const id = typeof entry === 'string' ? entry : entry.id;
+    const card = projects.cards.find((c) => c.id === id);
+    return card ? { ...card, cover: typeof entry === 'string' ? card.cover : entry.cover } : undefined;
+  })
+  .filter((c): c is NonNullable<typeof c> => !!c)
+  .slice(0, 4);
 ---
 {items.length > 0 && (
   <div class="related-projects">

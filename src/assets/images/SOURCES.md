@@ -55,17 +55,17 @@ All through Astro's Image component (resized, WebP). Slot names are in `src/cont
 | File | Slot | Used on |
 | --- | --- | --- |
 | projects/acs-hope-lodge-exterior.jpg | acsExterior | /portfolio, Hope Lodge gallery only (native 709px, no server crop) |
-| projects/acs-hope-lodge-sign.jpg | acsSign | /commercial-tenant-improvements photo header, home Commercial service (services list), Commercial service card, home featured project card, /portfolio. Not in the home slider since 2026-11-25 |
+| projects/acs-hope-lodge-sign.jpg | acsSign | /portfolio, Hope Lodge gallery only (since 2026-11-27). The cover, the commercial header and the Commercial service moved to edited copies (see "Edited copies") |
 | projects/acs-hope-lodge-ceiling-repair-1.jpg, -2.jpg | acsCeiling1, acsCeiling2 | /portfolio gallery |
-| projects/acs-hope-lodge-pergola-2.jpg | pergolaView | /portfolio, Hope Lodge gallery only. Since 2026-11-25 no longer the home photo band |
-| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | before: /portfolio compare slider; after: /remodeling photo hero. Since 2026-11-25 no longer in the home slider |
+| projects/acs-hope-lodge-pergola-2.jpg | pergolaView | Not placed since 2026-11-27 (its edited copy is the Hope Lodge cover and the commercial header; the gallery shows the sign photo instead, so the pergola never shows twice on /portfolio) |
+| projects/bamboo-floor-before.jpg, bamboo-floor-after.jpg | bambooBefore, bambooAfter | before: /portfolio compare slider; after: Kaneohe card cover. The /remodeling photo hero uses the edited copy since 2026-11-27 |
 | projects/bamboo-floor-after-aligned.jpg | bambooAfterAligned | /portfolio compare slider ("after") only |
 | projects/driveway-salt-lake-before.jpg, driveway-salt-lake-during.jpg | drivewayBefore, drivewayDuring | before: registered, not placed (the slider uses the aligned copy); during: /portfolio compare slider and the home slider |
 | projects/driveway-salt-lake-before-aligned.jpg | drivewayBeforeAligned | /portfolio compare slider ("before") only |
 | projects/concrete-walkway-1.jpg, -2.jpg, -3.jpg | walk1, walk2 | walk2: Concrete walkway portfolio card cover (since 2026-11-25), its gallery and the home slider ("From the job site"); walk1: its gallery. concrete-walkway-3.jpg is NOT USED anywhere (not registered in images.ts) because two crew faces are clearly readable (Ellard, 2026-11-25) |
 | projects/longs-drip-edge-before.jpg, -after.jpg | longsBefore, longsAfter | /portfolio gallery. Since 2026-11-25 no longer in the home slider |
 | projects/longs-drip-edge-1.jpg, -3.jpg | longs1, longsSign | /portfolio gallery |
-| projects/longs-drip-edge-2.jpg | longsStore | Longs Drugs portfolio card cover and home featured card. Since 2026-11-25 no longer on the Commercial service, the commercial page or the slider |
+| projects/longs-drip-edge-2.jpg | longsStore | Longs Drugs portfolio card cover. Not a home featured card since 2026-11-27; its edited copy is the home Commercial service image and the Commercial service card |
 
 ## ECM job photos from a repeat client's investment properties (2026-11-23)
 
@@ -98,7 +98,7 @@ All through Astro's Image component. Slot keys in `src/content/images.ts` are th
 | projects/waianae-addition-framing-3.jpg | /portfolio, Waianae gallery ("Addition framing"); home slider |
 | projects/waianae-addition-house-wrap.jpg | /portfolio, Waianae gallery ("Addition wrapped"); home slider |
 | projects/waianae-addition-framing-2.jpg, waianae-addition-roof.jpg | Home slider (since 2026-11-25). The truck plate in waianae-addition-roof.jpg is blurred in the file |
-| projects/waianae-addition-siding-done.jpg | `adu` slot: home services list (ADUs and additions), /adu-oahu photo header; /portfolio, Waianae gallery ("Addition sided") |
+| projects/waianae-addition-siding-done.jpg | /portfolio, Waianae gallery ("Addition sided"). The `adu` slot (home services list, /adu-oahu header, the ADU panel card on /services) uses the edited copy since 2026-11-27 |
 | projects/waianae-kitchen-before-1.jpg | /portfolio, Waianae gallery ("Kitchen before") |
 | projects/waianae-kitchen-after-1.jpg | /portfolio, Waianae card cover and gallery ("Kitchen after"); home featured project card. Since 2026-11-25 no longer in the home slider |
 | projects/waianae-bathroom-before-1.jpg | /portfolio, Waianae gallery ("Bathroom before") |
@@ -134,7 +134,7 @@ Same source and terms as the set above: the client owns the photos, approved web
 
 | File | Used on |
 | --- | --- |
-| projects/hawaii-island-new-home-exterior-2.jpg | **Home hero and share card (og:image, twitter:image)**; /portfolio, Big Island card cover |
+| projects/hawaii-island-new-home-exterior-2.jpg | /portfolio and /services, Big Island card cover. The home hero and share card use the edited copy since 2026-11-27 |
 | projects/hawaii-island-new-home-exterior-1.jpg | /portfolio, Big Island gallery ("New home"). Not the hero: only 1067px wide, soft when stretched to desktop widths |
 | projects/hawaii-island-new-home-exterior-3.jpg, -4.jpg | /portfolio, Big Island gallery ("New home"); exterior-4 is also the /about photo since 2026-11-25 |
 | projects/hawaii-island-new-home-entry.jpg | /portfolio, Big Island gallery ("Entry porch") |
@@ -149,3 +149,31 @@ Same source and terms as the set above: the client owns the photos, approved web
 | projects/waianae-remodel-2-kitchen.jpg | /portfolio, Waianae home remodel card cover and gallery ("Kitchen") |
 | projects/waianae-remodel-2-shower.jpg | /portfolio, Waianae home remodel gallery ("Shower") |
 | projects/hawaii-island-new-home-great-room-2.jpg, hawaii-island-new-home-kitchen-2.jpg | Registered in images.ts with alt text, not placed on a page yet |
+
+## Edited copies (2026-11-27)
+
+Honest edits only (Ellard, 2026-11-27): crop, level (3 degrees or less), perspective correction, mild exposure, contrast and white balance, saturation up 10% or less. Nothing added or removed, no sky replacement, no generative fill. Each edit is a new file next to its original, which stays unchanged. Metadata stripped. Never upscaled. Made with Pillow (scripts kept out of the repo); no rotation or perspective correction was needed on these.
+
+| File | Exact operations |
+| --- | --- |
+| projects/hawaii-island-new-home-exterior-2-edit.jpg | Edit of hawaii-island-new-home-exterior-2.jpg (2026-11-27): Pillow contrast x1.06, saturation x1.06, JPEG quality 88, progressive, no metadata. Result 2400x1800. Home hero. Overcast and flat; tone only, no crop (the hero crops itself). |
+| projects/hawaii-island-new-home-exterior-1-edit.jpg | Edit of hawaii-island-new-home-exterior-1.jpg (2026-11-27): Pillow crop box (145, 40, 1067, 731) to 922x691, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 922x691. Big Island featured card. Crops out the utility pole and wires at the left; driveway leads from the bottom left corner to the garage; roofline near the upper third. |
+| projects/hawaii-island-new-home-exterior-4-edit.jpg | Edit of hawaii-island-new-home-exterior-4.jpg (2026-11-27): Pillow crop box (60, 20, 1067, 775) to 1007x755, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1007x755. Home Custom homes service image. Crops out the pole at the left edge and some gravel. |
+| projects/waianae-addition-siding-done-edit.jpg | Edit of waianae-addition-siding-done.jpg (2026-11-27): Pillow crop box (110, 140, 1365, 1081) to 1255x941, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1255x941. ADU slot (home service image, /adu-oahu header). Crops out the car hood at the bottom right, the person at the left edge and most of the bare gravel. |
+| projects/longs-drip-edge-2-edit.jpg | Edit of longs-drip-edge-2.jpg (2026-11-27): Pillow crop box (236, 960, 1067, 1583) to 831x623, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 831x623. Commercial service image. Keeps the store sign, crops out the shopping carts and most of the sky; the roof edge runs from the upper right toward the sign. |
+| projects/acs-hope-lodge-pergola-2-edit.jpg | Edit of acs-hope-lodge-pergola-2.jpg (2026-11-27): Pillow crop box (0, 500, 1216, 1412) to 1216x912, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1216x912. Hope Lodge cover. Pergola beams run from the lower left toward Diamond Head and the city near the upper third. |
+| projects/waianae-addition-framing-3-edit.jpg | Edit of waianae-addition-framing-3.jpg (2026-11-27): Pillow crop box (1000, 30, 2333, 1030) to 1333x1000, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1333x1000. Job site slider. Crops out the wheelbarrow in front of the frame; the top plate leads toward the hillside. |
+| projects/driveway-salt-lake-during-edit.jpg | Edit of driveway-salt-lake-during.jpg (2026-11-27): Pillow crop box (0, 560, 1216, 1472) to 1216x912, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1216x912. Job site slider. Fresh driveway leads from the bottom toward the crew; faces stay too small to read. |
+| projects/waianae-addition-framing-1-edit.jpg | Edit of waianae-addition-framing-1.jpg (2026-11-27): Pillow crop box (520, 0, 2320, 1350) to 1800x1350, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1800x1350. Job site slider. Frame on the right third; crops out buckets and the wood pile at the left. |
+| projects/waianae-addition-framing-2-edit.jpg | Edit of waianae-addition-framing-2.jpg (2026-11-27): Pillow crop box (0, 0, 1800, 1350) to 1800x1350, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1800x1350. Job site slider. Stud shadows lead across the slab toward the frame. |
+| projects/waianae-addition-house-wrap-edit.jpg | Edit of waianae-addition-house-wrap.jpg (2026-11-27): Pillow crop box (260, 0, 2060, 1350) to 1800x1350, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1800x1350. Job site slider. 4:3 crop on the wrapped house. |
+| projects/waianae-addition-roof-edit.jpg | Edit of waianae-addition-roof.jpg (2026-11-27): Pillow crop box (200, 140, 1680, 1250) to 1480x1110, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1480x1110. Job site slider. Crops out the parked truck at the right and the wires at the top left. |
+| projects/bamboo-floor-after-edit.jpg | Edit of bamboo-floor-after.jpg (2026-11-27): Pillow crop box (0, 640, 1216, 1552) to 1216x912, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1216x912. /remodeling header. Floorboards and door frame lead into the room; crops out the shoe at the bottom. |
+
+Where the edited copies are used: home hero and share card (exterior-2-edit); home featured Big Island card (exterior-1-edit; /portfolio keeps exterior-2 as the card cover); home Commercial service and the Commercial service card (longs-drip-edge-2-edit); Hope Lodge cover on home and /portfolio, and the /commercial-tenant-improvements header (acs-hope-lodge-pergola-2-edit); home Custom homes service (exterior-4-edit); `adu` slot (siding-done-edit); home job site slider (framing-1, framing-2, framing-3, house-wrap, roof and driveway edits); /remodeling header (bamboo-floor-after-edit).
+
+Looked at and left unedited (2026-11-27):
+- concrete-walkway-2.jpg (home slider): two wheelbarrows sit inside the walkway forms, the subject; a crop cannot remove them.
+- waianae-remodel-demo.jpg (home slider): the utility pole and wires stand mid frame; a crop cannot remove them.
+- hawaii-island-new-home-exterior-3.jpg: a power line crosses the upper right toward the roof; a crop cannot remove it without losing the house. Not used on the home page.
+- hawaii-island-new-home-great-room-1.jpg (home band, /custom-homes header), mililani-kitchen-1.jpg (home Remodels service), waianae-kitchen-after-1.jpg (home featured Waianae card): already level and clean; the slot's own 4:3 or 16:10 crop is enough.

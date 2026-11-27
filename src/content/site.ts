@@ -237,15 +237,16 @@ export const home = {
   servicesHeading: 'What we build',
   // Big service list: name, one line (confirmed copy), photo slot, page.
   servicesList: [
-    { name: 'Custom homes and new construction', line: 'New homes built from your plans, or from scratch with an architect or designer we connect you with.', image: 'home', href: '/custom-homes' },
+    // 2026-11-27: an exterior here, because the band below shows the great room ('home' slot) on the same page.
+    { name: 'Custom homes and new construction', line: 'New homes built from your plans, or from scratch with an architect or designer we connect you with.', image: 'hawaii-island-new-home-exterior-4-edit', href: '/custom-homes' },
     { name: 'ADUs and additions', line: 'An ADU or addition adds space without moving.', image: 'adu', href: '/adu-oahu' },
     { name: 'Remodels', line: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.', image: 'mililani-kitchen-1', href: '/remodeling' },
-    { name: 'Commercial', line: 'Build outs and renovations for retail, office and other commercial spaces.', image: 'acsSign', href: '/commercial-tenant-improvements' },
+    { name: 'Commercial', line: 'Build outs and renovations for retail, office and other commercial spaces.', image: 'longsEdit', href: '/commercial-tenant-improvements' },
   ],
   featuredEyebrow: 'Recent work',
   featuredHeading: 'Featured projects',
   // Three slots. Waianae replaced the Kaneohe bamboo floor (2026-11-23); swap back here if wanted.
-  featured: ['acs-hope-lodge', 'longs-drugs', 'waianae-remodel-addition'],
+  featured: ['acs-hope-lodge', 'hawaii-island-new-homes', 'waianae-remodel-addition'],
   sliderEyebrow: 'On the job',
   sliderHeading: 'From the job site',
   bandImage: 'hawaii-island-new-home-great-room-1',
@@ -256,7 +257,7 @@ export const home = {
     { name: 'Custom homes and new construction', href: '/custom-homes', image: 'home' },
     { name: 'ADUs and additions', href: '/adu-oahu', image: 'adu' },
     { name: 'Remodels', href: '/remodeling', image: 'mililani-kitchen-1' },
-    { name: 'Commercial tenant improvements', href: '/commercial-tenant-improvements', image: 'acsSign' },
+    { name: 'Commercial tenant improvements', href: '/commercial-tenant-improvements', image: 'longsEdit' },
   ],
 };
 
@@ -281,7 +282,8 @@ export const services = {
     {
       id: 'adus-additions',
       // Recent projects shown at the bottom of this panel on /services (ids in projects.cards, max 4).
-      related: ['waianae-remodel-addition'],
+      // The same project sits in the Remodels panel below, so this panel shows an addition photo.
+      related: [{ id: 'waianae-remodel-addition', cover: 'adu' }],
       name: 'ADUs and additions',
       text: 'An ADU or addition adds space without moving. We handle the build and coordinate permits and inspections.',
       href: '/adu-oahu',
@@ -392,7 +394,7 @@ export const serviceDetail: Record<string, ServicePage> = {
     intro: [
       'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.',
     ],
-    image: 'bambooAfter',
+    image: 'bambooAfterEdit',
     sections: [
       {
         id: 'kitchens',
@@ -421,9 +423,9 @@ export const serviceDetail: Record<string, ServicePage> = {
       'Commercial build outs and tenant improvements for retail, office and other commercial spaces. Licensed Hawaii general contractor CT-37929 in Kapolei.',
     h1: 'Commercial tenant improvement contractor',
     intro: ['Build outs and renovations for retail, office and other commercial spaces.'],
-    // Back to the sign close-up until a full size building photo arrives (Ellard, 2026-11-25).
-    // The sign fills the frame, so the header shows it beside the heading, not under it.
-    image: 'acsSign',
+    // 2026-11-27: the edited Hope Lodge pergola copy (the sign photo stays in the Hope Lodge gallery
+    // only). Shown beside the heading on desktop, under it on phones.
+    image: 'pergolaEdit',
     imageSide: true,
     sections: [
       {
@@ -450,6 +452,7 @@ export type Project = {
   place: string; // '' when not stated in SOURCES.md
   summary: string;
   cover: string; // image slot
+  homeCover?: string; // cover on the home page's featured cards, when it must differ from `cover`
   gallery?: Array<{ image: string; caption: string }>;
   compare?: { before: string; after: string; beforeLabel: string; afterLabel: string };
 };
@@ -472,12 +475,13 @@ export const projects = {
       type: 'Restoration and pergola',
       place: 'Honolulu, Oahu',
       summary: 'Leak prevention and water mitigation, interior restoration and ceiling work, and an aluminum pergola system.',
-      cover: 'acsSign',
+      // 2026-11-27: edited pergola copy; the sign photo stays in this gallery only.
+      cover: 'pergolaEdit',
       gallery: [
         { image: 'acsExterior', caption: 'American Cancer Society Hope Lodge, Honolulu' },
         { image: 'acsCeiling1', caption: 'Interior restoration and ceiling work' },
         { image: 'acsCeiling2', caption: 'Interior restoration and ceiling work' },
-        { image: 'pergolaView', caption: 'Aluminum pergola system' },
+        { image: 'acsSign', caption: 'American Cancer Society Hope Lodge sign' },
       ],
     },
     {
@@ -542,6 +546,8 @@ export const projects = {
       place: 'Big Island',
       summary: 'New single family homes built on the Big Island.',
       cover: 'hawaii-island-new-home-exterior-2',
+      // The home hero is exterior-2, so the home page card shows another exterior (2026-11-27).
+      homeCover: 'hawaii-island-new-home-exterior-1-edit',
       gallery: [
         { image: 'hawaii-island-new-home-exterior-1', caption: 'New home' },
         { image: 'hawaii-island-new-home-exterior-3', caption: 'New home' },
