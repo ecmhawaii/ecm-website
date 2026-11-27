@@ -15,7 +15,9 @@ import { copy } from '../lib/draft';
 // exists, set PHONE to it in the (808) 000-0000 format: every spot becomes a tel: link again.
 // check:launch fails while PHONE is empty or the placeholder.
 export const PHONE_PLACEHOLDER = 'Twilio number coming soon';
-const PHONE: string = PHONE_PLACEHOLDER;
+// 2026-11-26: ECM's Google Business listing number (ECM's business line, CLAUDE.md rule 1) until the
+// Twilio sales line exists. check:launch blocks launch while PHONE is this number.
+const PHONE: string = '(808) 987-5782';
 // PUBLIC EMAIL: empty = no email address anywhere on the site or in the JSON-LD.
 const EMAIL: string = '';
 
@@ -60,7 +62,9 @@ export const business = {
   // Business hours. Empty = nothing shows. Fill from Answer Sheet #31; must match the Google listing.
   //   text:         shown in the footer next to the phone, e.g. 'Mon to Fri, 7am to 4pm' (no dashes)
   //   openingHours: schema.org format for the JSON-LD, e.g. ['Mo-Fr 07:00-16:00']
-  hours: { text: '', openingHours: [] as string[] },
+  // Draft answer for Jesse (2026-11-26), from ECM's Google Business listing: Monday to Friday
+  // 8 AM to 4 PM, Saturday and Sunday closed. Shown with a Draft badge until confirmed.
+  hours: { id: 'footer-hours', confirm: false, text: 'Mon to Fri, 8am to 4pm', openingHours: ['Mo-Fr 08:00-16:00'] as string[] },
 };
 
 // Clients ECM has built for. Confirmed by Jesse (via Ellard, 2026-11-21). Names only, as text. No logos.
@@ -189,6 +193,9 @@ export const ui = {
 };
 
 // Credentials strip: confirmed facts only. Shown with a middle dot between items.
+// Draft answer for Jesse (2026-11-26): Ellard says Jesse is Hawaiian; the site may say so only
+// after Jesse's OK. Shown next to every "Veteran owned" (trust strip, About credentials, footer).
+export const hawaiianOwned = { id: 'hawaiian-owned', confirm: false, text: 'Hawaiian owned' };
 export const credentials = [`Hawaii license CT-37929`, business.licenseClass, business.veteranOwned, business.islandsLine];
 
 export const howItWorks = {

@@ -76,8 +76,12 @@ const phoneRaw = phoneLine ? phoneLine[1].trim() : '';
 const phoneValue = phoneRaw === 'PHONE_PLACEHOLDER' ? placeholder : phoneRaw.replace(/^['"`]|['"`]$/g, '');
 const phoneDigits = phoneValue.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
 const placeholderPages = pages.filter((p) => p.html.includes('data-phone-placeholder'));
+// ECM's Google Business listing number (checked 2026-11-26) stands in until the Twilio sales line.
+const GOOGLE_LISTING_DIGITS = '8089875782';
 if (!phoneLine || !phoneValue || phoneValue === placeholder || phoneDigits.length !== 10 || placeholderPages.length) {
   blockers.push('Set the ECM Twilio number before launch.' + (placeholderPages.length ? ` (phone placeholder on ${placeholderPages.length} pages; PHONE in src/content/site.ts)` : ' (PHONE in src/content/site.ts)'));
+} else if (phoneDigits === GOOGLE_LISTING_DIGITS) {
+  blockers.push("PHONE is ECM's Google listing number. Switch to the Twilio sales line before launch so website calls go to Ellard and Bleys (Standing Decision: website leads belong to Ellard and Bleys).");
 }
 
 // 7. Draft gating (src/lib/draft.ts). Every confirm:false item is listed. Privacy and terms

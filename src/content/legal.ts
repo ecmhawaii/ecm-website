@@ -37,9 +37,11 @@ export const privacyPage = { id: 'privacy-page', confirm: false,
   intro: 'This policy applies to the pages and forms on ecmhawaii.com.',
   sections: [
     {
-      // JESSE CHECK: legal business name and address for privacy and terms (not on file).
+      // Legal name: Hawaii DCCA license record (ELITE CONSTRUCTION MANAGEMENT LLC, CT-37929, Answer
+      // Sheet #29, read 2026-11-22) and ECM's Google Business listing (checked 2026-11-26).
+      // No street address: the Google listing shows none.
       heading: 'Who we are',
-      paragraphs: ['This website is run by Elite Construction Management (ECM), based in Kapolei, Hawaii.'],
+      paragraphs: ['This website is run by Elite Construction Management LLC (ECM), based in Kapolei, Hawaii.'],
     },
     {
       heading: 'What each form collects',
@@ -160,7 +162,7 @@ export const termsPage = { id: 'terms-page', confirm: false,
   // Filled when Jesse confirms the page; check:launch blocks a confirmed page without it.
   effectiveDate: '',
   effectiveDateISO: '',
-  intro: 'These terms apply to the pages and forms on ecmhawaii.com.',
+  intro: 'These terms apply to the pages and forms on ecmhawaii.com, the website of Elite Construction Management LLC (ECM).',
   sections: [
     {
       // The old line "Figures in the guides are published third party data, labeled with their
