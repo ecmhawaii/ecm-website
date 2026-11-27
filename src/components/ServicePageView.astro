@@ -49,7 +49,7 @@ const crumbs = [
           <RelatedGuide page={s.key} section={sec.id} />
           <EstimateButton />
         </div>
-        {sec.image && <div class="split-media" data-reveal><PhotoSlot image={sec.image} ratio="photo" sizes="(min-width: 960px) 50vw, 100vw" /></div>}
+        {sec.image && <div class="split-media"><PhotoSlot image={sec.image} ratio="photo" sizes="(min-width: 960px) 50vw, 100vw" /></div>}
       </div>
     </section>
   ))}

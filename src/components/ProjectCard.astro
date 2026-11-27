@@ -32,7 +32,7 @@ const gallery = await Promise.all(
     <p class="lead">{p.summary}</p>
   </div>
   {p.compare && (
-    <div class="project-compare" data-reveal={reveal}>
+    <div class="project-compare">
       <h3 class="sub-head">{projects.compareHeading}</h3>
       <Compare {...p.compare} name={p.name} />
     </div>
@@ -40,11 +40,12 @@ const gallery = await Promise.all(
   {gallery.length > 0 && (
     <div class="project-gallery">
       <h3 class="sub-head" data-reveal={reveal}>{projects.galleryHeading}</h3>
-      <ul class="gallery-grid" data-stagger={reveal} data-gallery>
+      <ul class="gallery-grid" data-gallery>
         {gallery.map((g, i) => (
           <li>
             <a class="gallery-link lift" href={g.full} data-lightbox data-caption={g.caption} data-alt={g.alt} data-index={i}>
-              <PhotoSlot image={g.image} ratio="square" quality={42} sizes="(min-width: 960px) 25vw, 50vw" widths={[240, 360, 720]} />
+              {/* The first project's gallery is on the first screen at 1440px: not lazy (2026-11-27). */}
+              <PhotoSlot image={g.image} ratio="square" quality={42} sizes="(min-width: 960px) 25vw, 50vw" widths={[240, 360, 720]} eager={first} />
               <span class="sr-only">{ui.openPhoto}: {g.caption}</span>
             </a>
             <p class="gallery-caption">{g.caption}</p>

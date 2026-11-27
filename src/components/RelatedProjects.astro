@@ -5,8 +5,9 @@
 import PhotoSlot from './PhotoSlot.astro';
 import { projects, services } from '../content/site';
 // An entry can override the cover ({ id, cover }) so one photo never shows twice on /services.
-interface Props { ids: Array<string | { id: string; cover: string }>; headingId: string }
-const { ids, headingId } = Astro.props;
+// eager: the first open panel's cards are on the first screen at 1440px (2026-11-27).
+interface Props { ids: Array<string | { id: string; cover: string }>; headingId: string; eager?: boolean }
+const { ids, headingId, eager = false } = Astro.props;
 const items = ids
   .map((entry) => {
     const id = typeof entry === 'string' ? entry : entry.id;
@@ -23,7 +24,7 @@ const items = ids
       {items.map((p) => (
         <li class="card lift">
           <a class="project-link" href={`/portfolio#${p.id}`}>
-            <PhotoSlot image={p.cover} ratio="photo" sizes="(min-width: 960px) 200px, (min-width: 640px) 30vw, 50vw" widths={[320, 480, 640]} />
+            <PhotoSlot image={p.cover} ratio="photo" sizes="(min-width: 960px) 200px, (min-width: 640px) 30vw, 50vw" widths={[320, 480, 640]} eager={eager} />
             <div class="card-body">
               <p class="card-meta">{p.type}</p>
               <p class="card-title">{p.name}</p>

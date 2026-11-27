@@ -24,7 +24,7 @@ import { faqSchema } from '../lib/schema';
                 <a class="btn btn-outline" href={item.href}>{ui.learnMore}<span class="sr-only">: {item.name}</span></a>
                 <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
               </div>
-              <RelatedProjects ids={item.related ?? []} headingId={`${item.id}-projects`} />
+              <RelatedProjects ids={item.related ?? []} headingId={`${item.id}-projects`} eager={i === 0} />
             </div>
           </details>
         ))}

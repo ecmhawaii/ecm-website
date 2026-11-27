@@ -4,6 +4,7 @@ import '@fontsource/archivo/400.css';
 import '@fontsource/archivo/600.css';
 import '@fontsource/archivo/700.css';
 import '../styles/global.css';
+import '../styles/photo-placeholders.css';
 import { Image, getImage } from 'astro:assets';
 import { SITE, SITE_NOINDEX } from '../../site.config.mjs';
 import { business, nav, servicePages, ui, hawaiianOwned } from '../content/site';
@@ -259,6 +260,8 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
       import '../scripts/motion';
       import { initNav } from '../scripts/nav';
       import { initStickyCta } from '../scripts/sticky-cta';
+      import { initPhotoFade } from '../scripts/photo-fade';
+      initPhotoFade();
       initNav();
       initStickyCta();
     </script>

@@ -7,6 +7,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { photos } from '../content/images';
 import { ui } from '../content/site';
+import { placeholderClass, imageBaseName } from '../lib/placeholder-class.mjs';
 
 interface Props {
   image: string;
@@ -30,16 +31,20 @@ interface Props {
    * check for repeated photos (scripts/photo-checks.mjs) skips it.
    */
   layoutCopy?: boolean;
+  /** The page's LCP photo: also fetchpriority high. Plain `eager` only stops lazy loading. */
+  lcp?: boolean;
 }
 const {
   image: slot, sizes = '(min-width: 960px) 50vw, 100vw', widths = [480, 800, 1200], ratio = 'photo',
-  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58, layoutCopy = false,
+  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58, layoutCopy = false, lcp = false,
 } = Astro.props;
 const p = photos[slot];
 const isLocal = p && typeof p.src !== 'string';
 const remote = p && typeof p.src === 'string' ? (p.src as string) : '';
 const remoteSrc = remote && ratio !== 'band' && !sizes.includes('100vw') ? remote.replace('w=1600', 'w=900') : remote;
 const pos = `pos-${p?.position ?? 'center'}`;
+// Build time placeholder: a gradient of the photo's own colors (scripts/placeholders.mjs).
+const ph = isLocal ? placeholderClass(imageBaseName((p.src as ImageMetadata).src)) : '';
 const localW = isLocal ? (p.src as ImageMetadata).width : 0;
 // Crop on the server to the shape the slot shows, so no hidden pixels are downloaded.
 const aspects: Record<string, number> = { photo: 4 / 3, square: 1, tall: 3 / 4, wide: 16 / 9 };
@@ -48,7 +53,7 @@ const sharpPos: Record<string, string> = { top: 'top', upper: 'center', center: 
 // Never upscale: drop widths larger than the source and offer the source width itself instead.
 const fitWidths = isLocal ? [...new Set([...widths.filter((w) => w <= localW), ...(widths.some((w) => w > localW) ? [localW] : [])])] : [];
 ---
-<figure class:list={['photo', `ratio-${ratio}`, cls]} data-placeholder={p?.placeholder && (isLocal || remote) ? 'true' : undefined}>
+<figure class:list={['photo', `ratio-${ratio}`, ph, cls]} data-placeholder={p?.placeholder && (isLocal || remote) ? 'true' : undefined}>
   {isLocal ? (
     <Image
       src={p.src as ImageMetadata}
@@ -62,7 +67,7 @@ const fitWidths = isLocal ? [...new Set([...widths.filter((w) => w <= localW), .
       format="webp"
       quality={quality}
       loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager ? 'high' : undefined}
+      fetchpriority={eager && lcp ? 'high' : undefined}
       decoding="async"
       class:list={[pos, imgClass]}
       data-photo

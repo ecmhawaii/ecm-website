@@ -15,7 +15,7 @@ const side = photo && photoSide;
 <section class:list={['page-head', cover && 'page-head-photo', side && 'page-head-side']}>
   {cover && (
     <div class="page-head-media" data-parallax>
-      <PhotoSlot image={photo} ratio="none" crop={4 / 3} quality={42} sizes="100vw" widths={[480, 760, 1216]} eager class="page-head-photo-fig" />
+      <PhotoSlot image={photo} ratio="none" crop={4 / 3} quality={42} sizes="100vw" widths={[480, 760, 1216]} eager lcp class="page-head-photo-fig" />
     </div>
   )}
   {cover && <div class="hero-overlay"></div>}
@@ -30,7 +30,7 @@ const side = photo && photoSide;
     </div>
     {side && (
       <div class="page-head-side-media">
-        <PhotoSlot image={photo} ratio="photo" quality={62} sizes="(min-width: 1200px) 520px, (min-width: 960px) 44vw, 100vw" widths={[480, 760, 1040]} eager />
+        <PhotoSlot image={photo} ratio="photo" quality={62} sizes="(min-width: 1200px) 520px, (min-width: 960px) 44vw, 100vw" widths={[480, 760, 1040]} eager lcp />
       </div>
     )}
   </div>

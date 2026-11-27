@@ -791,3 +791,11 @@ html { scroll-padding-bottom: 96px; }
 .readiness-result:focus { outline: none; }
 .readiness-next { padding-left: 20px; }
 .readiness-promo { margin-top: 32px; }
+
+/* Photo loading (2026-11-27): lazy photos fade in over 250ms once decoded (scripts/photo-fade.ts
+   adds .is-pending only to lazy photos that have not loaded). The figure behind shows the build
+   time gradient placeholder (photo-placeholders.css). No fade under reduced motion. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  img[data-photo][loading='lazy'] { transition: opacity 0.25s ease; }
+  img[data-photo].is-pending { opacity: 0; }
+}

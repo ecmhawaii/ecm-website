@@ -11,7 +11,7 @@ const items = home.featured.map((id) => projects.cards.find((c) => c.id === id)!
       <h2 id="feat-h" data-reveal>{home.featuredHeading}</h2>
       <a class="link-arrow" href="/portfolio" data-reveal>{ui.viewAllProjects}</a>
     </div>
-    <ul class="card-grid three" data-stagger>
+    <ul class="card-grid three">
       {items.map((p) => (
         <li class="card lift">
           <a class="project-link" href={`/portfolio#${p.id}`}>
