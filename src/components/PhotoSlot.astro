@@ -33,10 +33,12 @@ interface Props {
   layoutCopy?: boolean;
   /** The page's LCP photo: also fetchpriority high. Plain `eager` only stops lazy loading. */
   lcp?: boolean;
+  /** fetchpriority low: a lazy photo just below the first screen that Chrome would otherwise fetch while the LCP photo loads. */
+  low?: boolean;
 }
 const {
   image: slot, sizes = '(min-width: 960px) 50vw, 100vw', widths = [480, 800, 1200], ratio = 'photo',
-  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58, layoutCopy = false, lcp = false,
+  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58, layoutCopy = false, lcp = false, low = false,
 } = Astro.props;
 const p = photos[slot];
 const isLocal = p && typeof p.src !== 'string';
@@ -67,7 +69,7 @@ const fitWidths = isLocal ? [...new Set([...widths.filter((w) => w <= localW), .
       format="webp"
       quality={quality}
       loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager && lcp ? 'high' : undefined}
+      fetchpriority={eager && lcp ? 'high' : low ? 'low' : undefined}
       decoding="async"
       class:list={[pos, imgClass]}
       data-photo
