@@ -207,7 +207,7 @@ export const termsPage = { id: 'terms-page', confirm: false,
       // <PHONE> comes from the PHONE value in src/content/site.ts (the placeholder is a launch blocker).
       heading: 'Text messages',
       list: [
-        'ECM project texts are provided by Elite Construction Management.',
+        'ECM project texts are provided by Elite Construction Management LLC.',
         'Program name: ECM project texts.',
         'If you check the text box on the estimate form, ECM may text you replies about your request, scheduling and project updates. Consent is not required to get an estimate.',
         'Message frequency varies.',
