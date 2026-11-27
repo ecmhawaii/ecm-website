@@ -93,7 +93,6 @@ import waianaeAdditionFraming1Edit from '../assets/images/projects/waianae-addit
 import waianaeAdditionFraming2Edit from '../assets/images/projects/waianae-addition-framing-2-edit.jpg';
 import waianaeAdditionHouseWrapEdit from '../assets/images/projects/waianae-addition-house-wrap-edit.jpg';
 import waianaeAdditionRoofEdit from '../assets/images/projects/waianae-addition-roof-edit.jpg';
-import bambooAfterEdit from '../assets/images/projects/bamboo-floor-after-edit.jpg';
 
 
 export type ImageSlot = {
@@ -135,7 +134,6 @@ export const photos: Record<string, ImageSlot> = {
   bambooBefore:   job(bambooBefore, 'Kaneohe residence before the bamboo floor remodel, bare concrete floor', 'lower'),
   bambooAfter:    job(bambooAfter, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
   // /remodeling header (2026-11-27).
-  bambooAfterEdit: job(bambooAfterEdit, 'Bamboo floor after the remodel at a Kaneohe residence'),
   bambooAfterAligned: job(bambooAfterAligned, 'Kaneohe residence after the bamboo floor remodel', 'lower'),
   walk1:          job(walk1, 'Garden courtyard with a concrete walkway', 'bottom'),
   walk2:          job(walk2, 'Forms and steel mesh set for a new concrete walkway in a garden courtyard, before the pour', 'lower'),

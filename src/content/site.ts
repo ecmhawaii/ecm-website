@@ -394,7 +394,7 @@ export const serviceDetail: Record<string, ServicePage> = {
     intro: [
       'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.',
     ],
-    image: 'bambooAfterEdit',
+    image: 'mililani-remodel-living-room',
     sections: [
       {
         id: 'kitchens',
