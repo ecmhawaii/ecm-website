@@ -45,7 +45,7 @@ const gallery = await Promise.all(
           <li>
             <a class="gallery-link lift" href={g.full} data-lightbox data-caption={g.caption} data-alt={g.alt} data-index={i}>
               {/* The first project's gallery is on the first screen at 1440px: not lazy (2026-11-27). */}
-              <PhotoSlot image={g.image} ratio="square" quality={42} sizes="(min-width: 960px) 25vw, 50vw" widths={[240, 360, 720]} eager={first} />
+              <PhotoSlot image={g.image} ratio="square" quality={52} sizes="(min-width: 960px) 25vw, 50vw" widths={[240, 360, 720]} eager={first} />
               <span class="sr-only">{ui.openPhoto}: {g.caption}</span>
             </a>
             <p class="gallery-caption">{g.caption}</p>
