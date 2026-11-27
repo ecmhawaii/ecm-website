@@ -794,4 +794,10 @@ html { scroll-padding-bottom: 96px; }
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   img[data-photo][loading='lazy'] { transition: opacity 0.25s ease; }
   img[data-photo].is-pending { opacity: 0; }
+  img[data-photo][data-defer-src] { transition: opacity 0.25s ease; }
 }
+
+/* Deferred photos (PhotoSlot `deferred`): no src until scripts/photo-fade.ts sets it. Until then
+   only the figure's gradient placeholder shows. JS off: the <noscript> copy shows instead. */
+img[data-defer-src]:not([src]) { opacity: 0; }
+@media (scripting: none) { img[data-defer-src] { display: none; } }

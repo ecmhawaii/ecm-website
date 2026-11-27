@@ -3,7 +3,7 @@
 // Local ECM photos go through Astro's Image (resized, WebP, width/height set so nothing shifts).
 // Remote sample photos are plain <img> with a visible "Sample photo" tag and data-placeholder
 // (checked by check:launch). Empty slots show a plain gray block.
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { photos } from '../content/images';
 import { ui } from '../content/site';
@@ -33,12 +33,16 @@ interface Props {
   layoutCopy?: boolean;
   /** The page's LCP photo: also fetchpriority high. Plain `eager` only stops lazy loading. */
   lcp?: boolean;
-  /** fetchpriority low: a lazy photo just below the first screen that Chrome would otherwise fetch while the LCP photo loads. */
-  low?: boolean;
+  /**
+   * Deferred: no src in the HTML. scripts/photo-fade.ts sets it once the page has loaded or the
+   * photo comes within 600px of the screen, whichever is first, so it never shares bandwidth with
+   * the LCP photo. JS off: a <noscript> copy shows the photo normally. Never for a first-screen photo.
+   */
+  deferred?: boolean;
 }
 const {
   image: slot, sizes = '(min-width: 960px) 50vw, 100vw', widths = [480, 800, 1200], ratio = 'photo',
-  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58, layoutCopy = false, lcp = false, low = false,
+  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58, layoutCopy = false, lcp = false, deferred = false,
 } = Astro.props;
 const p = photos[slot];
 const isLocal = p && typeof p.src !== 'string';
@@ -54,9 +58,37 @@ const aspect = p?.keepAspect ? undefined : crop ?? aspects[ratio];
 const sharpPos: Record<string, string> = { top: 'top', upper: 'center', center: 'center', lower: 'center', bottom: 'bottom' };
 // Never upscale: drop widths larger than the source and offer the source width itself instead.
 const fitWidths = isLocal ? [...new Set([...widths.filter((w) => w <= localW), ...(widths.some((w) => w > localW) ? [localW] : [])])] : [];
+const imgOpts = isLocal ? {
+  src: p.src as ImageMetadata,
+  widths: fitWidths,
+  width: aspect ? Math.max(...fitWidths) : undefined,
+  height: aspect ? Math.round(Math.max(...fitWidths) / aspect) : undefined,
+  fit: aspect ? ('cover' as const) : undefined,
+  position: aspect ? sharpPos[p.position ?? 'center'] : undefined,
+  format: 'webp' as const,
+  quality,
+} : null;
+const later = deferred && !eager && imgOpts ? await getImage(imgOpts) : null;
 ---
 <figure class:list={['photo', `ratio-${ratio}`, ph, cls]} data-placeholder={p?.placeholder && (isLocal || remote) ? 'true' : undefined}>
-  {isLocal ? (
+  {later ? (
+    <Fragment>
+      <img
+        data-defer-src={later.src}
+        data-defer-srcset={later.srcSet.attribute}
+        sizes={sizes}
+        alt={p.alt}
+        width={later.attributes.width}
+        height={later.attributes.height}
+        loading="lazy"
+        decoding="async"
+        class:list={[pos, imgClass]}
+        data-photo
+        data-layout-copy={layoutCopy ? 'true' : undefined}
+      />
+      <noscript><img src={later.src} srcset={later.srcSet.attribute} sizes={sizes} alt={p.alt} width={later.attributes.width} height={later.attributes.height} loading="lazy" decoding="async" class:list={[pos, imgClass]} data-photo data-layout-copy={layoutCopy ? 'true' : undefined} /></noscript>
+    </Fragment>
+  ) : isLocal ? (
     <Image
       src={p.src as ImageMetadata}
       alt={p.alt}
@@ -69,7 +101,7 @@ const fitWidths = isLocal ? [...new Set([...widths.filter((w) => w <= localW), .
       format="webp"
       quality={quality}
       loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager && lcp ? 'high' : low ? 'low' : undefined}
+      fetchpriority={eager && lcp ? 'high' : undefined}
       decoding="async"
       class:list={[pos, imgClass]}
       data-photo

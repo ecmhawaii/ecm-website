@@ -148,7 +148,8 @@ Same source and terms as the set above: the client owns the photos, approved web
 | projects/hawaii-island-new-home-barn-door.jpg | /portfolio, Big Island gallery ("Barn door detail") |
 | projects/waianae-remodel-2-kitchen.jpg | /portfolio, Waianae home remodel card cover and gallery ("Kitchen") |
 | projects/waianae-remodel-2-shower.jpg | /portfolio, Waianae home remodel gallery ("Shower") |
-| projects/hawaii-island-new-home-great-room-2.jpg, hawaii-island-new-home-kitchen-2.jpg | Registered in images.ts with alt text, not placed on a page yet |
+| projects/hawaii-island-new-home-great-room-2.jpg | Home Custom homes service image since 2026-11-27, unedited (level and clean). It replaced the exterior-4 edit there because the exterior's gravel made it a 59 KB file that slowed the hero on phones; great-room-2 is 23 KB |
+| projects/hawaii-island-new-home-kitchen-2.jpg | Registered in images.ts with alt text, not placed on a page yet |
 
 ## Edited copies (2026-11-27)
 
@@ -169,7 +170,7 @@ Honest edits only (Ellard, 2026-11-27): crop, level (3 degrees or less), perspec
 | projects/waianae-addition-house-wrap-edit.jpg | Edit of waianae-addition-house-wrap.jpg (2026-11-27): Pillow crop box (260, 0, 2060, 1350) to 1800x1350, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1800x1350. Job site slider. 4:3 crop on the wrapped house. Ellard approved 2026-11-27. |
 | projects/waianae-addition-roof-edit.jpg | Edit of waianae-addition-roof.jpg (2026-11-27): Pillow crop box (200, 140, 1680, 1250) to 1480x1110, contrast x1.04, saturation x1.05, JPEG quality 88, progressive, no metadata. Result 1480x1110. Job site slider. Crops out the parked truck at the right and the wires at the top left. Ellard approved 2026-11-27. |
 
-Where the edited copies are used: home hero and share card (exterior-2-edit); home featured Big Island card (exterior-1-edit; /portfolio keeps exterior-2 as the card cover); home Commercial service and the Commercial service card (longs-drip-edge-2-edit); Hope Lodge cover on home and /portfolio, and the /commercial-tenant-improvements header (acs-hope-lodge-pergola-2-edit); home Custom homes service (exterior-4-edit); `adu` slot (siding-done-edit); home job site slider (framing-1, framing-2, framing-3, house-wrap, roof and driveway edits).
+Where the edited copies are used: home hero and share card (exterior-2-edit); home featured Big Island card (exterior-1-edit; /portfolio keeps exterior-2 as the card cover); home Commercial service and the Commercial service card (longs-drip-edge-2-edit); Hope Lodge cover on home and /portfolio, and the /commercial-tenant-improvements header (acs-hope-lodge-pergola-2-edit); exterior-4-edit is approved but not placed since 2026-11-27 (the home Custom homes service moved to great-room-2); `adu` slot (siding-done-edit); home job site slider (framing-1, framing-2, framing-3, house-wrap, roof and driveway edits).
 
 Rejected (2026-11-27):
 - bamboo-floor-after-edit.jpg, an edit of bamboo-floor-after.jpg (crop box (0, 640, 1216, 1552), contrast x1.04, saturation x1.05). Ellard rejected it on 2026-11-27: the crop drops the window and leaves dark door jambs. The file was deleted. The /remodeling header now uses mililani-remodel-living-room.jpg, unedited (1600x1067, already level and clean; the header's own 4:3 crop is enough).

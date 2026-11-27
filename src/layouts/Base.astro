@@ -36,6 +36,11 @@ const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') 
 const canonical = new URL(path, SITE).href;
 
 // Share card: 1200x630 crop of the hero.
+// Home only: preload the hero photo with the same srcset as Hero.astro, so its request starts
+// from the first bytes of <head> instead of waiting for the parser to reach <body>.
+const heroPreload = path === '/' && typeof hero.src !== 'string'
+  ? await getImage({ src: hero.src, width: 1920, widths: [640, 800, 960, 1280, 1600, 1920], format: 'webp', quality: 56 })
+  : null;
 const og = await getImage({ src: hero.src, width: 1200, height: 630, fit: 'cover', position: 'center', format: 'jpg', quality: 80 });
 const ogUrl = new URL(og.src, SITE).href;
 // Logo for structured data.
@@ -91,6 +96,7 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {heroPreload && <link rel="preload" as="image" type="image/webp" imagesrcset={heroPreload.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />}
     {(SITE_NOINDEX || noindex) && (
       <Fragment>
         <!-- REMOVE AT LAUNCH: keeps the site out of search results while it is being built (SITE_NOINDEX in site.config.mjs) -->
@@ -260,8 +266,9 @@ const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), busi
       import '../scripts/motion';
       import { initNav } from '../scripts/nav';
       import { initStickyCta } from '../scripts/sticky-cta';
-      import { initPhotoFade } from '../scripts/photo-fade';
+      import { initPhotoFade, initDeferredPhotos } from '../scripts/photo-fade';
       initPhotoFade();
+      initDeferredPhotos();
       initNav();
       initStickyCta();
     </script>

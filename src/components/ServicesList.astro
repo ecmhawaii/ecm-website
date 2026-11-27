@@ -20,7 +20,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         <details class="svc-item" open data-svc-item data-reveal>
           <summary class="svc-name"><span class="svc-num" aria-hidden="true">{num(i)}</span>{s.name}</summary>
           <div class="svc-body">
-            <PhotoSlot image={s.image} ratio="photo" sizes="calc(100vw - 32px)" widths={[480, 720, 800]} class="svc-photo" low={i === 0} />
+            <PhotoSlot image={s.image} ratio="photo" sizes="calc(100vw - 32px)" widths={[480, 720, 800]} class="svc-photo" deferred={i === 0} />
             <p>{s.line}</p>
             <a class="link-arrow" href={s.href}>{ui.learnMore}<span class="sr-only">: {s.name}</span></a>
           </div>

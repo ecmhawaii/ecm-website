@@ -238,7 +238,7 @@ export const home = {
   // Big service list: name, one line (confirmed copy), photo slot, page.
   servicesList: [
     // 2026-11-27: an exterior here, because the band below shows the great room ('home' slot) on the same page.
-    { name: 'Custom homes and new construction', line: 'New homes built from your plans, or from scratch with an architect or designer we connect you with.', image: 'hawaii-island-new-home-exterior-4-edit', href: '/custom-homes' },
+    { name: 'Custom homes and new construction', line: 'New homes built from your plans, or from scratch with an architect or designer we connect you with.', image: 'hawaii-island-new-home-great-room-2', href: '/custom-homes' },
     { name: 'ADUs and additions', line: 'An ADU or addition adds space without moving.', image: 'adu', href: '/adu-oahu' },
     { name: 'Remodels', line: 'Kitchens, bathrooms and whole home remodels, scoped clearly before work starts.', image: 'mililani-kitchen-1', href: '/remodeling' },
     { name: 'Commercial', line: 'Build outs and renovations for retail, office and other commercial spaces.', image: 'longsEdit', href: '/commercial-tenant-improvements' },
