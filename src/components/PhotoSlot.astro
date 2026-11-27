@@ -24,10 +24,16 @@ interface Props {
   crop?: number;
   /** WebP quality. Lower for photos under a dark overlay. */
   quality?: number;
+  /**
+   * The same photo already rendered by another layout of the same component on this page, and
+   * never shown at the same time (home services list: phone list vs desktop preview). The build
+   * check for repeated photos (scripts/photo-checks.mjs) skips it.
+   */
+  layoutCopy?: boolean;
 }
 const {
   image: slot, sizes = '(min-width: 960px) 50vw, 100vw', widths = [480, 800, 1200], ratio = 'photo',
-  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58,
+  eager = false, emptyLabel = ui.photoComing, class: cls = '', imgClass = '', caption, crop, quality = 58, layoutCopy = false,
 } = Astro.props;
 const p = photos[slot];
 const isLocal = p && typeof p.src !== 'string';
@@ -60,6 +66,7 @@ const fitWidths = isLocal ? [...new Set([...widths.filter((w) => w <= localW), .
       decoding="async"
       class:list={[pos, imgClass]}
       data-photo
+      data-layout-copy={layoutCopy ? 'true' : undefined}
     />
   ) : remote ? (
     <img src={remoteSrc} alt={p.alt} width={p.width} height={p.height} loading={eager ? 'eager' : 'lazy'} decoding="async" referrerpolicy="no-referrer" class:list={[pos, imgClass]} data-photo />

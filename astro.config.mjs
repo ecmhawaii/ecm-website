@@ -4,6 +4,7 @@ import { SITE } from './site.config.mjs';
 import { draftPaths } from './src/content/site.ts';
 import { legalPages } from './src/content/legal.ts';
 import { readiness } from './src/content/readiness.ts';
+import { noRepeatPhotos } from './scripts/photo-checks.mjs';
 
 // Unconfirmed pages (confirm:false) stay out of the sitemap; production does not build them at all.
 const excluded = ['/thank-you', ...draftPaths, ...[...legalPages, readiness].filter((p) => !p.confirm).map((p) => p.path)];
@@ -23,6 +24,8 @@ export default defineConfig({
   vite: { build: { assetsInlineLimit: 0 } },
   trailingSlash: 'never',
   integrations: [
+    // Fails the build if one source photo renders twice on a page (scripts/photo-checks.mjs).
+    noRepeatPhotos(),
     sitemap({
       // Thank you page and any guide still marked DRAFT stay out of the sitemap.
       filter: (page) => {
