@@ -189,7 +189,7 @@ New leads are now written right under the last row that has a Netlify ID.
 The claim, nudge, digest and summary emails are sent by Google from the script owner's ecmhawaii.com address. Email for ecmhawaii.com is forwarded by Hostinger, and that forwarding can make Gmail distrust those messages. If they land in spam, each person adds a Gmail filter once:
 
 1. In Gmail, open Settings > See all settings > Filters and blocked addresses > Create a new filter.
-2. In From, enter `ellard@ecmhawaii.com` (the address the lead log emails come from).
+2. In From, enter Ellard's ECM email address (the script owner's address, which the lead log emails come from).
 3. Click Create filter, tick **Never send it to Spam**, and click Create filter again.
 
 This changes nothing in the email settings for ecmhawaii.com. It only tells each person's Gmail to trust these messages.

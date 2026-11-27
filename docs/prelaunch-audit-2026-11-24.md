@@ -228,7 +228,7 @@ Every third party fact in the guides carries a numbered citation, and every cita
    - Netlify's real response headers and CSP, as served.
    - 404 status codes on Netlify.
    - Netlify form detection.
-   - Whether form notifications reach info@ecmhawaii.com. (Update 2026-11-27: website leads now go to Ellard and Bleys. The estimate, contact and checklist-request forms email ellard@ecmhawaii.com and bleys@ecmhawaii.com and post to the lead relay; only the subcontractor form emails info@ecmhawaii.com. PM confirmed the live Netlify setup on 2026-11-26.)
+   - Whether form notifications reach info@ecmhawaii.com. (Update 2026-11-27: website leads now go to Ellard and Bleys. The estimate, contact and checklist-request forms email Ellard and Bleys and post to the lead relay; only the subcontractor form emails info@ecmhawaii.com. PM confirmed the live Netlify setup on 2026-11-26.)
    - Netlify's handling of trailing slash URLs.
 
    No form was submitted.

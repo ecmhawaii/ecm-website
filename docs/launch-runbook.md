@@ -131,7 +131,7 @@ Facts today:
 5. **Lower the TTL (optional, recommended).** (Ellard) At least a day before launch, set the TTL of only the web records (A or ALIAS `@`, CNAME `www`) to the lowest value Hostinger allows, for example 300 seconds. This makes both the cutover and any rollback fast.
    - **Verify:** the screenshot taken after shows the new TTL on those rows only.
 6. **Check form notifications.** (Ellard) In Netlify, open Forms, then Submission notifications.
-   - Website leads go to Ellard and Bleys, not Jesse (ECM Standing Decision 2026-11-25). The `estimate`, `contact` and `checklist-request` forms should email `ellard@ecmhawaii.com` and `bleys@ecmhawaii.com`.
+   - Website leads go to Ellard and Bleys, not Jesse (ECM Standing Decision 2026-11-25). The `estimate`, `contact` and `checklist-request` forms should email Ellard and Bleys at their ECM email addresses.
    - Only the `subcontractor` form emails `info@ecmhawaii.com`.
    - The `estimate`, `contact` and `checklist-request` forms also post to `/api/lead-hook` (the relay), which writes each lead into the lead log (see the lead relay item below and `ops/lead-log/README.md`).
    - Netlify only emails a recipient outside the Netlify team after that address confirms. Check that the confirmation was clicked.
@@ -362,7 +362,7 @@ Keep the redirects for at least a year (Google's site move guidance).
    2. On the live site, submit the estimate form once. Use your own details and "TEST launch check, please ignore" in the notes.
    3. **Verify:**
       - The submission shows in Netlify under Forms, `estimate`.
-      - The notification reaches `ellard@ecmhawaii.com` and `bleys@ecmhawaii.com` within a few minutes (check spam).
+      - The notification reaches Ellard and Bleys within a few minutes (check spam).
       - Reply-To is the address you entered.
       - A row for the test lead appears in the lead log, and both of you get a Claim email.
    4. Delete the test submission in Netlify and the test row in the lead log.
