@@ -3,6 +3,7 @@
 | File | Source | Status |
 | --- | --- | --- |
 | ecm-logo.png | ECM's own logo, copied from the live ecmhawaii.com builder site | ECM's brand. Use approved by Ellard for the draft 2026-11-21. Jesse to send the original file (Answer Sheet row 22). |
+| public/favicon.ico (16, 32, 48px), public/icon-192.png, public/icon-512.png, public/apple-touch-icon.png (180px) | Made 2026-11-28 from ecm-logo.png (logo use approved by Ellard for the draft 2026-11-21): the ECM letter mark only (rows 0 to 963 of the logo, above the clean transparent gap before the company name, which cannot be read that small), trimmed to its bounding box (135, 18, 1234, 964), centered on a white square with an 8% margin each side, resized with Pillow LANCZOS. Crop and pad only: no redrawing, recoloring or new shapes. PNGs saved with an adaptive 64 color palette of the image's own colors (mean difference under 0.4 of 255). Replace with icons made from Jesse's original logo file when it arrives (Answer Sheet row 22). | ECM's brand |
 | hero-diamond-head.jpg | Hero photo on the live ecmhawaii.com builder site | Origin unknown (ECM, bought, or downloaded). Retired 2026-11-23 (hero is now projects/hawaii-island-new-home-exterior-2.jpg) and **deleted from the repo 2026-11-24** (pre-launch audit finding 23). |
 
 ## Placeholder photos (hotlinked, draft only)
