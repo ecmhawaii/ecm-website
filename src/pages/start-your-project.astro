@@ -1,0 +1,288 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ChoiceGroup from '../components/ChoiceGroup.astro';
+import RelatedGuide from '../components/RelatedGuide.astro';
+import Reviews from '../components/Reviews.astro';
+import Phone from '../components/Phone.astro';
+import Draft from '../components/Draft.astro';
+import FormAgreement from '../components/FormAgreement.astro';
+import { smsConsent, privacyPage, termsPage, formAgreement } from '../content/legal';
+import { shown } from '../lib/draft';
+import { estimate as e, ui, business, slots, siteVisitCopy } from '../content/site';
+const s = e.steps;
+const total = 6;
+---
+<Base title={e.title} description={e.description} crumbs={[{ name: e.h1, path: '/start-your-project' }]}>
+  <PageHead h1={e.h1} lead={e.intro} leadItem={siteVisitCopy.estimateIntro}>
+    {slots.replyTime.enabled && slots.replyTime.text && <p class="reply-pill" data-slot="reply-time">{slots.replyTime.text}</p>}
+  </PageHead>
+  <section class="section">
+    <div class="container form-wrap">
+      <form
+        class="form estimate-form"
+        name={e.formName}
+        method="POST"
+        action="/thank-you"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        data-estimate
+        data-total={total}
+      >
+        <input type="hidden" name="form-name" value={e.formName} />
+        <input type="hidden" name="subject" value={e.defaultSubject} data-subject-prefix={e.subjectPrefix} />
+        <input type="hidden" name="source-page" value="unknown" />
+        {/* Form version + the SMS consent wording version shown (kept in the lead log's "Form version" column). */}
+        <input type="hidden" name="form-version" value={`${e.formVersion}${shown(smsConsent) ? `+${smsConsent.version}` : ''}`} />
+        <input type="hidden" name="lead-type" value={e.leadType} />
+        <p class="hidden-field">
+          <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+        </p>
+
+        <div class="progress-wrap" hidden data-progress data-template={e.progressTemplate}>
+          <p class="progress-text" aria-live="polite" data-progress-text></p>
+          <progress max={total} value="1" data-progress-bar></progress>
+        </div>
+
+        <fieldset class="step" data-step="1">
+          <legend class="step-legend" tabindex="-1">{s.type.legend}</legend>
+          <ChoiceGroup name={s.type.name} options={s.type.options} />
+          {/* Shown and required only when "Other" is picked (JS). JS off: visible and optional. */}
+          <div class="field other-field" data-other-for={s.type.name}>
+            <label for="project-type-other">{s.type.otherLabel}</label>
+            <input id="project-type-other" name={s.type.otherName} type="text" maxlength="120" autocomplete="off" />
+          </div>
+        </fieldset>
+
+        <fieldset class="step" data-step="2">
+          <legend class="step-legend" tabindex="-1">{s.location.legend}</legend>
+          <p class="sub-label" id="island-label">{s.location.islandLabel} <span aria-hidden="true">*</span></p>
+          <div role="radiogroup" aria-labelledby="island-label">
+            <ChoiceGroup name={s.location.islandName} options={s.location.islands} cols={3} />
+          </div>
+          <div class="field other-field" data-other-for={s.location.islandName}>
+            <label for="island-other">{s.location.islandOtherLabel}</label>
+            <input id="island-other" name={s.location.islandOtherName} type="text" maxlength="120" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="zip">{s.location.zipLabel}</label>
+            <input id="zip" name={s.location.zipName} type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" aria-describedby="zip-hint" />
+            <span class="hint" id="zip-hint">{s.location.zipHint}</span>
+          </div>
+        </fieldset>
+
+        <fieldset class="step" data-step="3">
+          <legend class="step-legend" tabindex="-1">{s.timeline.legend}</legend>
+          <ChoiceGroup name={s.timeline.name} options={s.timeline.options} />
+        </fieldset>
+
+        <fieldset class="step" data-step="4">
+          <legend class="step-legend" tabindex="-1">{s.budget.legend}</legend>
+          <ChoiceGroup name={s.budget.name} options={s.budget.options} />
+        </fieldset>
+
+        <fieldset class="step" data-step="5">
+          <legend class="step-legend" tabindex="-1">{s.plans.legend}</legend>
+          <ChoiceGroup name={s.plans.name} options={s.plans.options} cols={3} />
+        </fieldset>
+
+        <fieldset class="step" data-step="6">
+          <legend class="step-legend" tabindex="-1">{s.contact.legend}</legend>
+          <p class="hint">{ui.requiredNote}</p>
+          <div class="field">
+            <label for="name">{s.contact.name} <span aria-hidden="true">*</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="phone">{s.contact.phone} <span aria-hidden="true">*</span></label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+          </div>
+          {/* SMS consent (draft item sms-consent in src/content/legal.ts): separate, unchecked, optional. Required by Twilio A2P 10DLC. */}
+          <Draft item={smsConsent} class="field">
+            <label class="consent-check"><input type="checkbox" name={smsConsent.name} value={smsConsent.value} /><span>{smsConsent.label}</span></label>
+            <p class="consent-links">{smsConsent.linksLead} {shown(privacyPage) ? <a href={privacyPage.path}>{smsConsent.privacy}</a> : smsConsent.privacy} {smsConsent.and} {shown(termsPage) ? <a href={termsPage.path}>{smsConsent.terms}</a> : smsConsent.terms}{smsConsent.after}</p>
+          </Draft>
+          <div class="field">
+            <label for="email">{s.contact.email} <span aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="best-time">{s.contact.bestTime}</label>
+            <select id="best-time" name="best-time">
+              <option value="">{ui.selectPlaceholder}</option>
+              {s.contact.bestTimes.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="notes">{s.contact.notes}</label>
+            <textarea id="notes" name="notes"></textarea>
+          </div>
+          <div class="field">
+            <label for="heard-about">{s.contact.heardAbout.label}</label>
+            <select id="heard-about" name={s.contact.heardAbout.name}>
+              <option value="">{ui.selectPlaceholder}</option>
+              {s.contact.heardAbout.options.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+          {/* Shown and required only when "Other" is picked (JS). JS off: visible and optional. */}
+          <div class="field other-field" data-other-for={s.contact.heardAbout.name}>
+            <label for="heard-about-other">{s.contact.heardAbout.otherLabel}</label>
+            <input id="heard-about-other" name={s.contact.heardAbout.otherName} type="text" maxlength="120" autocomplete="off" />
+          </div>
+          {/* Agreement line, directly above the Send button (the step nav follows this step). */}
+          <FormAgreement button={ui.submit} extra={formAgreement.estimateExtra} />
+        </fieldset>
+
+        <p class="step-error" role="alert" hidden data-step-error>{e.chooseOne}</p>
+
+        <div class="step-nav">
+          <button type="button" class="btn btn-outline" hidden data-back>{e.back}</button>
+          <button type="button" class="btn btn-lg" hidden data-next>{e.next}</button>
+          <button type="submit" class="btn btn-lg" data-submit>{ui.submit}</button>
+        </div>
+      </form>
+      <RelatedGuide page="estimate" />
+      <p class="form-alt">{e.questionLead} <a href="/contact">{e.questionLink}</a></p>
+      <p class="form-alt form-alt-tight">{ui.phoneLabel}: <Phone />{business.email && <Fragment> · {ui.emailLabel}: <a href={business.emailHref}>{business.email}</a></Fragment>}</p>
+    </div>
+  </section>
+  {/* Reviews slot: hidden until real reviews are enabled in site.ts (slots.reviews). */}
+  <Reviews />
+</Base>
+
+<script>
+  import { count } from '../scripts/funnel';
+  // Progressive enhancement. Without JS every step shows as one plain form that submits normally.
+  const form = document.querySelector<HTMLFormElement>('[data-estimate]');
+  if (form) {
+    const steps = [...form.querySelectorAll<HTMLFieldSetElement>('.step')];
+    const total = steps.length;
+    const back = form.querySelector<HTMLButtonElement>('[data-back]')!;
+    const next = form.querySelector<HTMLButtonElement>('[data-next]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const progress = form.querySelector<HTMLElement>('[data-progress]')!;
+    const progressText = form.querySelector<HTMLElement>('[data-progress-text]')!;
+    const bar = form.querySelector<HTMLProgressElement>('[data-progress-bar]')!;
+
+    // "Other" text fields: shown, enabled and required only while "Other" is picked.
+    // Hidden ones are disabled, so they are never validated or submitted.
+    const others = [...form.querySelectorAll<HTMLElement>('[data-other-for]')];
+    const syncOther = (wrap: HTMLElement) => {
+      // Works for radio groups and selects ("How did you hear about us?").
+      const picked = (form.elements.namedItem(wrap.dataset.otherFor!) as RadioNodeList | HTMLSelectElement | null)?.value === 'Other';
+      const input = wrap.querySelector<HTMLInputElement>('input')!;
+      wrap.hidden = !picked;
+      input.disabled = !picked;
+      input.required = picked;
+    };
+    // Preselect from the readiness check's "Start my estimate" link (?type=&island=&timeline=).
+    // Only exact option values are used; anything else is ignored. No personal data is passed.
+    const pre = new URLSearchParams(location.search);
+    for (const [param, name] of [['type', 'project-type'], ['island', 'island'], ['timeline', 'timeline']]) {
+      const v = pre.get(param);
+      const input = v ? [...form.querySelectorAll<HTMLInputElement>(`input[type=radio][name="${name}"]`)].find((i) => i.value === v) : undefined;
+      if (input) input.checked = true;
+    }
+    others.forEach(syncOther);
+    const error = form.querySelector<HTMLElement>('[data-step-error]')!;
+    let current = 0;
+
+    const show = (i: number, focus = true) => {
+      current = i;
+      steps.forEach((s, n) => (s.hidden = n !== i));
+      back.hidden = i === 0;
+      next.hidden = i === total - 1;
+      submit.hidden = i !== total - 1;
+      progress.hidden = false;
+      progressText.textContent = (progress.dataset.template || '').replace('{n}', String(i + 1)).replace('{total}', String(total));
+      bar.value = i + 1;
+      error.hidden = true;
+      if (focus) steps[i].querySelector<HTMLElement>('.step-legend')?.focus();
+      count('estimate', 'view', i + 1); // first view of each step, once per page load
+    };
+
+    const stepValid = (i: number) => {
+      const fields = [...steps[i].querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea')];
+      for (const f of fields) {
+        if (!f.checkValidity()) {
+          if (f instanceof HTMLInputElement && f.type === 'radio') {
+            error.hidden = false;
+            f.focus();
+          } else {
+            f.reportValidity();
+          }
+          return false;
+        }
+      }
+      return true;
+    };
+
+    next.addEventListener('click', () => { if (stepValid(current)) show(current + 1); });
+    back.addEventListener('click', () => show(current - 1));
+
+    // A tap or click on a choice moves straight to the next step (once). Keyboard users
+    // (arrow keys / Space) stay on the step and press Next, so arrowing never skips ahead.
+    let pointerChoice = false;
+    let advancing = false;
+    form.addEventListener('pointerdown', (ev) => { pointerChoice = !!(ev.target as HTMLElement).closest('.choice'); });
+    form.addEventListener('keydown', () => { pointerChoice = false; });
+    form.addEventListener('change', (ev) => {
+      error.hidden = true;
+      const input = ev.target as HTMLInputElement;
+      const otherWrap = input.type === 'radio' || input.tagName === 'SELECT' ? others.find((w) => w.dataset.otherFor === input.name) : undefined;
+      if (otherWrap) {
+        syncOther(otherWrap);
+        // Picked "Other" with a tap or click: go straight to its text field.
+        if (!otherWrap.hidden && pointerChoice) { pointerChoice = false; otherWrap.querySelector('input')!.focus(); return; }
+      }
+      if (!pointerChoice || input.type !== 'radio' || advancing) return;
+      pointerChoice = false;
+      const stepEl = input.closest('.step') as HTMLFieldSetElement;
+      const i = steps.indexOf(stepEl);
+      const singleChoice = stepEl.querySelectorAll('input:not([type=radio]):not(:disabled), select, textarea').length === 0;
+      if (i !== current || !singleChoice || i >= total - 1) return;
+      advancing = true;
+      setTimeout(() => { advancing = false; if (current === i) show(i + 1); }, 180);
+    });
+    // Enter in a text field goes to the next step instead of submitting early.
+    form.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' && (ev.target as HTMLElement).tagName === 'INPUT' && current < total - 1) {
+        ev.preventDefault();
+        next.click();
+      }
+    });
+
+    const val = (name: string) => (form.elements.namedItem(name) as RadioNodeList | HTMLInputElement | null)?.value ?? '';
+
+    form.addEventListener('submit', (ev) => {
+      for (let i = 0; i < total; i++) {
+        if (!stepValid(i)) { ev.preventDefault(); show(i); return; }
+      }
+      const subject = form.elements.namedItem('subject') as HTMLInputElement;
+      const orOther = (name: string, other: string) => {
+        const v = val(name);
+        const typed = v === 'Other' ? val(other).trim().slice(0, 40).trim() : '';
+        return typed || v;
+      };
+      const type = orOther('project-type', 'project-type-other').replace('ADU or ohana unit', 'ADU');
+      const parts = [type, orOther('island', 'island-other'), val('budget')].filter(Boolean);
+      if (parts.length) subject.value = `${subject.dataset.subjectPrefix}: ${parts.join(', ')}`;
+
+      count('estimate', 'submit', total);
+      const answers = { form: 'estimate', type: val('project-type'), timeline: val('timeline'), island: val('island') };
+      try { sessionStorage.setItem('ecm-thank-you', JSON.stringify(answers)); } catch {}
+      const q = new URLSearchParams({ type: answers.type, timeline: answers.timeline });
+      form.action = `/thank-you?${q.toString()}`;
+    });
+
+    // Source page: where the visitor came from, if it was a page on this site.
+    const source = form.elements.namedItem('source-page') as HTMLInputElement;
+    try {
+      const ref = document.referrer ? new URL(document.referrer) : null;
+      source.value = ref ? (ref.origin === location.origin ? ref.pathname : ref.hostname) : 'direct';
+    } catch {}
+
+    form.classList.add('is-enhanced');
+    show(0, false);
+  }
+</script>

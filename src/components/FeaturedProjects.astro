@@ -1,0 +1,30 @@
+---
+import PhotoSlot from './PhotoSlot.astro';
+import Eyebrow from './Eyebrow.astro';
+import { home, projects, ui } from '../content/site';
+const items = home.featured.map((id) => projects.cards.find((c) => c.id === id)!).filter(Boolean);
+---
+<section class="section section-soft cv-auto" aria-labelledby="feat-h">
+  <div class="container">
+    <Eyebrow text={home.featuredEyebrow} />
+    <div class="section-head">
+      <h2 id="feat-h" data-reveal>{home.featuredHeading}</h2>
+      <a class="link-arrow" href="/portfolio" data-reveal>{ui.viewAllProjects}</a>
+    </div>
+    <ul class="card-grid three">
+      {items.map((p) => (
+        <li class="card lift">
+          <a class="project-link" href={`/portfolio#${p.id}`}>
+            <PhotoSlot image={p.homeCover ?? p.cover} ratio="photo" sizes="(min-width: 960px) 33vw, (min-width: 640px) 50vw, 100vw" widths={[400, 720, 900]} />
+            <div class="card-body">
+              <p class="card-meta">{p.type}{p.place && <Fragment> · {p.place}</Fragment>}</p>
+              <h3 class="card-title">{p.name}</h3>
+              <p>{p.summary}</p>
+              <span class="link-arrow" aria-hidden="true">{ui.viewProject}</span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

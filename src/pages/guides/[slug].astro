@@ -1,0 +1,83 @@
+---
+// Guide pages.
+// - Final guides: rendered from approved Markdown (src/content/guides/*.md via lib/guides.ts).
+// - Draft guides: structure only from site.ts, with a DRAFT badge and noindex (unchanged).
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Faq from '../../components/Faq.astro';
+import EstimateBand from '../../components/EstimateBand.astro';
+import EstimateButton from '../../components/EstimateButton.astro';
+import ChecklistOffer from '../../components/ChecklistOffer.astro';
+import { guides as draftGuides, guidesHub, guidePath, guidesPublished, ui } from '../../content/site';
+import { finalGuides } from '../../lib/guides';
+import { faqSchema, faqSchemaFromItems, articleSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return [
+    ...finalGuides.map((g) => ({ params: { slug: g.slug }, props: { kind: 'final' as const, slug: g.slug } })),
+    // Draft guides are built only in dev (`astro dev`), never in the production build.
+    ...(import.meta.env.DEV ? draftGuides : []).map((g) => ({ params: { slug: g.slug }, props: { kind: 'draft' as const, slug: g.slug } })),
+  ];
+}
+const { kind, slug } = Astro.props;
+const path = guidePath(slug);
+const final = kind === 'final' ? finalGuides.find((g) => g.slug === slug)! : null;
+const draft = kind === 'draft' ? draftGuides.find((g) => g.slug === slug)! : null;
+const h1 = final ? final.h1 : draft!.h1;
+const crumbs = [
+  { name: guidesHub.h1, path: '/guides' },
+  { name: h1, path },
+];
+const schema = final
+  ? [articleSchema({ h1: final.h1, description: final.description, checkedISO: final.checkedISO, publishedISO: guidesPublished, path, image: final.bodyHtml.match(/<img[^>]+src="([^"]+)"/)?.[1] }), ...faqSchemaFromItems(final.faq)]
+  : faqSchema(`guide:${slug}`);
+---
+{final ? (
+  <Base title={final.title} description={final.description} crumbs={crumbs} schema={schema} ogType="article">
+    <PageHead h1={final.h1} eyebrow={ui.guideEyebrow}>
+      <p class="checked-line"><time datetime={final.checkedISO}>{ui.sourcesChecked} {final.checkedLabel}</time></p>
+    </PageHead>
+    <article class="section guide">
+      <div class="container guide-layout">
+        <nav class="toc" aria-labelledby="toc-h">
+          <p id="toc-h" class="toc-head">{ui.onThisPage}</p>
+          <ul>
+            {final.toc.map((t) => <li><a href={`#${t.id}`}>{t.text}</a></li>)}
+            {final.faq.length > 0 && <li><a href="#faq-heading">{final.faqHeading}</a></li>}
+            <li><a href="#sources">{final.sourcesHeading}</a></li>
+          </ul>
+        </nav>
+        <div class="prose guide-prose" id="guide-body-start" set:html={final.bodyHtml} />
+      </div>
+    </article>
+    <ChecklistOffer path={path} />
+    <Faq page={`guide:${slug}`} eyebrow="" heading={final.faqHeading} items={final.faq} />
+    <section class="section guide-sources" aria-labelledby="sources">
+      <div class="container prose guide-prose" set:html={final.sourcesHtml} />
+      <div class="container"><EstimateButton /></div>
+    </section>
+    <EstimateBand />
+  </Base>
+) : (
+  <Base title={draft!.title} description={draft!.description} noindex={draft!.status === 'draft'} crumbs={crumbs} schema={schema}>
+    <PageHead h1={draft!.h1} lead={draft!.intro || undefined} badge={draft!.status === 'draft' ? ui.draftBadge : undefined} />
+    <!-- INTRO SLOT: guides[].intro in site.ts -->
+    <article class="section">
+      <div class="container prose guide-body">
+        <nav class="toc" aria-labelledby="toc-h">
+          <p id="toc-h" class="toc-head">{ui.onThisPage}</p>
+          <ul>{draft!.sections.map((s) => <li><a href={`#${s.id}`}>{s.heading}</a></li>)}</ul>
+        </nav>
+        {draft!.sections.map((s) => (
+          <section id={s.id} aria-labelledby={`${s.id}-h`}>
+            <h2 id={`${s.id}-h`}>{s.heading}</h2>
+            {s.body.length ? s.body.map((p) => <p>{p}</p>) : draft!.status === 'draft' && <p class="draft-note">{ui.draftBadge}</p>}
+          </section>
+        ))}
+        <EstimateButton />
+      </div>
+    </article>
+    <Faq page={`guide:${slug}`} />
+    <EstimateBand />
+  </Base>
+)}

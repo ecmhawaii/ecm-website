@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import FormAgreement from '../components/FormAgreement.astro';
+import { subcontractors as s, ui } from '../content/site';
+const f = s.fields;
+---
+<Base title={s.title} description={s.description} crumbs={[{ name: s.h1, path: '/subcontractors' }]}>
+  <PageHead h1={s.h1} lead={s.intro} />
+  <section class="section">
+    <div class="container form-wrap">
+      <p>{ui.requiredNote}</p>
+      <form
+        class="form"
+        name={s.formName}
+        method="POST"
+        action="/thank-you"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        data-sub-form
+      >
+        <input type="hidden" name="form-name" value={s.formName} />
+        <input type="hidden" name="subject" value={s.defaultSubject} data-subject-prefix={s.subjectPrefix} />
+        <p class="hidden-field">
+          <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+        </p>
+
+        <div class="field">
+          <label for="company">{f.company} <span aria-hidden="true">*</span></label>
+          <input id="company" name="company" type="text" autocomplete="organization" required />
+        </div>
+        <div class="field">
+          <label for="contact">{f.contact} <span aria-hidden="true">*</span></label>
+          <input id="contact" name="contact" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="phone">{f.phone} <span aria-hidden="true">*</span></label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+        </div>
+        <div class="field">
+          <label for="email">{f.email} <span aria-hidden="true">*</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="trade">{f.trade} <span aria-hidden="true">*</span></label>
+          <input id="trade" name="trade" type="text" required />
+        </div>
+        <div class="field">
+          <label for="license">{f.license}</label>
+          <input id="license" name="license" type="text" />
+        </div>
+        <div class="field">
+          <label for="islands">{f.islands}</label>
+          <input id="islands" name="islands" type="text" />
+        </div>
+        <fieldset class="field">
+          <legend>{f.insurance}</legend>
+          <div class="radio-row">
+            <label><input type="radio" name="insurance" value="Yes" /> {s.yes}</label>
+            <label><input type="radio" name="insurance" value="No" /> {s.no}</label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="note">{f.note}</label>
+          <textarea id="note" name="note"></textarea>
+        </div>
+        <FormAgreement button={ui.submit} />
+        <button class="btn btn-lg" type="submit">{ui.submit}</button>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Sets the email subject from the answers (JS off keeps the default), and lets the
+  // thank you page show the subcontractor version of its message.
+  const form = document.querySelector<HTMLFormElement>('[data-sub-form]');
+  form?.addEventListener('submit', () => {
+    const subject = form.elements.namedItem('subject') as HTMLInputElement;
+    const part = (name: string) => ((form.elements.namedItem(name) as HTMLInputElement | null)?.value ?? '').trim().slice(0, 40).trim();
+    const parts = [part('trade'), part('islands')].filter(Boolean);
+    if (parts.length) subject.value = `${subject.dataset.subjectPrefix}: ${parts.join(', ')}`;
+    try { sessionStorage.setItem('ecm-thank-you', JSON.stringify({ form: 'subcontractor' })); } catch {}
+    form.action = '/thank-you?form=subcontractor';
+  });
+</script>

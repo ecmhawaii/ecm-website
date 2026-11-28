@@ -1,0 +1,18 @@
+---
+// HIDDEN SLOT: Trusted By partner and association logos. Each needs the owner's written OK.
+import { slots } from '../content/site';
+const t = slots.trustedBy;
+const show = t.enabled && t.logos.length > 0;
+---
+{show && (
+  <section class="section" aria-labelledby="trusted-heading" data-slot="trusted-by">
+    <div class="container">
+      <h2 id="trusted-heading">{t.heading}</h2>
+      <ul class="logo-row">
+        {t.logos.map((l) => (
+          <li>{l.url ? <a href={l.url} rel="noopener"><img src={l.image} alt={l.name} loading="lazy" height="60" /></a> : <img src={l.image} alt={l.name} loading="lazy" height="60" />}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}

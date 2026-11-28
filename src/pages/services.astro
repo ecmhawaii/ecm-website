@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import CredentialsStrip from '../components/CredentialsStrip.astro';
+import Financing from '../components/Financing.astro';
+import Faq from '../components/Faq.astro';
+import RelatedProjects from '../components/RelatedProjects.astro';
+import EstimateBand from '../components/EstimateBand.astro';
+import { services, ui } from '../content/site';
+import { faqSchema } from '../lib/schema';
+---
+<Base title={services.title} description={services.description} crumbs={[{ name: services.h1, path: '/services' }]} schema={faqSchema('services')}>
+  <PageHead h1={services.h1} lead={services.intro} />
+  <CredentialsStrip />
+  <section class="section">
+    <div class="container">
+      <div class="accordion">
+        {services.items.map((item, i) => (
+          <details id={item.id} open={i === 0}>
+            <summary>{item.name}</summary>
+            <div class="panel">
+              <p>{item.text}</p>
+              <div class="btn-row btn-row-left">
+                <a class="btn btn-outline" href={item.href}>{ui.learnMore}<span class="sr-only">: {item.name}</span></a>
+                <a class="btn" href="/start-your-project">{ui.estimateButton}</a>
+              </div>
+              <RelatedProjects ids={item.related ?? []} headingId={`${item.id}-projects`} eager={i === 0} />
+            </div>
+          </details>
+        ))}
+      </div>
+      <p class="prose subs-line">{services.subsLine}</p>
+      <Financing />
+    </div>
+  </section>
+  <Faq page="services" />
+  <EstimateBand />
+</Base>

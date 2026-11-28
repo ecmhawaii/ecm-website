@@ -1,0 +1,37 @@
+---
+// /privacy and /terms (src/content/legal.ts). Drafts (confirm:false): built on previews with a
+// "Draft for review" header, left out of production builds until confirmed.
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { legalPages, legalUi } from '../content/legal';
+import { shown, draftBadge } from '../lib/draft';
+import { inlineLinks } from '../lib/inline-links';
+
+export function getStaticPaths() {
+  return legalPages.filter(shown).map((page) => ({ params: { legal: page.path.slice(1) }, props: { page } }));
+}
+const { page } = Astro.props;
+const isDraft = draftBadge(page);
+---
+<Base title={page.title} description={page.description} noindex={isDraft} crumbs={[{ name: page.h1, path: page.path }]}>
+  <PageHead h1={page.h1} lead={page.intro} />
+  <section class="section">
+    <div class="container prose legal" data-draft={isDraft ? page.id : undefined}>
+      {isDraft && (
+        <div class="callout draft-callout">
+          <p><span class="draft-tag">{legalUi.draftHeader}</span> {legalUi.draftNote}</p>
+        </div>
+      )}
+      {page.effectiveDate && <p class="legal-updated"><time datetime={page.effectiveDateISO || undefined}>{legalUi.effectiveLabel}: {page.effectiveDate}</time></p>}
+      <p class="legal-updated"><time datetime={page.updatedISO}>{legalUi.updatedLabel}: {page.updated}</time></p>
+      {page.sections.map((sec) => (
+        <section>
+          <h2>{sec.heading}</h2>
+          {sec.paragraphs?.map((p) => <p set:html={inlineLinks(p)} />)}
+          {sec.list && <ul>{sec.list.map((li) => <li set:html={inlineLinks(li)} />)}</ul>}
+          {sec.after?.map((p) => <p set:html={inlineLinks(p)} />)}
+        </section>
+      ))}
+    </div>
+  </section>
+</Base>

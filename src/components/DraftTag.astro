@@ -1,0 +1,8 @@
+---
+// Inline "Draft" tag for a reworded sentence (src/lib/draft.ts `copy`). Previews only.
+import { draftBadge, type Confirmable } from '../lib/draft';
+import { ui } from '../content/site';
+interface Props { item: Confirmable }
+const { item } = Astro.props;
+---
+{draftBadge(item) && <span class="draft-tag" data-draft={item.id}>{ui.draftTag}</span>}

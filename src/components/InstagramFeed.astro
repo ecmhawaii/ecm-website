@@ -1,0 +1,19 @@
+---
+// HIDDEN SLOT: Instagram. Plain links and local images. No third party script or embed.
+import { slots } from '../content/site';
+const ig = slots.instagram;
+const show = ig.enabled && ig.profileUrl && ig.posts.length > 0;
+---
+{show && (
+  <section class="section" aria-labelledby="ig-heading" data-slot="instagram">
+    <div class="container">
+      <h2 id="ig-heading">{ig.heading}</h2>
+      <ul class="ig-grid">
+        {ig.posts.map((p) => (
+          <li><a href={p.url} rel="noopener"><img src={p.image} alt={p.alt} loading="lazy" width="400" height="400" /></a></li>
+        ))}
+      </ul>
+      <p><a href={ig.profileUrl} rel="noopener">{ig.handle}</a></p>
+    </div>
+  </section>
+)}

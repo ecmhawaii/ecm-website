@@ -1,0 +1,16 @@
+---
+// Wraps one confirm-able item (see src/lib/draft.ts).
+// Production: renders nothing until the item is confirmed. Elsewhere: renders the content, with a
+// visible "Draft" badge while confirm is false. `inline` gives a span instead of a block.
+import { shown, draftBadge, type Confirmable } from '../lib/draft';
+import { ui } from '../content/site';
+interface Props { item: Confirmable; inline?: boolean; class?: string }
+const { item, inline = false, class: cls } = Astro.props;
+const show = shown(item);
+const badge = draftBadge(item);
+---
+{show && (inline ? (
+  <span class:list={[cls, badge && 'draft-inline']} data-draft={badge ? item.id : undefined}>{badge && <span class="draft-tag">{ui.draftTag}</span>}<slot /></span>
+) : (
+  <div class:list={[cls, badge && 'draft-block']} data-draft={badge ? item.id : undefined}>{badge && <span class="draft-tag">{ui.draftTag}</span>}<slot /></div>
+))}

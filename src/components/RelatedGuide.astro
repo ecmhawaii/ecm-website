@@ -1,0 +1,15 @@
+---
+// One related guide link. Renders only for final guides.
+import { relatedGuides, ui } from '../content/site';
+import { findGuide } from '../lib/guides';
+interface Props { page: string; section?: string }
+const { page, section } = Astro.props;
+const rel = relatedGuides[page];
+const g = rel && (section === undefined ? !rel.afterSection : rel.afterSection === section) ? findGuide(rel.slug) : undefined;
+---
+{g && g.status === 'final' && (
+  <p class="related-guide">
+    <span class="related-label">{ui.relatedGuide}</span>
+    <a class="link-arrow" href={g.href}>{g.h1}</a>
+  </p>
+)}

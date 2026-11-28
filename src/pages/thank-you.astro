@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import Phone from '../components/Phone.astro';
+import DraftTag from '../components/DraftTag.astro';
+import Draft from '../components/Draft.astro';
+import { checklists, checklistThanks } from '../content/checklists';
+import { shown } from '../lib/draft';
+import PageHead from '../components/PageHead.astro';
+import { business, thankYou as t, slots, planningGuideByType, ui, siteVisitCopy } from '../content/site';
+import { publishedGuides } from '../lib/guides';
+// Only final guides are suggested; a draft mapping falls back to the default guide.
+const guideList = publishedGuides.map((g) => ({ slug: g.slug, h1: g.h1, href: g.href }));
+// Checklist requests: /thank-you?form=checklist&c=<slug> links the checklist (only checklists built here).
+const checklistMap = Object.fromEntries(checklists.filter(shown).map((c) => [c.slug, `/checklists/${c.slug}`]));
+const showChecklistThanks = shown(checklistThanks) && Object.keys(checklistMap).length > 0;
+---
+<Base title={t.title} description={t.description} noindex crumbs={[{ name: t.title.split(' |')[0], path: '/thank-you' }]}>
+  <PageHead h1={t.h1} />
+  <section class="section">
+    <div class="container prose" data-thanks data-guides={JSON.stringify(guideList)} data-guide-map={JSON.stringify(planningGuideByType)}>
+      <p class="lead" data-thanks-text data-sub-text={t.subcontractorText} data-contact-text={t.contactText}><DraftTag item={siteVisitCopy.thanksText} />{t.text}</p>
+      {/* REPLY TIME SLOT: confirmed by Jesse 2026-11-21 (slots.replyTime in site.ts). Hidden for subcontractors. */}
+      {slots.replyTime.enabled && slots.replyTime.text && <p class="reply-pill reply-pill-dark" data-slot="reply-time" data-reply>{slots.replyTime.text}</p>}
+
+      <div class="callout next-box" data-next-box>
+        <h2 class="card-title">{t.nextHeading}</h2>
+        <ol class="next-steps">{t.nextSteps.map((s, i) => <li>{i === t.nextSteps.length - 1 && <DraftTag item={siteVisitCopy.thanksStep} />}{s}</li>)}</ol>
+      </div>
+
+      {showChecklistThanks && (
+        <div hidden data-checklist-box data-checklists={JSON.stringify(checklistMap)} data-checklist-text={checklistThanks.text}>
+          <Draft item={checklistThanks} class="callout">
+            <p class="btn-row btn-row-left">
+              <a class="btn btn-lg btn-arrow" href="/checklists" data-checklist-link>{checklistThanks.openLabel}</a>
+              <a class="btn btn-lg btn-outline" href="/start-your-project">{checklistThanks.estimateButton}</a>
+            </p>
+          </Draft>
+        </div>
+      )}
+
+      <div class="callout" hidden data-planning-box>
+        <h2 class="card-title">{t.planningHeading}</h2>
+        <p>{t.planningLead} <a href="/guides" data-guide-link>{ui.footerGuides}</a></p>
+      </div>
+
+      <p>{t.urgentLead} <Phone />.</p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Reads answers from the URL or sessionStorage. With no data, the default page stays as is.
+  const root = document.querySelector<HTMLElement>('[data-thanks]');
+  if (root) {
+    let data: Record<string, string> = {};
+    try { data = JSON.parse(sessionStorage.getItem('ecm-thank-you') || '{}'); } catch {}
+    const params = new URLSearchParams(location.search);
+    for (const k of ['type', 'timeline', 'form', 'c']) { const v = params.get(k); if (v) data[k] = v; }
+
+    const box = root.querySelector<HTMLElement>('[data-checklist-box]');
+    const checklistHref = data.form === 'checklist' && box ? (JSON.parse(box.dataset.checklists || '{}') as Record<string, string>)[data.c] : undefined;
+    if (checklistHref && box) {
+      // Checklist request: link the checklist (slug checked against the list built into the page).
+      root.querySelector<HTMLElement>('[data-thanks-text]')!.textContent = box.dataset.checklistText || '';
+      box.querySelector<HTMLAnchorElement>('[data-checklist-link]')!.href = checklistHref;
+      box.hidden = false;
+      root.querySelector<HTMLElement>('[data-next-box]')!.hidden = true;
+      const reply = root.querySelector<HTMLElement>('[data-reply]');
+      if (reply) reply.hidden = true;
+    } else if (data.form === 'subcontractor' || data.form === 'contact') {
+      const text = root.querySelector<HTMLElement>('[data-thanks-text]')!;
+      text.textContent = (data.form === 'contact' ? text.dataset.contactText : text.dataset.subText) || text.textContent;
+      root.querySelector<HTMLElement>('[data-next-box]')!.hidden = true;
+      const reply = root.querySelector<HTMLElement>('[data-reply]');
+      if (reply) reply.hidden = true;
+    } else if (data.timeline === 'Just planning') {
+      const map = JSON.parse(root.dataset.guideMap || '{}') as Record<string, string>;
+      const list = JSON.parse(root.dataset.guides || '[]') as Array<{ slug: string; h1: string; href: string }>;
+      const guide = list.find((g) => g.slug === map[data.type]) || list.find((g) => g.slug === map.default);
+      if (guide) {
+        const link = root.querySelector<HTMLAnchorElement>('[data-guide-link]')!;
+        link.href = guide.href;
+        link.textContent = guide.h1;
+        root.querySelector<HTMLElement>('[data-planning-box]')!.hidden = false;
+        root.querySelector<HTMLElement>('[data-next-box]')!.hidden = true;
+      }
+    }
+    try { sessionStorage.removeItem('ecm-thank-you'); } catch {}
+  }
+</script>

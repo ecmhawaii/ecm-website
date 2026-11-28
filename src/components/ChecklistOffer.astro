@@ -1,0 +1,83 @@
+---
+// Checklist offer box on a source page (a guide or /adu-oahu). Netlify form "checklist-request".
+// The box is new copy (confirm:false on the checklist): Draft on previews, left out of production.
+// Submit goes to /thank-you?form=checklist&c=<slug>, which links the checklist.
+import Draft from './Draft.astro';
+import FormAgreement from './FormAgreement.astro';
+import { checklistForSource, checklistUi as u } from '../content/checklists';
+import { estimate, ui } from '../content/site';
+import { shown } from '../lib/draft';
+interface Props { path: string }
+const cl = checklistForSource(Astro.props.path);
+const show = cl && shown(cl);
+const id = (s: string) => `cl-${s}`;
+---
+{show && cl && (
+  <section class="section section-tight checklist-offer-wrap" aria-labelledby={id('h')}>
+    <div class="container">
+      <Draft item={cl} class="checklist-offer card">
+        <h2 id={id('h')} class="checklist-offer-h">{cl.offerHeading}</h2>
+        <p>{cl.offerText}</p>
+        <p class="hint">{ui.requiredNote}</p>
+        <form
+          class="form checklist-form"
+          name={u.formName}
+          method="POST"
+          action={`/thank-you?form=checklist&c=${cl.slug}`}
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          data-checklist-form
+          data-checklist-n={cl.n}
+          data-checklist-slug={cl.slug}
+        >
+          <input type="hidden" name="form-name" value={u.formName} />
+          <input type="hidden" name="subject" value={`${u.subjectPrefix}: ${cl.slug}`} />
+          <input type="hidden" name="lead-type" value={u.leadType} />
+          <input type="hidden" name="form-version" value={u.formVersion} />
+          <input type="hidden" name="checklist" value={cl.slug} />
+          <input type="hidden" name="source-page" value={cl.sourcePath} />
+          <p class="hidden-field">
+            <label>{ui.honeypotLabel} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+          </p>
+          <div class="checklist-form-grid">
+            <div class="field">
+              <label for={id('first-name')}>{u.firstName} <span aria-hidden="true">*</span></label>
+              <input id={id('first-name')} name="first-name" type="text" autocomplete="given-name" maxlength="80" required />
+            </div>
+            <div class="field">
+              <label for={id('email')}>{u.email} <span aria-hidden="true">*</span></label>
+              <input id={id('email')} name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for={id('phone')}>{u.phone}</label>
+              <input id={id('phone')} name="phone" type="tel" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for={id('island')}>{u.island} <span aria-hidden="true">*</span></label>
+              <select id={id('island')} name="island" required>
+                <option value="">{ui.selectPlaceholder}</option>
+                {estimate.steps.location.islands.map((o) => <option value={o}>{o}</option>)}
+              </select>
+            </div>
+          </div>
+          <label class="consent-check"><input type="checkbox" name="email-ok" value="Yes" /><span>{u.emailOk}</span></label>
+          <FormAgreement button={u.submit} />
+          <button class="btn btn-lg" type="submit">{u.submit}</button>
+        </form>
+      </Draft>
+    </div>
+  </section>
+)}
+
+<script>
+  import { count } from '../scripts/funnel';
+  // Step counter: start on the first focus in the form, submit on send (s = checklist number).
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-checklist-form]')) {
+    const n = Number(form.dataset.checklistN) || 0;
+    form.addEventListener('focusin', () => count('checklist', 'start', n), { once: true });
+    form.addEventListener('submit', () => {
+      count('checklist', 'submit', n);
+      try { sessionStorage.setItem('ecm-thank-you', JSON.stringify({ form: 'checklist', c: form.dataset.checklistSlug })); } catch {}
+    });
+  }
+</script>

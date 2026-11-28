@@ -1,0 +1,20 @@
+---
+// GUIDE CONTENT SLOT. Filled from guideContent[page] in site.ts by the PM. Renders nothing while empty.
+import { guideContent, guidePath } from '../content/site';
+import { ui } from '../content/site';
+interface Props { page: string }
+const items = guideContent[Astro.props.page] ?? [];
+---
+{items.length > 0 && (
+  <section class="section section-soft guide-slot" data-slot="guide-content">
+    <div class="container prose">
+      {items.map((g) => (
+        <div>
+          <h2>{g.heading}</h2>
+          <p>{g.text}</p>
+          {g.guide && <p><a href={guidePath(g.guide)}>{ui.learnMore}</a></p>}
+        </div>
+      ))}
+    </div>
+  </section>
+)}

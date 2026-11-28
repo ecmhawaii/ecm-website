@@ -1,0 +1,76 @@
+---
+// Photo slider: CSS scroll-snap. No autoplay, no library.
+// Touch: native swipe. Mouse: drag (pointer events). Keyboard: the track is focusable and
+// moves with the arrow keys; Previous/Next buttons appear when JS runs.
+import PhotoSlot from './PhotoSlot.astro';
+import { ui } from '../content/site';
+interface Props { slots: string[] }
+const { slots } = Astro.props;
+---
+<div class="slider" data-slider>
+  <div class="slider-track" tabindex="0" role="region" aria-label={ui.sliderLabel} data-slider-track>
+    {slots.map((s, i) => (
+      <div class="slide" role="group" aria-label={`${i + 1} / ${slots.length}`}>
+        <PhotoSlot image={s} ratio="photo" sizes="(min-width: 960px) 40vw, 85vw" widths={[480, 800, 1000]} />
+      </div>
+    ))}
+  </div>
+  <div class="slider-controls" hidden data-slider-controls>
+    <button type="button" class="slider-btn" data-dir="-1" aria-label={ui.sliderPrev}><span aria-hidden="true">&lsaquo;</span></button>
+    <span class="slider-count" aria-live="polite" data-slider-count></span>
+    <button type="button" class="slider-btn" data-dir="1" aria-label={ui.sliderNext}><span aria-hidden="true">&rsaquo;</span></button>
+  </div>
+</div>
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-slider]')) {
+    const track = root.querySelector<HTMLElement>('[data-slider-track]')!;
+    const controls = root.querySelector<HTMLElement>('[data-slider-controls]')!;
+    const count = root.querySelector<HTMLElement>('[data-slider-count]')!;
+    const slides = [...track.children] as HTMLElement[];
+    const step = () => slides[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || '0');
+    const current = () => Math.round(track.scrollLeft / step());
+    const update = () => { count.textContent = `${Math.min(current() + 1, slides.length)} / ${slides.length}`; };
+    const smooth = () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth') as ScrollBehavior;
+    const go = (i: number) => {
+      const n = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({ left: n * step(), behavior: smooth() });
+    };
+    controls.hidden = false;
+    for (const b of controls.querySelectorAll<HTMLButtonElement>('[data-dir]')) {
+      b.addEventListener('click', () => go(current() + Number(b.dataset.dir)));
+    }
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(current() + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(current() - 1); }
+    });
+    track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+
+    // Mouse drag (touch already swipes natively).
+    let startX = 0, startLeft = 0, dragging = false, moved = false;
+    track.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      dragging = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
+      track.classList.add('is-dragging');
+      track.setPointerCapture(e.pointerId);
+    });
+    track.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      track.scrollLeft = startLeft - dx;
+    });
+    const end = (e: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      track.classList.remove('is-dragging');
+      if (track.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId);
+      const dx = e.clientX - startX;
+      go(current() + (Math.abs(dx) > step() / 5 ? (dx < 0 ? 1 : -1) * (Math.round(track.scrollLeft / step()) === Math.round(startLeft / step()) ? 1 : 0) : 0));
+    };
+    track.addEventListener('pointerup', end);
+    track.addEventListener('pointercancel', end);
+    track.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+    track.addEventListener('dragstart', (e) => e.preventDefault());
+    update();
+  }
+</script>

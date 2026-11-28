@@ -1,0 +1,16 @@
+---
+// One phone spot. Text and link come from the single PHONE value in src/content/site.ts.
+// - Real number set: a normal tel: link. `label` replaces the text (for example "Call (808) ...").
+// - Placeholder: the placeholder text, never a tel: link. Plain text, or with `button` a
+//   non-clickable button look (role="link" + aria-disabled, no href, not focusable).
+import { business } from '../content/site';
+interface Props { class?: string; label?: string; button?: boolean }
+const { class: cls, label, button = false } = Astro.props;
+---
+{business.phoneLive ? (
+  <a class={cls} href={business.phoneHref}>{label ?? business.phoneDisplay}</a>
+) : button ? (
+  <a class:list={[cls, 'is-disabled']} role="link" aria-disabled="true" data-phone-placeholder>{business.phoneDisplay}</a>
+) : (
+  <span class={cls} data-phone-placeholder>{business.phoneDisplay}</span>
+)}

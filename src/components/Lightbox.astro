@@ -1,0 +1,26 @@
+---
+// One lightbox per page, used by gallery links with data-lightbox.
+// Native <dialog> (Escape closes, rest of the page is inert) plus an explicit focus trap.
+// JS off: gallery links simply open the full-size photo.
+import { ui } from '../content/site';
+---
+<dialog class="lightbox" aria-label={ui.photoDialogLabel} data-lightbox-dialog>
+  <div class="lightbox-inner">
+    <button type="button" class="lightbox-close" data-lb-close>{ui.closePhoto}</button>
+    <figure class="lightbox-figure">
+      <img alt="" hidden data-lb-img />
+      <figcaption data-lb-caption></figcaption>
+    </figure>
+    <div class="lightbox-nav">
+      <button type="button" class="slider-btn slider-btn-light" data-lb-prev aria-label={ui.prevPhoto}><span aria-hidden="true">&lsaquo;</span></button>
+      <span class="lightbox-count" aria-live="polite" data-lb-count></span>
+      <button type="button" class="slider-btn slider-btn-light" data-lb-next aria-label={ui.nextPhoto}><span aria-hidden="true">&rsaquo;</span></button>
+    </div>
+  </div>
+</dialog>
+<script>
+  import { initLightbox } from '../scripts/lightbox';
+  import { initCompare } from '../scripts/compare';
+  initLightbox();
+  initCompare();
+</script>

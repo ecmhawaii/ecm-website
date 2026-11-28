@@ -1,0 +1,35 @@
+# robots.txt for ecmhawaii.com: allows all crawlers, with explicit groups for search engines
+# and AI search and answer bots. (Kept in public/robots.launch.txt until launch, then copied
+# over public/robots.txt.)
+
+User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://ecmhawaii.com/sitemap-index.xml

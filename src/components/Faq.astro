@@ -1,0 +1,33 @@
+---
+// Visible Q and A. Pages pass the same items to Base as FAQPage structured data (lib/schema.ts).
+// Items come from site.ts (`page` key) or, for final guides, from the guide's Markdown (`items`,
+// answers as HTML so links and citation links keep working). Renders nothing when empty.
+import { faqs, ui } from '../content/site';
+import Eyebrow from './Eyebrow.astro';
+interface Props {
+  page: string;
+  eyebrow?: string;
+  heading?: string;
+  items?: Array<{ q: string; aHtml: string }>;
+}
+const { page, eyebrow = 'FAQ', heading = ui.faqHeading, items: given } = Astro.props;
+const items = given ?? (faqs[page] ?? []).map((f) => ({ q: f.q, aText: f.a }));
+---
+{items.length > 0 && (
+  <section class="section faq" aria-labelledby="faq-heading" data-faq={page}>
+    <div class="container faq-grid">
+      <div>
+        {eyebrow && <Eyebrow text={eyebrow} />}
+        <h2 id="faq-heading" data-reveal>{heading}</h2>
+      </div>
+      <div class="faq-list">
+        {items.map((f: any) => (
+          <details data-reveal>
+            <summary>{f.q}</summary>
+            <div class="panel">{f.aHtml ? <p set:html={f.aHtml} /> : <p>{f.aText}</p>}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

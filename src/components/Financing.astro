@@ -1,0 +1,13 @@
+---
+// HIDDEN SLOT: Hearth financing link. Needs Jesse's Hearth link and approved wording.
+import { slots } from '../content/site';
+const f = slots.financing;
+const show = f.enabled && f.url && f.text && f.linkLabel;
+---
+{show && (
+  <aside class="callout financing" data-slot="financing">
+    {f.heading && <h2 class="card-title">{f.heading}</h2>}
+    <p>{f.text}</p>
+    <p><a href={f.url} rel="noopener">{f.linkLabel}</a></p>
+  </aside>
+)}

@@ -1,0 +1,14 @@
+---
+// Agreement line directly above a form's submit button (confirm:false, src/content/legal.ts):
+// By clicking "<button label>", you agree to the website Terms. Our Privacy Policy explains how
+// we handle your information. Each link renders only while its page is built.
+import Draft from './Draft.astro';
+import { formAgreement as t, privacyPage, termsPage } from '../content/legal';
+import { shown } from '../lib/draft';
+interface Props { button: string; extra?: string }
+const { button, extra } = Astro.props;
+---
+<Draft item={t} class="form-agree">
+  <p>{t.byClicking} "{button}"{t.agree} {shown(termsPage) ? <a href={termsPage.path}>{t.terms}</a> : t.terms}{t.our} {shown(privacyPage) ? <a href={privacyPage.path}>{t.privacy}</a> : t.privacy} {t.explains}</p>
+  {extra && <p>{extra}</p>}
+</Draft>

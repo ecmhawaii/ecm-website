@@ -1,0 +1,64 @@
+---
+// Shared body for the four service pages.
+import Base from '../layouts/Base.astro';
+import PageHead from './PageHead.astro';
+import CredentialsStrip from './CredentialsStrip.astro';
+import PhotoSlot from './PhotoSlot.astro';
+import HowItWorks from './HowItWorks.astro';
+import GuideContentSlot from './GuideContentSlot.astro';
+import Financing from './Financing.astro';
+import Faq from './Faq.astro';
+import EstimateBand from './EstimateBand.astro';
+import EstimateButton from './EstimateButton.astro';
+import RelatedGuide from './RelatedGuide.astro';
+import ChecklistOffer from './ChecklistOffer.astro';
+import Phone from './Phone.astro';
+import { serviceDetail, services, business, ui } from '../content/site';
+import { faqSchema } from '../lib/schema';
+
+interface Props { page: keyof typeof serviceDetail }
+const s = serviceDetail[Astro.props.page];
+const crumbs = [
+  { name: services.h1, path: '/services' },
+  { name: s.h1, path: s.path },
+];
+---
+<Base title={s.title} description={s.description} crumbs={crumbs} schema={faqSchema(s.key)}>
+  <PageHead h1={s.h1} eyebrow={services.h1} photo={s.image} photoSide={'imageSide' in s && s.imageSide}>
+    <div class="btn-row btn-row-left" data-hero-in="3" data-cta-watch>
+      <a class="btn btn-lg btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
+      <Phone class="btn btn-lg btn-ghost" label={ui.callButton} button />
+    </div>
+  </PageHead>
+  <CredentialsStrip />
+
+  <section class="section">
+    <div class="container prose">
+      {s.intro.map((p) => <p class="lead lead-lg" data-reveal>{p}</p>)}
+      <EstimateButton />
+    </div>
+  </section>
+
+  {s.sections.map((sec, i) => (
+    <section class:list={['section', i % 2 === 0 && 'section-soft']} id={sec.id} aria-labelledby={`${sec.id}-h`}>
+      <div class:list={['container', sec.image ? 'split' : 'prose']}>
+        <div class="split-text">
+          <h2 id={`${sec.id}-h`} data-reveal>{sec.heading}</h2>
+          {sec.text && <p data-reveal>{sec.text}</p>}
+          {sec.list && <ul class="check-list" data-stagger>{sec.list.map((li) => <li>{li}</li>)}</ul>}
+          <RelatedGuide page={s.key} section={sec.id} />
+          <EstimateButton />
+        </div>
+        {sec.image && <div class="split-media"><PhotoSlot image={sec.image} ratio="photo" sizes="(min-width: 960px) 50vw, 100vw" /></div>}
+      </div>
+    </section>
+  ))}
+
+  {/* Checklist offer (only pages with a checklist, see src/content/checklists.ts). */}
+  <ChecklistOffer path={s.path} />
+  <HowItWorks />
+  <GuideContentSlot page={s.key} />
+  <div class="container"><Financing /></div>
+  <Faq page={s.key} />
+  <EstimateBand />
+</Base>

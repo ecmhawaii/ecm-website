@@ -1,16 +1,43 @@
 ---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import ClientsStrip from '../components/ClientsStrip.astro';
+import Hook from '../components/Hook.astro';
+import ServicesList from '../components/ServicesList.astro';
+import FeaturedProjects from '../components/FeaturedProjects.astro';
+import PhotoBand from '../components/PhotoBand.astro';
+import Slider from '../components/Slider.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Reviews from '../components/Reviews.astro';
+import TrustedBy from '../components/TrustedBy.astro';
+import InstagramFeed from '../components/InstagramFeed.astro';
+import Financing from '../components/Financing.astro';
+import Faq from '../components/Faq.astro';
+import EstimateBand from '../components/EstimateBand.astro';
+import { home } from '../content/site';
+import { sliderKeys } from '../content/images';
+import { faqSchema } from '../lib/schema';
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- REMOVE AT LAUNCH: keeps the site out of search results while it is being built -->
-    <meta name="robots" content="noindex, nofollow" />
-    <title>Elite Construction Management</title>
-  </head>
-  <body>
-    <h1>Elite Construction Management</h1>
-    <p>Our new website is on the way. Call (808) 987-5782.</p>
-  </body>
-</html>
+<Base title={home.title} description={home.description} schema={faqSchema('home')}>
+  <Hero eyebrow={home.eyebrow} h1={home.h1} line={home.heroLine} />
+  <ClientsStrip />
+  <Hook />
+  <ServicesList />
+  <FeaturedProjects />
+  <PhotoBand image={home.bandImage} />
+  <section class="section cv-auto" aria-labelledby="slider-h">
+    <div class="container">
+      <Eyebrow text={home.sliderEyebrow} />
+      <h2 id="slider-h" data-reveal>{home.sliderHeading}</h2>
+      <Slider slots={sliderKeys} />
+    </div>
+  </section>
+  <HowItWorks />
+  <Reviews />
+  <TrustedBy />
+  <InstagramFeed />
+  <div class="container"><Financing /></div>
+  <Faq page="home" eyebrow={home.faqEyebrow} heading={home.faqHeading} />
+  <EstimateBand />
+</Base>

@@ -1,0 +1,54 @@
+---
+// Printable checklist pages (src/content/checklists.ts). noindex, never in the sitemap.
+// A checklist page is built only while its checklist is shown (src/lib/draft.ts); unconfirmed
+// items inside it carry their own Draft badge and are left out of production.
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Draft from '../../components/Draft.astro';
+import { checklists, checklistUi as u } from '../../content/checklists';
+import { serviceDetail, ui } from '../../content/site';
+import { finalGuides } from '../../lib/guides';
+import { shown, draftBadge } from '../../lib/draft';
+
+export function getStaticPaths() {
+  return checklists.filter(shown).map((cl) => ({ params: { slug: cl.slug }, props: { cl } }));
+}
+const { cl } = Astro.props;
+const sourceTitle = finalGuides.find((g) => `/guides/${g.slug}` === cl.sourcePath)?.h1 ?? serviceDetail.adu.h1;
+const path = `/checklists/${cl.slug}`;
+const isDraft = draftBadge(cl);
+---
+<Base title={`${cl.title.replace(/^Checklist: /, '')} | ${u.pageTitleSuffix}`} description={cl.intro} noindex crumbs={[{ name: cl.title, path }]}>
+  <PageHead h1={cl.title} lead={cl.intro} />
+  <section class="section checklist-page">
+    <div class="container prose" data-draft={isDraft ? cl.id : undefined}>
+      {isDraft && <p><span class="draft-tag">{ui.draftTag}</span></p>}
+      <p class="checklist-source">{u.sourceLead} <a href={cl.sourcePath}>{sourceTitle}</a></p>
+      <p class="no-print"><button type="button" class="btn" hidden data-print>{u.printButton}</button></p>
+      {cl.groups.map((g) => {
+        const items = g.items.filter(shown);
+        return items.length > 0 && (
+          <section class="checklist-group">
+            <h2>{g.heading}</h2>
+            <ul class="checklist-items">
+              {items.map((it) => <li><Draft item={it} inline>{it.text}</Draft></li>)}
+            </ul>
+          </section>
+        );
+      })}
+      <p class="checklist-note">{u.sourcesNote}</p>
+      <div class="no-print">
+        <p>{u.estimateLead}</p>
+        <a class="btn btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-print]');
+  if (btn && typeof window.print === 'function') {
+    btn.hidden = false;
+    btn.addEventListener('click', () => window.print());
+  }
+</script>

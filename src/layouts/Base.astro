@@ -1,0 +1,280 @@
+---
+import '@fontsource/merriweather/700.css';
+import '@fontsource/archivo/400.css';
+import '@fontsource/archivo/600.css';
+import '@fontsource/archivo/700.css';
+import '../styles/global.css';
+import '../styles/photo-placeholders.css';
+import { Image, getImage } from 'astro:assets';
+import { SITE, SITE_NOINDEX } from '../../site.config.mjs';
+import { business, nav, servicePages, ui, hawaiianOwned } from '../content/site';
+import { publishedGuides } from '../lib/guides';
+import { logo, hero } from '../content/images';
+import Phone from '../components/Phone.astro';
+import Draft from '../components/Draft.astro';
+import { legalPages } from '../content/legal';
+import { readiness } from '../content/readiness';
+import { shown } from '../lib/draft';
+
+export interface Crumb { name: string; path: string }
+
+interface Props {
+  title: string;
+  description: string;
+  /** Extra noindex for this page only (draft guides). */
+  noindex?: boolean;
+  /** Breadcrumb trail after Home. Inner pages pass at least their own crumb. */
+  crumbs?: Crumb[];
+  /** Additional JSON-LD objects for this page (FAQPage etc). */
+  schema?: object[];
+  /** Open Graph type: 'website' (default) or 'article' (guides). */
+  ogType?: 'website' | 'article';
+}
+
+const { title, description, noindex = false, crumbs = [], schema = [], ogType = 'website' } = Astro.props;
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
+const canonical = new URL(path, SITE).href;
+
+// Share card: 1200x630 crop of the hero.
+// Home only: preload the hero photo with the same srcset as Hero.astro, so its request starts
+// from the first bytes of <head> instead of waiting for the parser to reach <body>.
+const heroPreload = path === '/' && typeof hero.src !== 'string'
+  ? await getImage({ src: hero.src, width: 1920, widths: [640, 800, 960, 1280, 1600, 1920], format: 'webp', quality: 56 })
+  : null;
+const og = await getImage({ src: hero.src, width: 1200, height: 630, fit: 'cover', position: 'center', format: 'jpg', quality: 80 });
+const ogUrl = new URL(og.src, SITE).href;
+// Logo for structured data.
+const ldLogo = await getImage({ src: logo.src, width: 512, format: 'png' });
+const ldLogoUrl = new URL(ldLogo.src, SITE).href;
+
+const business_ld: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  '@id': `${SITE}/#business`,
+  name: business.name,
+  url: `${SITE}/`,
+  logo: ldLogoUrl,
+  image: ogUrl,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: business.locality,
+    addressRegion: business.region,
+    addressCountry: business.country,
+  },
+};
+// telephone only once the real number is set (never the placeholder); no email while it is empty.
+if (business.phoneLive) business_ld.telephone = business.phoneE164;
+if (business.email) business_ld.email = business.email;
+if (shown(business.hours) && business.hours.openingHours.length) business_ld.openingHours = business.hours.openingHours;
+if (business.areaServed.length) {
+  business_ld.areaServed = business.areaServed.map((name) => ({ '@type': 'Place', name }));
+}
+
+const breadcrumb_ld = crumbs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ name: ui.home, path: '/' }, ...crumbs].map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.name,
+        item: new URL(c.path, SITE).href,
+      })),
+    }
+  : null;
+
+const ld = [business_ld, breadcrumb_ld, ...schema].filter(Boolean);
+const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
+// The Services section is /services plus the four service pages.
+const servicesCurrent = path === '/services' ? 'page' : servicePages.some((sp) => sp.href === path) ? 'true' : undefined;
+const onEstimatePage = path === '/start-your-project';
+// "Elite Construction" / "Management": split at the last space.
+const brandLines = [business.name.slice(0, business.name.lastIndexOf(' ')), business.name.slice(business.name.lastIndexOf(' ') + 1)];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {heroPreload && <link rel="preload" as="image" type="image/webp" imagesrcset={heroPreload.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />}
+    {(SITE_NOINDEX || noindex) && (
+      <Fragment>
+        <!-- REMOVE AT LAUNCH: keeps the site out of search results while it is being built (SITE_NOINDEX in site.config.mjs) -->
+        <meta name="robots" content="noindex, nofollow" />
+      </Fragment>
+    )}
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {path !== '/404' && <link rel="canonical" href={canonical} />}
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#111111" />
+    {/* Icons: the ECM letter mark from ecm-logo.png (see src/assets/images/SOURCES.md). */}
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={hero.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+    {ld.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+  </head>
+  <body class={onEstimatePage ? 'on-estimate' : undefined}>
+    <a class="skip-link" href="#main">{ui.skipLink}</a>
+    <header class="site-header">
+      <div class="container header-bar">
+        <a class="brand" href="/">
+          <Image src={logo.src} alt="" width={56} densities={[1, 2]} class="brand-logo" loading="eager" />
+          {/* Two fixed lines on phones, so the wordmark keeps its height when the web font loads (no layout shift). */}
+          <span class="brand-name"><span class="brand-line">{brandLines[0]}</span> <span class="brand-line">{brandLines[1]}</span></span>
+        </a>
+        <nav class="nav-desktop" aria-label={ui.mainNavLabel}>
+          <ul>
+            {nav.map((item) =>
+              item.href === '/services' ? (
+                <li class="nav-dd" data-nav-dd>
+                  {/* JS off: a plain link to /services. JS on: replaced by the disclosure button below. */}
+                  <a class="nav-dd-link" href={item.href} aria-current={servicesCurrent}>{item.label}</a>
+                  <button type="button" class="nav-dd-toggle" aria-expanded="false" aria-controls="nav-services-menu" aria-current={servicesCurrent} hidden data-dd-toggle>
+                    {item.label}<span class="nav-dd-chevron" aria-hidden="true"></span>
+                  </button>
+                  <ul class="nav-dd-menu" id="nav-services-menu" hidden data-dd-menu>
+                    {servicePages.map((sp) => (
+                      <li><a href={sp.href} aria-current={path === sp.href ? 'page' : undefined}>{sp.label}</a></li>
+                    ))}
+                    <li class="nav-dd-all"><a href="/services" aria-current={path === '/services' ? 'page' : undefined}>{ui.allServices}</a></li>
+                  </ul>
+                </li>
+              ) : (
+                <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+              )
+            )}
+            {/* No header phone since Contact joined the row (2026-11-25): it no longer fits at any width
+                (the container caps at 1168px; even a real number pushed the estimate button to two lines).
+                The phone stays in the hero, service page heads, mobile menu, sticky bar, footer and /contact. */}
+            <li><a class="btn" href="/start-your-project">{ui.estimateButton}</a></li>
+          </ul>
+        </nav>
+        <details class="nav-mobile">
+          <summary>{ui.menu}</summary>
+          <nav aria-label={ui.mainNavLabel}>
+            <ul>
+              <li><a href="/">{ui.home}</a></li>
+              {nav.map((item) => (
+                <Fragment>
+                  <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+                  {item.href === '/services' && servicePages.map((sp) => (
+                    <li class="sub"><a href={sp.href} aria-current={isCurrent(sp.href) ? 'page' : undefined}>{sp.label}</a></li>
+                  ))}
+                </Fragment>
+              ))}
+              <li><a href="/start-your-project">{ui.estimateButton}</a></li>
+              <li><Phone class="nav-mobile-phone" label={ui.callButton} /></li>
+            </ul>
+          </nav>
+        </details>
+      </div>
+    </header>
+
+    {crumbs.length > 0 && (
+      <div class="crumb-bar">
+        <nav class="container breadcrumbs" aria-label={ui.breadcrumbLabel}>
+          <ol>
+            <li><a href="/">{ui.home}</a></li>
+            {crumbs.map((c, i) =>
+              i === crumbs.length - 1 ? <li aria-current="page">{c.name}</li> : <li><a href={c.path}>{c.name}</a></li>
+            )}
+          </ol>
+        </nav>
+      </div>
+    )}
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-top">
+          <a href="/" class="footer-brand-link">
+            <Image src={logo.src} alt="" width={140} densities={[1, 2]} class="footer-logo" />
+            <span class="footer-wordmark">{business.name}</span>
+          </a>
+          <a class="btn btn-lg btn-arrow" href="/start-your-project">{ui.estimateButton}</a>
+        </div>
+        <div class="footer-grid">
+          <div>
+            <p class="footer-head">{ui.footerContactLabel}</p>
+            <p><Phone /></p>
+            {shown(business.hours) && business.hours.text && <p class="footer-hours"><Draft inline item={business.hours}>{business.hours.text}</Draft></p>}
+            {business.email && <p><a href={business.emailHref}>{business.email}</a></p>}
+            <p>{business.city}</p>
+            <p class="footer-head footer-head-gap">{ui.footerIslandsLabel}</p>
+            <p>{business.islandsLine}</p>
+          </div>
+          <nav aria-label={ui.footerServicesLabel}>
+            <p class="footer-head">{ui.footerServicesLabel}</p>
+            <ul>
+              <li><a href="/services">{ui.footerServicesLabel}</a></li>
+              {servicePages.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+            </ul>
+          </nav>
+          <nav aria-label={ui.footerGuides}>
+            <p class="footer-head">{ui.footerGuides}</p>
+            <ul>
+              <li><a href="/guides">{ui.footerGuides}</a></li>
+              {publishedGuides.map((g) => <li><a href={g.href}>{g.h1}</a></li>)}
+              {shown(readiness) && <li><Draft inline item={readiness}><a href={readiness.path}>{readiness.promoLink}</a></Draft></li>}
+            </ul>
+          </nav>
+          <nav aria-label={ui.footerCompanyLabel}>
+            <p class="footer-head">{ui.footerCompanyLabel}</p>
+            <ul>
+              <li><a href="/">{ui.home}</a></li>
+              {nav.filter((n) => n.href !== '/services' && n.href !== '/guides').map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+              <li><a href="/start-your-project">{ui.estimateButton}</a></li>
+              <li><a href="/subcontractors">{ui.footerSubcontractors}</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-legal">
+          <p>{business.name}</p>
+          <p>{business.license} · {business.licenseClass}</p>
+          <p>{business.veteranOwned}</p>
+          {shown(hawaiianOwned) && <p><Draft inline item={hawaiianOwned}>{hawaiianOwned.text}</Draft></p>}
+          {/* Privacy and terms (src/content/legal.ts): drafts until confirmed, links only while built.
+              Their own line under the license and ownership lines, at every width. */}
+          {legalPages.some(shown) && (
+            <p class="footer-legal-links">
+              {legalPages.filter(shown).map((page) => <Draft inline item={page}><a href={page.path}>{page.navLabel}</a></Draft>)}
+            </p>
+          )}
+        </div>
+      </div>
+    </footer>
+
+    <div class="sticky-cta" aria-label={ui.estimateButton} role="region">
+      <Phone class="btn btn-light" label={ui.callShort} button />
+      <a class="btn" href="/start-your-project">{ui.estimateShort}</a>
+    </div>
+    <script>
+      import '../scripts/motion';
+      import { initNav } from '../scripts/nav';
+      import { initStickyCta } from '../scripts/sticky-cta';
+      import { initPhotoFade, initDeferredPhotos } from '../scripts/photo-fade';
+      initPhotoFade();
+      initDeferredPhotos();
+      initNav();
+      initStickyCta();
+    </script>
+  </body>
+</html>
